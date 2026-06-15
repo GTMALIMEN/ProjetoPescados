@@ -1,4 +1,8 @@
-from functools import lru_cache
+﻿from pathlib import Path
+
+p = Path("src/database/connection.py")
+
+novo = r'''from functools import lru_cache
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
@@ -39,3 +43,7 @@ def execute_sql_file(path: str) -> None:
 
     with engine.begin() as conn:
         conn.execute(text(sql))
+'''
+
+p.write_text(novo, encoding="utf-8")
+print("✅ connection.py corrigido para Streamlit Cloud + Supabase.")
