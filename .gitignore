@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Ambiente
+.env
+
+# Logs
+*.log
+logs/*.log
+
+# Outputs gerados
+outputs/relatorios/*.xlsx
+outputs/relatorios/*.html
+outputs/relatorios/*.pdf
+
+# Cache/testes
+.pytest_cache/
+.mypy_cache/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temporários
+*.tmp
+*.bak
+~$*
+
+# Secrets Streamlit
+.streamlit/secrets.toml
+# Backups de banco
+*.dump
+*.backup
+*.sql.gz
+# Bases locais sensíveis
+data/input/
+data/output/
+
+*.pyc

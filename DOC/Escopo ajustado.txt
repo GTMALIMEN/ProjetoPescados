@@ -1,0 +1,418 @@
+Escopo ajustado
+Radar Pescados IA — Escopo Ajustado
+
+O app será um sistema de inteligência de mercado para pescados, proteínas, grãos, ração, importação, economia e regiões comerciais, usando:
+
+Engenharia de Dados;
+Ciência de Dados;
+Estatística aplicada;
+Probabilidade;
+Machine Learning;
+Economia aplicada;
+IA;
+Lógica de decisão comercial.
+
+A proposta está certa, mas eu faria estes ajustes finais para deixar o projeto mais profissional.
+
+1. Ajuste geográfico correto
+
+Antes estava muito focado em MG. Agora o certo é:
+
+Brasil
+ └── UF selecionada
+      └── Região IBGE
+           └── Região comercial
+                └── Município
+                     └── Bairro/setor censitário, no futuro
+
+Brasil
+ └── MG
+      └── Central / RMBH
+      └── Norte de MG
+      └── Sul de MG
+      └── Triângulo
+      └── Zona da Mata
+      └── Vale do Aço
+
+Brasil
+ └── SP
+      └── Capital / Grande SP
+      └── Interior
+      └── Litoral
+      └── Campinas
+      └── Ribeirão Preto
+
+Brasil
+ └── RJ
+ └── ES
+ └── PR
+ └── SC(Aqui pode adicionar todos os estados)
+
+Quando nada estiver selecionado: mapa do Brasil.
+Quando selecionar uma UF: mapa da UF.
+Quando selecionar região: mapa regional/municipal.
+No futuro: visão global, usando países, importação, câmbio, commodities e preços internacionais.(seria interessante já vim com as visões globais mas não vamos complicar agora)
+
+2. Histórico desde 2000: ajuste obrigatório
+
+Esse ponto é essencial.
+
+Para trabalhar com previsão, probabilidade, sazonalidade e machine learning,Economia aplicada, o app precisa guardar histórico. A regra será:
+
+Sempre tentar coletar dados desde 01/01/2000.
+Quando a fonte tiver histórico anterior, guardar também.
+Quando a fonte não tiver desde 2000, salvar desde a primeira data disponível.
+
+Isso é importante porque algumas fontes têm histórico maior que 2000. Por exemplo, o Comex Stat informa dados mensais de exportação/importação desde 1997 até o ano atual; o FRED tem a série global de fish meal desde janeiro de 1992; a Conab informa pesquisa de preços agropecuários há mais de 30 anos; já no Banco Central e IBGE, o período disponível varia conforme a série/tabela consultada.
+
+Então o correto é:
+data_inicio_padrao = 2000-01-01
+data_inicio_real = maior histórico disponível por fonte
+
+
+3. Nova camada no banco: histórico e séries temporais
+
+Além das tabelas que você já colocou, eu adicionaria uma estrutura específica para séries históricas.
+
+Schemas sugeridos
+
+raw
+staging
+dw
+ml
+app
+
+
+| Schema  | Função                                         |
+| ------- | ---------------------------------------------- |
+| raw     | dado bruto exatamente como veio da API/arquivo |
+| staging | dado limpo e padronizado                       |
+| dw      | modelo final para análise                      |
+| ml      | bases preparadas para modelos                  |
+| app     | tabelas usadas diretamente no Streamlit        |
+
+
+
+4. Tabela central de séries históricas
+
+Eu criaria essa tabela para guardar qualquer indicador histórico:
+
+CREATE TABLE dw.fato_serie_historica (
+    id SERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    fonte TEXT NOT NULL,
+    codigo_serie TEXT,
+    indicador TEXT NOT NULL,
+    categoria TEXT,
+    subcategoria TEXT,
+    pais TEXT DEFAULT 'Brasil',
+    uf TEXT,
+    municipio TEXT,
+    regiao_comercial TEXT,
+    valor NUMERIC,
+    unidade TEXT,
+    periodicidade TEXT,
+    data_inicio_fonte DATE,
+    data_fim_fonte DATE,
+    data_coleta TIMESTAMP DEFAULT NOW(),
+    hash_registro TEXT,
+    UNIQUE (data, fonte, codigo_serie, indicador, pais, uf, municipio, regiao_comercial)
+);
+
+Essa tabela pode receber:
+
+dólar;
+Selic;
+IPCA;
+IPCA alimentos;
+milho;
+soja;
+farelo de soja;
+fish meal;
+frango;
+boi;
+suíno;
+ovos;
+tilápia;
+importação de salmão;
+importação de bacalhau;
+importação de camarão;
+população;
+renda;
+produção aquícola;
+produção pecuária.
+
+5. Controle de carga histórica
+
+Também precisa ter uma tabela de controle para saber o que foi coletado.
+
+CREATE TABLE app.etl_controle_carga (
+    id SERIAL PRIMARY KEY,
+    fonte TEXT NOT NULL,
+    indicador TEXT NOT NULL,
+    codigo_serie TEXT,
+    data_inicio_solicitada DATE,
+    data_inicio_disponivel DATE,
+    data_fim_disponivel DATE,
+    ultima_data_coletada DATE,
+    status TEXT,
+    mensagem TEXT,
+    qtd_registros INT,
+    data_execucao TIMESTAMP DEFAULT NOW()
+);
+
+Isso evita bagunça e ajuda a saber:
+
+qual fonte já foi carregada;
+qual série deu erro;
+qual série não tem histórico desde 2000;
+qual série precisa atualizar;
+quantos registros entraram.
+
+
+
+6. Ajuste do MVP 1
+
+O MVP 1 agora deve mudar de:
+
+criar mapa Brasil/MG/regiões
+
+para:
+
+criar mapa Brasil/UF selecionada/regiões comerciais/municípios
+
+MVP 1 corrigido
+
+Fontes:
+
+vendas internas;
+Banco Central;
+IBGE;
+CONAB;
+CEPEA;
+Comex Stat básico.
+
+Funcionalidades:
+
+carregar histórico de vendas internas;
+coletar histórico desde 2000, quando disponível;
+coletar dólar, Selic, IPCA e IPCA alimentos;
+coletar população e renda por UF/município;
+coletar milho, soja, frango, boi, suíno, ovos e tilápia;
+coletar importação básica por NCM;
+criar mapa Brasil → UF → região → município;
+criar score de oportunidade regional;
+criar score de risco;
+criar cenário 1 a 10;
+recomendar vendedor, promotor, campanha ou monitoramento;
+criar dashboard com gráficos e alertas.
+
+
+7. Ponto importante: dado real x dado estimado
+
+Essa regra precisa aparecer no app.
+
+| Tipo        | Exemplo                                       | Como tratar                     |
+| ----------- | --------------------------------------------- | ------------------------------- |
+| Real        | vendas internas, dólar, importação, população | mostrar como dado medido        |
+| Estimado    | consumo provável de proteína por região       | mostrar como estimativa         |
+| Previsto    | venda futura, risco de queda, oportunidade    | mostrar como probabilidade      |
+| Recomendado | colocar vendedor/promotor/campanha            | mostrar com confiança do modelo |
+
+
+Exemplo de texto dentro do app:
+
+Esta análise é probabilística. O modelo estima tendência com base em histórico, indicadores econômicos, comportamento regional, preços relativos e dados comerciais. Não representa certeza absoluta.
+
+Isso é obrigatório para o app ficar profissional.
+
+
+8. Fontes históricas: como usar
+
+Banco Central
+
+Usar para séries macroeconômicas:
+
+dólar;
+Selic;
+inflação;
+juros;
+câmbio.
+
+O SGS do Banco Central permite consultar séries econômico-financeiras e automatizar consultas por webservices.
+
+IBGE/SIDRA
+
+Usar para:
+
+população;
+renda;
+IPCA;
+IPCA alimentos;
+POF;
+Censo;
+produção pecuária/aquícola.
+
+O SIDRA reúne séries históricas e pesquisas como inflação, trabalho, rendimento, agropecuária, PIB, Censo, PNAD e POF; a API de agregados permite consultar dados por variáveis, localidades e classificações.
+
+CONAB
+
+Usar para:
+
+preços agropecuários;
+milho;
+soja;
+grãos;
+séries históricas de preços.
+
+A Conab informa séries históricas de preços agropecuários e pesquisa sistemática de mais de 112 produtos, com registros por unidades da federação.
+
+CEPEA
+
+Usar para:
+
+boi;
+frango;
+suíno;
+ovos;
+milho;
+soja;
+tilápia;
+trigo.
+
+O CEPEA lista indicadores de preços agropecuários para várias cadeias, incluindo boi, frango, milho, soja, suíno, ovos, tilápia e trigo.
+
+Comex Stat
+
+Usar para:
+
+salmão;
+bacalhau;
+camarão;
+merluza;
+pescados congelados;
+origem dos produtos;
+valor FOB;
+kg líquido;
+preço médio importado.
+
+O Comex Stat é o sistema oficial para extração das estatísticas de comércio exterior brasileiro e disponibiliza dados mensais detalhados desde 1997.
+
+FRED/FMI
+
+Usar para:
+
+fish meal;
+commodities internacionais;
+preços globais.
+
+A série global de fish meal do FRED/FMI tem dados mensais desde janeiro de 1992 e unidade em dólares por tonelada métrica.
+
+
+9. Como o app vai usar estatística e ML
+
+A arquitetura correta é:
+
+Dados históricos
+    ↓
+Tratamento e padronização
+    ↓
+Indicadores derivados
+    ↓
+Estatística aplicada
+    ↓
+Probabilidade
+    ↓
+Machine Learning
+    ↓
+Cenário 1 a 10
+    ↓
+Recomendação
+
+| Indicador              | Cálculo                               |
+| ---------------------- | ------------------------------------- |
+| variação mensal        | mês atual vs mês anterior             |
+| variação trimestral    | últimos 3 meses vs 3 meses anteriores |
+| tendência              | regressão ou média móvel              |
+| volatilidade           | desvio padrão                         |
+| anomalia               | z-score/IQR                           |
+| risco de queda         | classificação probabilística          |
+| oportunidade regional  | score ponderado                       |
+| sensibilidade ao dólar | correlação/regressão                  |
+| competitividade        | pescado vs outras proteínas           |
+| cenário 1 a 10         | score normalizado                     |
+
+
+10. Ordem correta agora
+
+Eu ajustaria a ordem de construção para:
+
+Criar estrutura do projeto
+Streamlit;
+PostgreSQL;
+schemas;
+.env;
+logs.
+Criar banco histórico
+raw;
+staging;
+dw;
+ml;
+app.
+Criar coletores históricos
+BCB;
+IBGE;
+CONAB;
+CEPEA;
+Comex;
+FRED/FMI.
+Salvar tudo no Postgres
+desde 2000, quando disponível;
+antes de 2000, se a fonte permitir;
+com controle de carga.
+Carregar vendas internas
+data;
+produto;
+proteína;
+cliente;
+município;
+UF;
+vendedor;
+valor;
+volume.
+Criar mapa Brasil/UF/região/município
+Criar primeiros indicadores
+oportunidade;
+risco;
+pressão de custo;
+competitividade;
+sensibilidade ao dólar.
+Criar cenário 1 a 10
+Criar recomendações
+vendedor;
+promotor;
+campanha;
+monitorar.
+Criar módulo IA
+previsão;
+probabilidade;
+intervalo de confiança;
+cenário pessimista/base/otimista.
+
+Veredito
+
+Está 100% no caminho certo.
+
+A única correção técnica que eu faria no texto é trocar:
+
+“histórico desde 2000”
+
+por:
+
+“histórico desde 2000 como padrão mínimo desejado, ou desde a primeira data disponível quando a fonte tiver mais ou menos histórico.”
+
+Isso evita erro técnico, porque cada fonte tem disponibilidade diferente.
+
+Com essa atualização, o projeto fica com cara de sistema real de Data Intelligence para mercado de pescados e proteínas, não apenas um app de gráficos.
+
+Agora vamos separar e trabalhar por modulo o que deve melhorar por modulo, vamos ver as formulas que iremos utilizar, vamos ver os dados, entrar detalhe por detalhe no plano para deixar 100% e podermos dar inicio, 

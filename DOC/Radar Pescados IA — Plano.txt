@@ -1,0 +1,1012 @@
+Radar Pescados IA — Plano fechado por módulos
+
+
+Módulo 0 — Fundação do projeto
+
+Esse módulo é a estrutura base. Sem ele, o app vira bagunça.
+
+Objetivo
+
+Criar a arquitetura do projeto, banco, pastas, logs, variáveis de ambiente e padrão de dados.
+
+Stack fechada
+
+| Camada                   | Ferramenta                       |
+| ------------------------ | -------------------------------- |
+| App                      | Streamlit                        |
+| Banco                    | PostgreSQL                       |
+| Tratamento               | Pandas / Polars                  |
+| Gráficos                 | Plotly                           |
+| Mapas                    | GeoPandas + Folium/Plotly Mapbox |
+| Machine Learning         | Scikit-learn                     |
+| Séries temporais         | Statsmodels / Prophet opcional   |
+| Banco vetorial/IA futura | opcional, depois                 |
+| Deploy futuro            | Docker                           |
+
+
+Estrutura do projeto
+
+radar_pescados_ia/
+│
+├── app.py
+├── requirements.txt
+├── .env
+├── README.md
+│
+├── src/
+│   ├── config/
+│   │   └── settings.py
+│   │
+│   ├── database/
+│   │   ├── connection.py
+│   │   ├── create_schemas.sql
+│   │   └── models.sql
+│   │
+│   ├── collectors/
+│   │   ├── bcb_collector.py
+│   │   ├── ibge_collector.py
+│   │   ├── conab_collector.py
+│   │   ├── cepea_collector.py
+│   │   ├── comex_collector.py
+│   │   └── fred_collector.py
+│   │
+│   ├── etl/
+│   │   ├── transform_series.py
+│   │   ├── transform_vendas.py
+│   │   └── load_postgres.py
+│   │
+│   ├── services/
+│   │   ├── indicadores_service.py
+│   │   ├── scores_service.py
+│   │   ├── recomendacao_service.py
+│   │   └── previsao_service.py
+│   │
+│   ├── ml/
+│   │   ├── features.py
+│   │   ├── train_models.py
+│   │   ├── predict.py
+│   │   └── evaluate.py
+│   │
+│   ├── pages/
+│   │   ├── visao_geral.py
+│   │   ├── mapa_mercado.py
+│   │   ├── radar_economico.py
+│   │   ├── radar_proteinas.py
+│   │   ├── radar_graos.py
+│   │   ├── comercio_exterior.py
+│   │   ├── oportunidade_regiao.py
+│   │   ├── ia_previsao.py
+│   │   └── recomendacoes.py
+│   │
+│   └── utils/
+│       ├── datas.py
+│       ├── normalizacao.py
+│       ├── logs.py
+│       └── validacoes.py
+
+
+Decisão fechada
+
+O app será construído como sistema modular, não como um arquivo único. Cada API terá seu próprio coletor. Cada indicador terá seu próprio service.
+
+-----------------------------------------------------------------------------------------------------------------
+
+Módulo 1 — Banco de dados e histórico
+Objetivo
+
+Guardar histórico longo, preferencialmente desde 01/01/2000, ou desde a primeira data disponível em cada fonte.
+
+Essa regra está correta:
+
+Histórico desde 2000 como padrão mínimo desejado, ou desde a primeira data disponível quando a fonte tiver mais ou menos histórico.
+
+Isso é obrigatório para:
+
+tendência;
+sazonalidade;
+volatilidade;
+correlação;
+regressão;
+previsão;
+probabilidade;
+machine learning;
+economia aplicada.
+Schemas fechados
+
+CREATE SCHEMA IF NOT EXISTS raw;
+CREATE SCHEMA IF NOT EXISTS staging;
+CREATE SCHEMA IF NOT EXISTS dw;
+CREATE SCHEMA IF NOT EXISTS ml;
+CREATE SCHEMA IF NOT EXISTS app;
+
+| Schema  | Função                                         |
+| ------- | ---------------------------------------------- |
+| raw     | dado bruto exatamente como veio da API/arquivo |
+| staging | dado tratado e padronizado                     |
+| dw      | modelo analítico final                         |
+| ml      | bases de treino, features e previsões          |
+| app     | tabelas prontas para o Streamlit               |
+
+
+Tabela central histórica
+
+
+CREATE TABLE IF NOT EXISTS dw.fato_serie_historica (
+    id SERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    fonte TEXT NOT NULL,
+    codigo_serie TEXT,
+    indicador TEXT NOT NULL,
+    categoria TEXT,
+    subcategoria TEXT,
+    pais TEXT DEFAULT 'Brasil',
+    uf TEXT,
+    municipio TEXT,
+    regiao_ibge TEXT,
+    regiao_comercial TEXT,
+    valor NUMERIC,
+    unidade TEXT,
+    periodicidade TEXT,
+    data_inicio_fonte DATE,
+    data_fim_fonte DATE,
+    data_coleta TIMESTAMP DEFAULT NOW(),
+    hash_registro TEXT,
+    UNIQUE (
+        data,
+        fonte,
+        codigo_serie,
+        indicador,
+        pais,
+        uf,
+        municipio,
+        regiao_ibge,
+        regiao_comercial
+    )
+);
+
+Controle de carga
+
+CREATE TABLE IF NOT EXISTS app.etl_controle_carga (
+    id SERIAL PRIMARY KEY,
+    fonte TEXT NOT NULL,
+    indicador TEXT NOT NULL,
+    codigo_serie TEXT,
+    data_inicio_solicitada DATE,
+    data_inicio_disponivel DATE,
+    data_fim_disponivel DATE,
+    ultima_data_coletada DATE,
+    status TEXT,
+    mensagem TEXT,
+    qtd_registros INT,
+    data_execucao TIMESTAMP DEFAULT NOW()
+);
+
+Decisão fechada
+
+Todo dado externo entra primeiro em raw, depois passa por staging, depois entra no dw.
+
+Nada de jogar dado direto no dashboard.
+
+---------------------------------------------------------------------------------------------------------------------
+
+Módulo 2 — Geografia e regiões
+Objetivo
+
+Permitir análise por:
+
+Brasil
+ → UF
+   → Região IBGE
+     → Região comercial
+       → Município
+         → Bairro/setor censitário, futuro
+
+O IBGE será a base oficial para API de dados, localidades, agregados e divisão regional; a documentação oficial lista APIs como Agregados e Localidades, e as divisões regionais do IBGE incluem as regiões geográficas imediatas e intermediárias.
+
+Dimensão geográfica:
+CREATE TABLE IF NOT EXISTS dw.dim_geografia (
+    id SERIAL PRIMARY KEY,
+    codigo_ibge TEXT,
+    pais TEXT DEFAULT 'Brasil',
+    uf TEXT,
+    nome_uf TEXT,
+    municipio TEXT,
+    regiao_intermediaria TEXT,
+    regiao_imediata TEXT,
+    regiao_metropolitana TEXT,
+    regiao_comercial TEXT,
+    latitude NUMERIC,
+    longitude NUMERIC
+);
+
+Regiões comerciais
+
+Essa parte será manual no início, porque região comercial é regra da empresa, não necessariamente do IBGE.
+
+CREATE TABLE IF NOT EXISTS app.dim_regiao_comercial (
+    id SERIAL PRIMARY KEY,
+    uf TEXT NOT NULL,
+    regiao_comercial TEXT NOT NULL,
+    municipio TEXT NOT NULL,
+    codigo_ibge TEXT,
+    prioridade INT,
+    ativo BOOLEAN DEFAULT TRUE
+);
+
+Decisão fechada
+
+O app terá duas geografias:
+
+| Tipo             | Uso                                      |
+| ---------------- | ---------------------------------------- |
+| Região IBGE      | padrão estatístico oficial               |
+| Região comercial | decisão de vendedor, promotor e campanha |
+
+
+---------------------------------------------------------------------------------------------------------
+
+
+Módulo 3 — Fontes de dados
+Fonte 1 — Banco Central
+Dados
+dólar;
+Selic;
+IPCA;
+IPCA alimentos;
+juros;
+câmbio.
+
+O SGS do Banco Central consolida séries econômico-financeiras e possui serviço automatizado/webservice para consulta das séries
+
+Uso
+impacto do dólar nos importados;
+custo financeiro;
+inflação geral;
+inflação de alimentos;
+cenário econômico.
+
+Periodicidade
+
+| Indicador      | Periodicidade |
+| -------------- | ------------- |
+| dólar          | diária        |
+| Selic          | diária/mensal |
+| IPCA           | mensal        |
+| IPCA alimentos | mensal        |
+
+
+Fonte 2 — IBGE/SIDRA/Censo
+
+Dados
+população;
+renda;
+IPCA;
+IPCA alimentos;
+POF;
+Censo;
+produção pecuária/aquícola;
+municípios;
+regiões;
+malhas geográficas.
+
+A API de Agregados do IBGE serve para consultas multidimensionais por variáveis, períodos, localidades e classificações; as malhas territoriais representam a estrutura territorial em nível de estado, município, distrito e subdistrito.
+
+Uso
+potencial de mercado;
+renda regional;
+consumo estimado;
+população por município;
+mapa;
+oportunidade regional.
+
+Fonte 3 — CONAB
+Dados
+milho;
+soja;
+grãos;
+preços agropecuários;
+séries históricas.
+
+A Conab realiza pesquisa sistemática de preços de mais de 112 produtos agropecuários há mais de 30 anos, com mais de 20 mil registros de séries em todas as UFs.
+
+Uso
+pressão de custo;
+ração;
+cadeia de proteína animal;
+risco de aumento de custo.
+Fonte 4 — CEPEA
+Dados
+boi;
+frango;
+suíno;
+ovos;
+milho;
+soja;
+tilápia;
+trigo.
+
+O CEPEA lista indicadores de preços agropecuários para várias cadeias, incluindo boi, frango, milho, soja, suíno, ovos, tilápia e trigo.
+
+Uso
+competitividade entre proteínas;
+tilápia x frango;
+pescado x boi;
+pescado x suíno;
+decisão de campanha.
+Fonte 5 — Comex Stat / MDIC
+Dados
+importação por NCM;
+exportação por NCM;
+país de origem;
+UF;
+kg líquido;
+valor FOB;
+preço médio importado.
+
+A API do Comex Stat permite consultas detalhadas de exportações e importações brasileiras, e o portal oficial informa acesso gratuito às estatísticas de comércio exterior.
+
+Uso
+salmão;
+bacalhau;
+camarão;
+merluza;
+pescados congelados;
+impacto do dólar;
+risco de abastecimento;
+preço médio importado.
+
+Fonte 6 — FRED/FMI
+Dados
+fish meal;
+soybean meal;
+shrimp;
+beef;
+commodities globais.
+
+O FRED possui a série global de fish meal, com dados mensais desde janeiro de 1992 e fonte original do FMI.
+
+Uso
+pressão global de insumos;
+ração;
+custo de pescado;
+visão internacional futura.
+
+---------------------------------------------------------------------
+
+Módulo 4 — Dados internos de vendas
+Objetivo
+
+Usar as vendas internas como base real do app.
+
+Campos mínimos necessários
+
+data_faturamento
+uf
+municipio
+cliente
+grupo_cliente
+perfil_cliente
+produto
+grupo_produto
+proteina
+vendedor
+valor_venda
+volume_kg
+quantidade
+ticket_medio
+canal
+
+Tabela de vendas
+
+CREATE TABLE IF NOT EXISTS dw.fato_vendas (
+    id SERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    uf TEXT,
+    municipio TEXT,
+    codigo_ibge TEXT,
+    regiao_comercial TEXT,
+    cliente TEXT,
+    grupo_cliente TEXT,
+    perfil_cliente TEXT,
+    produto TEXT,
+    grupo_produto TEXT,
+    proteina TEXT,
+    vendedor TEXT,
+    valor_venda NUMERIC,
+    volume_kg NUMERIC,
+    quantidade NUMERIC,
+    ticket_medio NUMERIC,
+    canal TEXT,
+    data_carga TIMESTAMP DEFAULT NOW()
+);
+
+Decisão fechada
+
+Sem venda interna, o app ainda funciona como radar externo.
+Com venda interna, ele vira inteligência comercial real.
+
+
+
+Módulo 5 — Indicadores estatísticos
+
+Aqui começa a parte analítica de verdade.
+
+5.1 Variação mensal
+
+var_mensal = (valor_mes_atual - valor_mes_anterior) / valor_mes_anterior
+Uso:
+
+venda;
+volume;
+preço;
+dólar;
+milho;
+soja;
+proteína;
+importação.
+
+5.2 Variação trimestral
+
+var_tri = (media_ultimos_3_meses - media_3_meses_anteriores) / media_3_meses_anteriores
+
+Uso:
+
+tendência mais estável que a mensal;
+redução de ruído;
+análise de curto prazo.
+
+5.3 Média móvel
+
+media_movel_3m = média dos últimos 3 meses
+media_movel_6m = média dos últimos 6 meses
+media_movel_12m = média dos últimos 12 meses
+
+Uso:
+
+suavizar ruído;
+identificar tendência;
+comparar atual contra histórico.
+
+5.4 Volatilidade
+volatilidade = desvio_padrao(variações_mensais)
+
+Uso:
+
+saber se um indicador é instável;
+medir risco;
+compor o score de confiança.
+
+5.5 Z-score
+
+z = (valor_atual - média_histórica) / desvio_padrão_histórico
+
+Uso:
+
+detectar anomalias;
+identificar alta ou queda fora do normal;
+alertas.
+
+Interpretação:
+
+|      Z-score | Interpretação        |
+| -----------: | -------------------- |
+| menor que -2 | queda anormal        |
+|       -2 a 2 | comportamento normal |
+|  maior que 2 | alta anormal         |
+
+
+5.6 Correlação
+
+correlacao = corr(indicador_x, indicador_y)
+
+Exemplos:
+
+dólar x venda de salmão;
+IPCA alimentos x volume vendido;
+frango x tilápia;
+milho x preço de proteína;
+renda x mix premium.
+
+(Uma Obs vamos ter uma de peixes vs outras proteínas tbm a pessoa seleciona o peixe vs a proteína)
+
+Interpretação:
+
+|    Correlação | Leitura                   |
+| ------------: | ------------------------- |
+| -1,00 a -0,70 | relação negativa forte    |
+| -0,69 a -0,30 | relação negativa moderada |
+|  -0,29 a 0,29 | relação fraca             |
+|   0,30 a 0,69 | relação positiva moderada |
+|   0,70 a 1,00 | relação positiva forte    |
+
+
+
+5.7 Elasticidade
+
+elasticidade = variação_percentual_volume / variação_percentual_preço
+
+Uso:
+
+sensibilidade a preço;
+campanhas;
+desconto;
+troca de mix.
+
+Exemplo:
+
+Se o preço sobe 5% e o volume cai 10%:
+
+elasticidade = -10% / 5% = -2
+
+Interpretação:
+
+| Elasticidade | Leitura                  |
+| -----------: | ------------------------ |
+| menor que -1 | produto sensível a preço |
+| entre -1 e 0 | sensibilidade moderada   |
+| próximo de 0 | pouco sensível           |
+
+
+
+Módulo 6 — Indicadores estratégicos
+
+6.1 Índice de Pressão de Custo
+Variáveis
+dólar;
+milho;
+soja;
+farelo de soja;
+fish meal;
+inflação de alimentos;
+preço internacional;
+importação.
+Fórmula inicial
+
+pressao_custo =
+0.20 * dolar_norm +
+0.15 * milho_norm +
+0.15 * soja_norm +
+0.15 * farelo_norm +
+0.20 * fish_meal_norm +
+0.10 * ipca_alimentos_norm +
+0.05 * importacao_norm
+
+Saída
+
+|    Score | Situação         |
+| -------: | ---------------- |
+|   0 a 30 | baixa pressão    |
+|  31 a 60 | pressão moderada |
+|  61 a 80 | pressão alta     |
+| 81 a 100 | pressão crítica  |
+
+
+6.2 Índice de Competitividade entre Proteínas
+Variáveis
+preço do pescado;
+preço do frango;
+preço do suíno;
+preço do boi;
+preço dos ovos;
+variação de cada proteína;
+volume vendido.
+
+Fórmula base
+
+competitividade_pescado =
+preco_relativo_pescado_vs_concorrentes_norm * 0.40 +
+variacao_preco_pescado_norm * 0.25 +
+variacao_preco_concorrentes_norm * 0.20 +
+volume_pescado_norm * 0.15
+
+Uso prático
+
+Se frango cair e tilápia subir, o app precisa responder:
+
+risco de substituição;
+campanha recomendada;
+produto alternativo;
+região mais sensível;
+ação de marketing.
+
+6.3 Índice de Sensibilidade ao Dólar
+Produtos
+salmão;
+bacalhau;
+camarão;
+merluza;
+pescados congelados importados.
+
+Fórmula inicial
+
+sensibilidade_dolar =
+correlacao(dolar, preco_produto) * 0.35 +
+correlacao(dolar, volume_produto) * -0.35 +
+participacao_importada * 0.20 +
+volatilidade_preco * 0.10
+
+
+Interpretação
+
+|    Score | Leitura               |
+| -------: | --------------------- |
+|   0 a 30 | baixa sensibilidade   |
+|  31 a 60 | média sensibilidade   |
+|  61 a 80 | alta sensibilidade    |
+| 81 a 100 | sensibilidade crítica |
+
+6.4 Índice de Oportunidade Regional
+
+Esse é um dos principais.
+
+Variáveis
+população;
+renda;
+clientes ativos;
+histórico de compra;
+ticket médio;
+mix premium;
+potencial de consumo;
+presença de vendedor;
+presença de promotor;
+logística;
+crescimento recente.
+
+Fórmula inicial
+
+oportunidade_regional =
+0.15 * populacao_norm +
+0.15 * renda_norm +
+0.15 * crescimento_vendas_norm +
+0.10 * clientes_ativos_norm +
+0.10 * ticket_medio_norm +
+0.10 * mix_premium_norm +
+0.10 * potencial_consumo_norm +
+0.10 * baixa_cobertura_norm +
+0.05 * logistica_norm
+
+Interpretação
+|    Score | Ação                  |
+| -------: | --------------------- |
+|   0 a 30 | baixa prioridade      |
+|  31 a 50 | monitorar             |
+|  51 a 70 | oportunidade moderada |
+|  71 a 85 | oportunidade alta     |
+| 86 a 100 | prioridade máxima     |
+
+6.5 Índice de Risco de Queda
+
+Variáveis
+queda de volume;
+queda de frequência;
+queda de clientes ativos;
+inflação;
+dólar;
+concorrência;
+sazonalidade negativa;
+redução de mix;
+queda de ticket.
+
+Fórmula inicial
+
+risco_queda =
+0.20 * queda_volume_norm +
+0.15 * queda_frequencia_norm +
+0.15 * queda_clientes_norm +
+0.10 * inflacao_norm +
+0.10 * dolar_norm +
+0.10 * concorrencia_norm +
+0.10 * sazonalidade_negativa_norm +
+0.05 * reducao_mix_norm +
+0.05 * queda_ticket_norm
+
+Interpretação
+
+|    Score | Leitura       |
+| -------: | ------------- |
+|   0 a 30 | risco baixo   |
+|  31 a 50 | atenção       |
+|  51 a 70 | risco médio   |
+|  71 a 85 | risco alto    |
+| 86 a 100 | risco crítico |
+
+
+Módulo 7 — Cenário 1 a 10
+
+Objetivo
+
+Transformar vários indicadores em uma nota clara.
+
+Fórmula base
+
+
+score_final =
+0.30 * oportunidade_regional +
+0.20 * desempenho_vendas +
+0.15 * competitividade_proteina +
+0.15 * ambiente_economico +
+0.10 * cobertura_comercial -
+0.10 * risco queda
+
+Depois converte para nota:
+
+cenario_1_10 = ceil(score_final / 10)
+
+Escala fechada
+
+| Nota | Situação           | Ação                    |
+| ---: | ------------------ | ----------------------- |
+|    1 | crítico extremo    | ação urgente            |
+|    2 | muito ruim         | plano corretivo         |
+|    3 | ruim               | revisar preço/mix       |
+|    4 | atenção            | acompanhar semanalmente |
+|    5 | neutro             | manter                  |
+|    6 | levemente positivo | testar campanha         |
+|    7 | bom                | explorar oportunidade   |
+|    8 | muito bom          | expandir comercialmente |
+|    9 | excelente          | prioridade alta         |
+|   10 | ideal              | máxima prioridade       |
+
+
+Módulo 8 — Decisão vendedor/promotor/campanha
+Regra inicial
+
+| Condição                                             | Recomendação   |
+| ---------------------------------------------------- | -------------- |
+| oportunidade alta + poucos clientes                  | vendedor       |
+| oportunidade alta + muitos clientes + baixa execução | promotor       |
+| competitividade ruim + queda de volume               | campanha       |
+| renda alta + mix premium baixo                       | ação premium   |
+| risco alto + queda forte                             | ação corretiva |
+| oportunidade baixa + risco alto                      | não expandir   |
+| oportunidade média + risco baixo                     | monitorar      |
+
+
+Fórmula de decisão
+
+score_vendedor =
+0.35 * oportunidade_regional +
+0.25 * baixa_cobertura_clientes +
+0.20 * potencial_consumo +
+0.10 * crescimento_regional +
+0.10 * margem_media
+
+score_promotor =
+0.30 * clientes_ativos +
+0.25 * redes_ativas +
+0.20 * baixa_execucao_loja +
+0.15 * mix_premium +
+0.10 * oportunidade campanha
+
+score_campanha =
+0.30 * risco_substituicao +
+0.25 * queda_volume +
+0.20 * competitividade_preco +
+0.15 * sazonalidade +
+0.10 * margem disponível
+
+| Maior score      | Ação                       |
+| ---------------- | -------------------------- |
+| score_vendedor   | adicionar vendedor         |
+| score_promotor   | adicionar promotor         |
+| score_campanha   | campanha de marketing      |
+| todos baixos     | monitorar                  |
+| risco muito alto | corrigir antes de expandir |
+
+
+Módulo 9 — IA e previsão
+Primeira etapa
+
+Começar simples:
+
+média móvel;
+regressão linear;
+sazonalidade;
+Random Forest;
+classificação de risco.
+Depois
+
+Adicionar:
+
+XGBoost;
+Prophet;
+SARIMA;
+modelos por região;
+modelos por produto;
+modelos por cliente.
+Previsões principais
+
+| Previsão                  | Saída          |
+| ------------------------- | -------------- |
+| faturamento               | valor esperado |
+| volume                    | kg esperado    |
+| risco de queda            | probabilidade  |
+| oportunidade regional     | probabilidade  |
+| cliente em risco          | probabilidade  |
+| produto sensível ao dólar | score          |
+
+
+Saída obrigatória
+
+Toda previsão terá:
+
+previsao
+intervalo_minimo
+intervalo_maximo
+probabilidade
+confianca_modelo
+principais fatores
+
+Exemplo
+
+Produto: Salmão
+Região: Grande BH
+Cenário: 7/10
+Probabilidade de crescimento: 64%
+Intervalo previsto: R$ 420 mil a R$ 510 mil
+Confiança do modelo: 71%
+Principais fatores: renda alta, histórico positivo, dólar pressionado, boa presença em redes.
+
+Módulo 10 — Telas do app
+Tela 1 — Visão Geral
+
+Cards:
+
+cenário geral;
+faturamento;
+volume;
+ticket médio;
+dólar;
+IPCA alimentos;
+pressão de custo;
+risco de queda;
+oportunidade regional;
+recomendações críticas.
+Tela 2 — Mapa de Mercado
+
+Filtros:
+
+Brasil;
+UF;
+região IBGE;
+região comercial;
+município;
+produto;
+proteína;
+canal;
+período.
+
+Camadas:
+
+vendas;
+população;
+renda;
+oportunidade;
+risco;
+cenário;
+recomendação.
+Tela 3 — Radar Econômico
+
+Gráficos:
+
+dólar x venda de importados;
+IPCA alimentos x volume;
+Selic x comportamento;
+inflação x ticket médio.
+Tela 4 — Radar de Proteínas
+
+Gráficos:
+
+pescado x frango;
+pescado x suíno;
+pescado x boi;
+pescado x ovos;
+tilápia x frango;
+competitividade por região.
+Tela 5 — Radar de Grãos e Ração
+
+Gráficos:
+
+milho;
+soja;
+farelo;
+fish meal;
+pressão de custo;
+variação mensal/trimestral.
+Tela 6 — Comércio Exterior
+
+Gráficos:
+
+salmão;
+bacalhau;
+camarão;
+merluza;
+origem;
+preço médio importado;
+dólar x importação.
+Tela 7 — Oportunidade por Região
+
+Mostra:
+
+população;
+renda;
+vendas;
+clientes;
+ticket;
+potencial;
+produto recomendado;
+vendedor/promotor recomendado.
+Tela 8 — IA / Previsão
+
+Mostra:
+
+previsão;
+probabilidade;
+cenário pessimista;
+cenário base;
+cenário otimista;
+confiança do modelo.
+Tela 9 — Central de Recomendações
+
+Mostra:
+
+região;
+nota;
+ação;
+justificativa;
+confiança;
+impacto estimado.
+Módulo 11 — MVP fechado
+
+Agora sim, o MVP 1 fica fechado assim:
+
+MVP 1 — Radar Regional Econômico
+Entrega 1
+estrutura do projeto;
+PostgreSQL com schemas;
+controle de carga;
+coletor BCB;
+coletor IBGE localidades;
+tabela de vendas internas;
+primeira tela Streamlit.
+Entrega 2
+histórico BCB;
+mapa Brasil/UF/município;
+população/renda IBGE;
+dashboard econômico;
+séries salvas no Postgres.
+Entrega 3
+CONAB/CEPEA;
+preços de proteínas;
+preços de grãos;
+índice de pressão de custo;
+índice de competitividade.
+Entrega 4
+Comex Stat;
+importação de pescados;
+preço médio importado;
+sensibilidade ao dólar.
+Entrega 5
+score regional;
+risco de queda;
+cenário 1 a 10;
+recomendação vendedor/promotor/campanha.
+Entrega 6
+primeiro modelo de previsão;
+intervalo de confiança;
+probabilidade;
+central de recomendações.
+
+O que está 100% decidido
+O app começa no Brasil, não em MG.
+Pode selecionar qualquer UF.
+MG será o primeiro caso prático por causa do seu trabalho.
+Histórico desde 2000 será padrão desejado.
+Se a fonte tiver antes de 2000, salvamos também.
+Se a fonte tiver só depois de 2000, salvamos desde onde existir.
+Tudo será salvo no PostgreSQL.
+O app separa dado real, estimado, previsto e recomendado.
+As recomendações sempre terão confiança/probabilidade.
+O app terá cenário de 1 a 10.
+A primeira versão terá BCB + IBGE + vendas internas.
+Depois entram CONAB, CEPEA, Comex e FRED/FMI.

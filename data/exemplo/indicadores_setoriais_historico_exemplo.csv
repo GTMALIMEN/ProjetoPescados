@@ -1,0 +1,1225 @@
+data;fonte;indicador;categoria;subcategoria;produto;uf;regiao;valor;unidade;periodicidade
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;14.1755;R$/kg;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;47.0092;R$/kg;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;61.7124;R$/kg;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;53.9212;R$/kg;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.5484;R$/kg;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;12.5044;R$/kg;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;26.0471;R$/kg;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.4287;R$/dz;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;38.669;R$/sc;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;76.6727;R$/sc;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1438.1982;R$/ton;mensal
+2018-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1309.0306;US$/ton;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;14.6457;R$/kg;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;48.4022;R$/kg;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;63.6755;R$/kg;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;55.8173;R$/kg;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.5605;R$/kg;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;12.7445;R$/kg;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;26.298;R$/kg;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.6261;R$/dz;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;40.0559;R$/sc;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;79.0744;R$/sc;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1476.7719;R$/ton;mensal
+2018-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1379.903;US$/ton;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;14.7464;R$/kg;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;51.9551;R$/kg;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;65.6634;R$/kg;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;57.9162;R$/kg;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.7504;R$/kg;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.3742;R$/kg;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;26.7722;R$/kg;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.8982;R$/dz;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;39.729;R$/sc;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;83.226;R$/sc;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1546.546;R$/ton;mensal
+2018-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1413.4229;US$/ton;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.1096;R$/kg;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;51.5196;R$/kg;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;67.2575;R$/kg;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;59.5729;R$/kg;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.751;R$/kg;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.396;R$/kg;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;27.4572;R$/kg;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.0086;R$/dz;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;40.7946;R$/sc;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;84.5975;R$/sc;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1556.8631;R$/ton;mensal
+2018-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1378.2176;US$/ton;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.4446;R$/kg;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;51.1838;R$/kg;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;67.6871;R$/kg;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;60.9011;R$/kg;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.7485;R$/kg;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.1101;R$/kg;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;27.0671;R$/kg;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.8072;R$/dz;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;39.9508;R$/sc;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;83.7173;R$/sc;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1569.4537;R$/ton;mensal
+2018-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1397.5057;US$/ton;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;14.9146;R$/kg;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;50.5917;R$/kg;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;66.6884;R$/kg;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;57.7851;R$/kg;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.5965;R$/kg;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.0906;R$/kg;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;27.1873;R$/kg;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.9151;R$/dz;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;41.0406;R$/sc;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;83.3799;R$/sc;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1577.7662;R$/ton;mensal
+2018-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1423.1889;US$/ton;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.0611;R$/kg;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;50.2514;R$/kg;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;65.4283;R$/kg;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;57.2846;R$/kg;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.7767;R$/kg;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.1294;R$/kg;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;27.233;R$/kg;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.5518;R$/dz;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;38.6797;R$/sc;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;79.8903;R$/sc;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1487.1486;R$/ton;mensal
+2018-07-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1355.3178;US$/ton;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;14.6078;R$/kg;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;50.0079;R$/kg;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;64.3646;R$/kg;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;56.0448;R$/kg;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.3601;R$/kg;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;12.9668;R$/kg;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;26.0849;R$/kg;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.6546;R$/dz;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;37.5734;R$/sc;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;79.5699;R$/sc;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1437.1851;R$/ton;mensal
+2018-08-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1352.144;US$/ton;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;14.5909;R$/kg;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;50.936;R$/kg;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;63.2764;R$/kg;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;56.4147;R$/kg;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.5846;R$/kg;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;12.8928;R$/kg;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;26.2867;R$/kg;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.7068;R$/dz;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;38.9141;R$/sc;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;79.87;R$/sc;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1439.0683;R$/ton;mensal
+2018-09-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1336.1403;US$/ton;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;14.8053;R$/kg;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;49.3488;R$/kg;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;63.1771;R$/kg;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;55.1805;R$/kg;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.6402;R$/kg;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;12.7234;R$/kg;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;26.5584;R$/kg;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.6744;R$/dz;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;37.2018;R$/sc;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;78.8434;R$/sc;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1473.8764;R$/ton;mensal
+2018-10-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1338.4486;US$/ton;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;14.7335;R$/kg;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;49.2954;R$/kg;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;66.3186;R$/kg;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;57.175;R$/kg;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.6022;R$/kg;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.328;R$/kg;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;26.6369;R$/kg;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.5343;R$/dz;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;37.7036;R$/sc;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;80.0288;R$/sc;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1451.8316;R$/ton;mensal
+2018-11-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1362.0013;US$/ton;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.2773;R$/kg;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;52.6436;R$/kg;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;66.5427;R$/kg;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;57.8869;R$/kg;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.7679;R$/kg;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;12.9925;R$/kg;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;27.2785;R$/kg;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.0208;R$/dz;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;39.5178;R$/sc;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;80.0176;R$/sc;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1506.7563;R$/ton;mensal
+2018-12-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1372.5397;US$/ton;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.3414;R$/kg;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;53.8219;R$/kg;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;67.0103;R$/kg;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;59.5154;R$/kg;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.7873;R$/kg;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.3415;R$/kg;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;27.5725;R$/kg;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;8.9641;R$/dz;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;41.7452;R$/sc;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;82.6252;R$/sc;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1539.4264;R$/ton;mensal
+2019-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1391.1786;US$/ton;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;16.1798;R$/kg;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;55.203;R$/kg;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;68.0632;R$/kg;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;62.1037;R$/kg;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.7533;R$/kg;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.6518;R$/kg;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;28.1747;R$/kg;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.1841;R$/dz;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;43.1094;R$/sc;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;88.6009;R$/sc;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1622.7899;R$/ton;mensal
+2019-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1476.2128;US$/ton;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;16.0659;R$/kg;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;55.8305;R$/kg;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;71.2031;R$/kg;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;62.4563;R$/kg;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.1515;R$/kg;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.0195;R$/kg;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;28.8469;R$/kg;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.2475;R$/dz;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;42.7444;R$/sc;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;89.5903;R$/sc;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1635.4441;R$/ton;mensal
+2019-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1499.8956;US$/ton;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;16.549;R$/kg;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;56.476;R$/kg;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;71.1513;R$/kg;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;63.7443;R$/kg;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.1584;R$/kg;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.8186;R$/kg;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;28.5102;R$/kg;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.5361;R$/dz;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;43.5957;R$/sc;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;91.5366;R$/sc;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1681.9808;R$/ton;mensal
+2019-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1498.1672;US$/ton;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;16.4612;R$/kg;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;55.1168;R$/kg;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;71.4241;R$/kg;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;64.4837;R$/kg;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.9625;R$/kg;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.4274;R$/kg;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;28.5713;R$/kg;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.3464;R$/dz;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;43.8409;R$/sc;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;92.1962;R$/sc;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1659.9536;R$/ton;mensal
+2019-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1511.4331;US$/ton;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;16.0263;R$/kg;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;55.9417;R$/kg;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;68.4142;R$/kg;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;61.832;R$/kg;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.1775;R$/kg;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.9144;R$/kg;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;29.6802;R$/kg;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.1399;R$/dz;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;43.0226;R$/sc;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;87.9001;R$/sc;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1667.1035;R$/ton;mensal
+2019-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1522.7443;US$/ton;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.7968;R$/kg;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;54.1629;R$/kg;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;67.6909;R$/kg;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;60.998;R$/kg;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.0132;R$/kg;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.7544;R$/kg;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;29.0513;R$/kg;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.2768;R$/dz;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;43.2128;R$/sc;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;86.8005;R$/sc;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1659.8259;R$/ton;mensal
+2019-07-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1437.7831;US$/ton;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.3554;R$/kg;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;53.1682;R$/kg;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;68.1004;R$/kg;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;59.7634;R$/kg;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.7349;R$/kg;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.1688;R$/kg;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;27.9872;R$/kg;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.3777;R$/dz;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;42.2726;R$/sc;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;84.7031;R$/sc;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1613.8304;R$/ton;mensal
+2019-08-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1429.8389;US$/ton;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.9382;R$/kg;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;53.0973;R$/kg;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;67.4421;R$/kg;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;58.2637;R$/kg;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.9103;R$/kg;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.0951;R$/kg;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;28.0864;R$/kg;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.1109;R$/dz;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;41.2289;R$/sc;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;82.7669;R$/sc;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1537.7024;R$/ton;mensal
+2019-09-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1389.0594;US$/ton;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.5548;R$/kg;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;51.7488;R$/kg;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;66.743;R$/kg;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;58.7311;R$/kg;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.7488;R$/kg;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.4539;R$/kg;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;28.4263;R$/kg;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.3013;R$/dz;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;41.6755;R$/sc;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;86.1309;R$/sc;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1538.1477;R$/ton;mensal
+2019-10-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1438.7924;US$/ton;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.7547;R$/kg;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;51.9569;R$/kg;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;65.6214;R$/kg;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;59.2608;R$/kg;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.9631;R$/kg;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;13.7299;R$/kg;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;28.2205;R$/kg;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.462;R$/dz;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;40.3833;R$/sc;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;87.8121;R$/sc;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1569.8065;R$/ton;mensal
+2019-11-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1451.397;US$/ton;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;15.7556;R$/kg;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;53.9634;R$/kg;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;69.3202;R$/kg;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;60.7133;R$/kg;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;7.9946;R$/kg;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.0776;R$/kg;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;28.7038;R$/kg;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.2485;R$/dz;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;41.8849;R$/sc;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;86.1263;R$/sc;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1658.6025;R$/ton;mensal
+2019-12-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1433.1507;US$/ton;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;16.7975;R$/kg;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;54.0268;R$/kg;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;70.7697;R$/kg;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;63.0214;R$/kg;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.002;R$/kg;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.6441;R$/kg;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;30.1109;R$/kg;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.7316;R$/dz;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;43.7725;R$/sc;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;90.364;R$/sc;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1658.5609;R$/ton;mensal
+2020-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1482.0038;US$/ton;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;16.9634;R$/kg;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;57.9545;R$/kg;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;71.0954;R$/kg;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;63.4087;R$/kg;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.2701;R$/kg;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.3254;R$/kg;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;29.973;R$/kg;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.5837;R$/dz;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;45.7529;R$/sc;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;94.1454;R$/sc;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1751.5974;R$/ton;mensal
+2020-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1549.4559;US$/ton;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;17.5255;R$/kg;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;58.4525;R$/kg;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;72.0748;R$/kg;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;65.4446;R$/kg;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.5334;R$/kg;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.0747;R$/kg;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;30.3241;R$/kg;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.8334;R$/dz;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;47.3681;R$/sc;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;97.1705;R$/sc;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1753.7367;R$/ton;mensal
+2020-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1596.1832;US$/ton;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.3136;R$/kg;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;62.6176;R$/kg;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;81.6085;R$/kg;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;70.9812;R$/kg;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2428;R$/kg;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.1338;R$/kg;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;33.5166;R$/kg;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.5375;R$/dz;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;49.4783;R$/sc;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;105.9746;R$/sc;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1989.5595;R$/ton;mensal
+2020-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1700.5424;US$/ton;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.1796;R$/kg;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;63.6591;R$/kg;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;81.5917;R$/kg;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;70.8283;R$/kg;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2339;R$/kg;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.6367;R$/kg;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;32.6622;R$/kg;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.4609;R$/dz;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;50.3249;R$/sc;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;107.2789;R$/sc;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1959.6525;R$/ton;mensal
+2020-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1689.1405;US$/ton;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.0669;R$/kg;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;63.2461;R$/kg;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;78.2373;R$/kg;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;72.5675;R$/kg;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9987;R$/kg;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.2493;R$/kg;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;33.7769;R$/kg;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.7671;R$/dz;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;49.1156;R$/sc;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;103.4003;R$/sc;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1932.0578;R$/ton;mensal
+2020-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1670.7272;US$/ton;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;17.7151;R$/kg;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;62.087;R$/kg;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;78.6505;R$/kg;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;71.9544;R$/kg;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.1292;R$/kg;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.4206;R$/kg;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;32.2298;R$/kg;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.7447;R$/dz;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;48.2017;R$/sc;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;99.7307;R$/sc;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1899.3583;R$/ton;mensal
+2020-07-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1696.5314;US$/ton;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.0321;R$/kg;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;62.7259;R$/kg;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;79.6734;R$/kg;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;71.1489;R$/kg;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.8062;R$/kg;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.5827;R$/kg;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;33.4389;R$/kg;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.3704;R$/dz;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;47.9735;R$/sc;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;101.2645;R$/sc;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1862.7011;R$/ton;mensal
+2020-08-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1648.7343;US$/ton;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;17.658;R$/kg;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;62.1054;R$/kg;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;75.8424;R$/kg;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;68.7475;R$/kg;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9852;R$/kg;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.6901;R$/kg;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;31.7551;R$/kg;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.5106;R$/dz;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;47.2312;R$/sc;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;97.7899;R$/sc;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1759.5806;R$/ton;mensal
+2020-09-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1626.562;US$/ton;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.0294;R$/kg;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;60.7929;R$/kg;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;78.7333;R$/kg;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;67.9447;R$/kg;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.7408;R$/kg;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.4798;R$/kg;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;32.9696;R$/kg;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.2931;R$/dz;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;47.8465;R$/sc;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;100.4608;R$/sc;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1760.8972;R$/ton;mensal
+2020-10-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1575.9104;US$/ton;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.1956;R$/kg;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;63.6721;R$/kg;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;81.0311;R$/kg;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;71.3494;R$/kg;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.0711;R$/kg;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.6124;R$/kg;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;32.1504;R$/kg;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.7635;R$/dz;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;47.7907;R$/sc;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;98.1737;R$/sc;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1857.3847;R$/ton;mensal
+2020-11-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1600.2913;US$/ton;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;17.9038;R$/kg;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;63.7188;R$/kg;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;79.8002;R$/kg;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;72.4293;R$/kg;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.1205;R$/kg;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.9578;R$/kg;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;33.4718;R$/kg;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.4399;R$/dz;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;48.9153;R$/sc;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;104.6357;R$/sc;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1857.096;R$/ton;mensal
+2020-12-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1703.2527;US$/ton;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;17.6361;R$/kg;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;63.0992;R$/kg;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;78.8629;R$/kg;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;70.171;R$/kg;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.5013;R$/kg;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.8508;R$/kg;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;31.2352;R$/kg;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;9.9216;R$/dz;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;47.8383;R$/sc;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;100.4708;R$/sc;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1845.3003;R$/ton;mensal
+2021-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1648.1687;US$/ton;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;17.7912;R$/kg;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;64.7984;R$/kg;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;81.7216;R$/kg;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;71.4528;R$/kg;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.5439;R$/kg;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.1995;R$/kg;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;33.1775;R$/kg;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.4566;R$/dz;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;47.9192;R$/sc;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;103.9169;R$/sc;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1852.9595;R$/ton;mensal
+2021-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1647.8837;US$/ton;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;17.9429;R$/kg;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;67.0374;R$/kg;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;83.5218;R$/kg;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;73.0785;R$/kg;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.6698;R$/kg;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.8561;R$/kg;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;32.878;R$/kg;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.4787;R$/dz;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;50.3855;R$/sc;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;105.0974;R$/sc;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1906.2152;R$/ton;mensal
+2021-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1690.7002;US$/ton;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.5027;R$/kg;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;67.602;R$/kg;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;82.5466;R$/kg;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;73.9233;R$/kg;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.7887;R$/kg;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.593;R$/kg;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;34.1133;R$/kg;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.4915;R$/dz;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;50.7063;R$/sc;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;105.9235;R$/sc;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1995.8166;R$/ton;mensal
+2021-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1751.5953;US$/ton;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.0186;R$/kg;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;78.0492;R$/kg;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;96.8031;R$/kg;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;89.4022;R$/kg;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.1621;R$/kg;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.376;R$/kg;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.1858;R$/kg;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.2745;R$/dz;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;59.6582;R$/sc;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;122.8803;R$/sc;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2276.5268;R$/ton;mensal
+2021-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1988.7093;US$/ton;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.6868;R$/kg;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;78.0079;R$/kg;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;93.7634;R$/kg;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;84.7307;R$/kg;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.3527;R$/kg;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.0576;R$/kg;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.683;R$/kg;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.2878;R$/dz;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.0175;R$/sc;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;122.5481;R$/sc;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2195.6593;R$/ton;mensal
+2021-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1998.2918;US$/ton;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.3214;R$/kg;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;76.4661;R$/kg;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;96.0233;R$/kg;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;85.4397;R$/kg;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.1653;R$/kg;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.7999;R$/kg;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.5202;R$/kg;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.3773;R$/dz;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.2256;R$/sc;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;116.8587;R$/sc;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2137.7855;R$/ton;mensal
+2021-07-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1906.5892;US$/ton;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.0283;R$/kg;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;72.6008;R$/kg;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;93.6471;R$/kg;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;83.5193;R$/kg;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.0956;R$/kg;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.8731;R$/kg;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.4031;R$/kg;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9435;R$/dz;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;54.6468;R$/sc;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;116.88;R$/sc;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2153.1134;R$/ton;mensal
+2021-08-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1907.3695;US$/ton;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.0672;R$/kg;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;74.6268;R$/kg;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;93.4212;R$/kg;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;82.329;R$/kg;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.9297;R$/kg;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.0989;R$/kg;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.505;R$/kg;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.0057;R$/dz;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;54.5961;R$/sc;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;115.98;R$/sc;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2114.2265;R$/ton;mensal
+2021-09-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1909.511;US$/ton;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.5329;R$/kg;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;72.3105;R$/kg;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;92.7639;R$/kg;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;81.4061;R$/kg;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.1985;R$/kg;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.6873;R$/kg;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.7793;R$/kg;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9997;R$/dz;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;54.8831;R$/sc;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;116.6437;R$/sc;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2077.4482;R$/ton;mensal
+2021-10-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1842.1135;US$/ton;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.6295;R$/kg;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;73.8106;R$/kg;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;91.9736;R$/kg;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;81.7989;R$/kg;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.1585;R$/kg;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.7337;R$/kg;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.3021;R$/kg;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.1578;R$/dz;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;54.1496;R$/sc;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;117.0151;R$/sc;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2179.9325;R$/ton;mensal
+2021-11-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1899.2931;US$/ton;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.3775;R$/kg;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;75.9649;R$/kg;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;93.55;R$/kg;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;84.2407;R$/kg;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.198;R$/kg;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.4032;R$/kg;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.7712;R$/kg;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.1308;R$/dz;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;58.1854;R$/sc;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;120.6225;R$/sc;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2180.097;R$/ton;mensal
+2021-12-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1986.0905;US$/ton;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.9234;R$/kg;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;78.703;R$/kg;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;94.936;R$/kg;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;86.4139;R$/kg;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.3745;R$/kg;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.817;R$/kg;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;40.2069;R$/kg;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.5668;R$/dz;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;59.489;R$/sc;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;121.8022;R$/sc;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2320.6489;R$/ton;mensal
+2022-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1970.9936;US$/ton;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.467;R$/kg;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;77.5736;R$/kg;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;98.7292;R$/kg;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;89.9448;R$/kg;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.5206;R$/kg;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.9798;R$/kg;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;39.8546;R$/kg;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.9482;R$/dz;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;59.9122;R$/sc;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;131.2757;R$/sc;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2354.2864;R$/ton;mensal
+2022-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2018.9682;US$/ton;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.1531;R$/kg;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;79.8055;R$/kg;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;100.3343;R$/kg;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;91.3308;R$/kg;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.6865;R$/kg;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.1178;R$/kg;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;41.7177;R$/kg;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.8243;R$/dz;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;61.8788;R$/sc;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;132.5022;R$/sc;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2461.5171;R$/ton;mensal
+2022-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2137.7627;US$/ton;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.279;R$/kg;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;80.9268;R$/kg;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;97.9465;R$/kg;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;89.5938;R$/kg;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;11.1651;R$/kg;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.2127;R$/kg;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;41.9737;R$/kg;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.2437;R$/dz;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.3829;R$/sc;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;134.5317;R$/sc;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2460.5459;R$/ton;mensal
+2022-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2166.8186;US$/ton;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.1231;R$/kg;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;81.7789;R$/kg;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;100.9144;R$/kg;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;89.3261;R$/kg;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.7247;R$/kg;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.319;R$/kg;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;42.1241;R$/kg;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.1805;R$/dz;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;62.9608;R$/sc;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;135.5276;R$/sc;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2432.365;R$/ton;mensal
+2022-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2157.0594;US$/ton;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.1859;R$/kg;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;81.903;R$/kg;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;98.4043;R$/kg;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;89.3405;R$/kg;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.6422;R$/kg;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.0043;R$/kg;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;40.3527;R$/kg;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.9506;R$/dz;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.783;R$/sc;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;128.5361;R$/sc;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2412.3237;R$/ton;mensal
+2022-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2107.877;US$/ton;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.5586;R$/kg;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;77.0829;R$/kg;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;96.109;R$/kg;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;87.7674;R$/kg;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.6914;R$/kg;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.0545;R$/kg;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;40.87;R$/kg;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.7493;R$/dz;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;60.605;R$/sc;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;131.8222;R$/sc;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2311.4907;R$/ton;mensal
+2022-07-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2050.9423;US$/ton;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.2712;R$/kg;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;76.9999;R$/kg;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;94.6965;R$/kg;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;88.3709;R$/kg;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.6517;R$/kg;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.1256;R$/kg;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;41.3748;R$/kg;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.9937;R$/dz;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;59.5213;R$/sc;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;125.9333;R$/sc;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2247.4355;R$/ton;mensal
+2022-08-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1988.8767;US$/ton;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.2882;R$/kg;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;67.7181;R$/kg;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;81.7788;R$/kg;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;75.1664;R$/kg;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2806;R$/kg;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.1818;R$/kg;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;33.948;R$/kg;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;10.9735;R$/dz;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;49.709;R$/sc;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;106.9934;R$/sc;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1951.717;R$/ton;mensal
+2022-09-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1689.4349;US$/ton;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.5827;R$/kg;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;65.555;R$/kg;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;83.2453;R$/kg;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;72.5696;R$/kg;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2287;R$/kg;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.196;R$/kg;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;34.8407;R$/kg;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.1351;R$/dz;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;50.9395;R$/sc;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;109.0969;R$/sc;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1917.0629;R$/ton;mensal
+2022-10-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1705.7022;US$/ton;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.0392;R$/kg;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;66.3253;R$/kg;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;82.6867;R$/kg;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;76.1574;R$/kg;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.1066;R$/kg;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.4308;R$/kg;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;34.8156;R$/kg;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.0923;R$/dz;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;51.2339;R$/sc;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;111.066;R$/sc;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1969.6594;R$/ton;mensal
+2022-11-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1789.1892;US$/ton;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.0008;R$/kg;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;68.7257;R$/kg;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;85.3537;R$/kg;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;75.6137;R$/kg;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.5523;R$/kg;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.9684;R$/kg;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.5049;R$/kg;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.2144;R$/dz;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;52.8173;R$/sc;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;110.2221;R$/sc;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;1988.3438;R$/ton;mensal
+2022-12-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1812.9916;US$/ton;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.1543;R$/kg;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;71.2016;R$/kg;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;88.536;R$/kg;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;80.3751;R$/kg;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.6669;R$/kg;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.6925;R$/kg;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.5033;R$/kg;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.607;R$/dz;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;54.3282;R$/sc;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;117.0405;R$/sc;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2066.849;R$/ton;mensal
+2023-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1840.7765;US$/ton;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.8841;R$/kg;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;73.6471;R$/kg;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;91.2734;R$/kg;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;81.2948;R$/kg;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.536;R$/kg;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.4315;R$/kg;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.5412;R$/kg;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.8387;R$/dz;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.2118;R$/sc;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;119.1476;R$/sc;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2151.7713;R$/ton;mensal
+2023-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1886.8059;US$/ton;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.4154;R$/kg;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;76.917;R$/kg;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;91.9877;R$/kg;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;85.4772;R$/kg;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.6071;R$/kg;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.8139;R$/kg;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.63;R$/kg;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.8884;R$/dz;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;58.1522;R$/sc;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;120.0055;R$/sc;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2212.0259;R$/ton;mensal
+2023-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1937.8084;US$/ton;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.0552;R$/kg;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;75.7808;R$/kg;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;92.2335;R$/kg;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;85.5025;R$/kg;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.8241;R$/kg;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.2811;R$/kg;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.9665;R$/kg;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.7929;R$/dz;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.4782;R$/sc;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;124.7948;R$/sc;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2231.6176;R$/ton;mensal
+2023-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1991.8853;US$/ton;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.0593;R$/kg;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;77.0935;R$/kg;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;93.1996;R$/kg;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;87.6197;R$/kg;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.7476;R$/kg;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.8935;R$/kg;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.4199;R$/kg;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9871;R$/dz;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;59.8241;R$/sc;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;125.0938;R$/sc;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2256.388;R$/ton;mensal
+2023-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1969.1412;US$/ton;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.8543;R$/kg;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;78.553;R$/kg;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;92.705;R$/kg;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;85.1105;R$/kg;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.9789;R$/kg;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.8412;R$/kg;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.0825;R$/kg;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.0853;R$/dz;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;58.0151;R$/sc;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;125.4733;R$/sc;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2210.3555;R$/ton;mensal
+2023-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1954.7132;US$/ton;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.2274;R$/kg;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;77.5775;R$/kg;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;91.5991;R$/kg;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;84.1393;R$/kg;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.6217;R$/kg;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.0313;R$/kg;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.1341;R$/kg;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.7856;R$/dz;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.0391;R$/sc;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;118.7053;R$/sc;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2206.7403;R$/ton;mensal
+2023-07-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1889.3834;US$/ton;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.373;R$/kg;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;76.6974;R$/kg;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;94.6673;R$/kg;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;81.8211;R$/kg;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.5844;R$/kg;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.3705;R$/kg;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.9215;R$/kg;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.8949;R$/dz;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;55.6736;R$/sc;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;120.7019;R$/sc;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2085.0889;R$/ton;mensal
+2023-08-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1898.1425;US$/ton;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.6659;R$/kg;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;74.5483;R$/kg;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;93.9859;R$/kg;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;80.9264;R$/kg;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.6317;R$/kg;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.241;R$/kg;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.0358;R$/kg;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.4572;R$/dz;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;55.2679;R$/sc;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;116.9416;R$/sc;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2064.1527;R$/ton;mensal
+2023-09-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1836.8607;US$/ton;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.0367;R$/kg;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;75.6309;R$/kg;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;91.7598;R$/kg;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;82.0074;R$/kg;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.754;R$/kg;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.2408;R$/kg;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.9274;R$/kg;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.7946;R$/dz;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;53.6517;R$/sc;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;115.0979;R$/sc;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2146.7358;R$/ton;mensal
+2023-10-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1826.4427;US$/ton;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.3797;R$/kg;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;74.107;R$/kg;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;90.7055;R$/kg;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;85.0067;R$/kg;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.6683;R$/kg;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.3552;R$/kg;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.3619;R$/kg;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.4903;R$/dz;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;54.2542;R$/sc;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;118.7231;R$/sc;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2097.5206;R$/ton;mensal
+2023-11-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1869.3432;US$/ton;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.3035;R$/kg;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;78.6503;R$/kg;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;95.3028;R$/kg;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;87.2872;R$/kg;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.8276;R$/kg;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.5356;R$/kg;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.7489;R$/kg;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.8928;R$/dz;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.6691;R$/sc;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;123.8553;R$/sc;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2181.6665;R$/ton;mensal
+2023-12-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1940.521;US$/ton;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.9286;R$/kg;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;76.2929;R$/kg;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;97.5944;R$/kg;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;89.2932;R$/kg;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.695;R$/kg;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.6794;R$/kg;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.5785;R$/kg;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.8748;R$/dz;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.3139;R$/sc;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;123.9626;R$/sc;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2209.975;R$/ton;mensal
+2024-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1961.8521;US$/ton;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.3673;R$/kg;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;79.7783;R$/kg;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;100.2629;R$/kg;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;87.8606;R$/kg;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.7595;R$/kg;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.5731;R$/kg;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.5911;R$/kg;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.0172;R$/dz;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;59.9007;R$/sc;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;127.8047;R$/sc;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2273.0919;R$/ton;mensal
+2024-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2004.1253;US$/ton;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.2458;R$/kg;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;81.2178;R$/kg;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;99.2682;R$/kg;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;91.7006;R$/kg;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.0694;R$/kg;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.0724;R$/kg;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;40.5929;R$/kg;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.3056;R$/dz;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;60.4313;R$/sc;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;127.9286;R$/sc;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2345.1966;R$/ton;mensal
+2024-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2074.7821;US$/ton;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.3269;R$/kg;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;82.1299;R$/kg;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;98.6208;R$/kg;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;92.1547;R$/kg;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.4354;R$/kg;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.091;R$/kg;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;40.5742;R$/kg;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.3154;R$/dz;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;61.6852;R$/sc;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;129.1001;R$/sc;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2378.9801;R$/ton;mensal
+2024-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2069.6603;US$/ton;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.7399;R$/kg;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;81.1492;R$/kg;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;100.3259;R$/kg;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;94.26;R$/kg;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.2745;R$/kg;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.4245;R$/kg;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;40.6847;R$/kg;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.5961;R$/dz;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;60.5937;R$/sc;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;129.9846;R$/sc;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2350.4647;R$/ton;mensal
+2024-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2117.2188;US$/ton;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.2031;R$/kg;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;81.8276;R$/kg;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;99.0742;R$/kg;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;91.6389;R$/kg;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.0604;R$/kg;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.6262;R$/kg;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;39.5764;R$/kg;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.1928;R$/dz;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;61.238;R$/sc;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;128.3261;R$/sc;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2383.9861;R$/ton;mensal
+2024-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2079.3763;US$/ton;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.7361;R$/kg;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;80.8232;R$/kg;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;99.2929;R$/kg;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;89.6422;R$/kg;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2825;R$/kg;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.4229;R$/kg;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;39.1329;R$/kg;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.1892;R$/dz;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;59.2643;R$/sc;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;125.2011;R$/sc;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2275.1324;R$/ton;mensal
+2024-07-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2053.3052;US$/ton;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.1289;R$/kg;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;80.365;R$/kg;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;93.7575;R$/kg;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;86.7864;R$/kg;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.0896;R$/kg;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.1829;R$/kg;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.9226;R$/kg;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.2296;R$/dz;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;58.494;R$/sc;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;125.8446;R$/sc;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2247.2586;R$/ton;mensal
+2024-08-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1991.8;US$/ton;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.0871;R$/kg;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;78.0546;R$/kg;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;92.839;R$/kg;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;84.2798;R$/kg;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.3783;R$/kg;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.2001;R$/kg;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.5698;R$/kg;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9643;R$/dz;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.2662;R$/sc;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;123.9264;R$/sc;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2187.8338;R$/ton;mensal
+2024-09-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1925.7698;US$/ton;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.2931;R$/kg;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;77.5163;R$/kg;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;95.4436;R$/kg;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;84.1687;R$/kg;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.3186;R$/kg;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.7744;R$/kg;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;39.1919;R$/kg;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.8245;R$/dz;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;57.3299;R$/sc;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;120.1358;R$/sc;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2174.3717;R$/ton;mensal
+2024-10-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1954.5506;US$/ton;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.31;R$/kg;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;78.6098;R$/kg;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;94.3948;R$/kg;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;86.1039;R$/kg;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.192;R$/kg;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;17.8824;R$/kg;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.8178;R$/kg;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9671;R$/dz;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;59.2722;R$/sc;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;122.2988;R$/sc;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2220.7166;R$/ton;mensal
+2024-11-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1927.7084;US$/ton;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.5394;R$/kg;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;79.1056;R$/kg;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;97.892;R$/kg;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;90.0001;R$/kg;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2482;R$/kg;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.7309;R$/kg;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;40.2633;R$/kg;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.4371;R$/dz;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;60.9468;R$/sc;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;131.2235;R$/sc;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2337.3654;R$/ton;mensal
+2024-12-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1987.7783;US$/ton;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.3821;R$/kg;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;81.1404;R$/kg;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;97.5479;R$/kg;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;90.2438;R$/kg;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.6472;R$/kg;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.9947;R$/kg;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;40.9922;R$/kg;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.4069;R$/dz;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;62.6311;R$/sc;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;135.8896;R$/sc;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2427.1529;R$/ton;mensal
+2025-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2112.5186;US$/ton;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.8795;R$/kg;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;85.0648;R$/kg;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;102.8012;R$/kg;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;96.412;R$/kg;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.0192;R$/kg;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;18.8803;R$/kg;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;43.1597;R$/kg;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.093;R$/dz;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;66.0486;R$/sc;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;143.3543;R$/sc;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2569.0445;R$/ton;mensal
+2025-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2133.5818;US$/ton;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.829;R$/kg;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;89.5357;R$/kg;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;103.3073;R$/kg;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;95.5794;R$/kg;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.2178;R$/kg;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.2003;R$/kg;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;42.9742;R$/kg;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.9852;R$/dz;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;66.0676;R$/sc;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;141.6183;R$/sc;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2581.4691;R$/ton;mensal
+2025-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2185.3674;US$/ton;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;24.1274;R$/kg;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;87.6196;R$/kg;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;105.8899;R$/kg;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;97.1877;R$/kg;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.0206;R$/kg;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;20.1818;R$/kg;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;44.2499;R$/kg;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.3451;R$/dz;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;68.2713;R$/sc;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;143.9016;R$/sc;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2639.8305;R$/ton;mensal
+2025-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2259.4158;US$/ton;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;24.8482;R$/kg;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;88.3521;R$/kg;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;108.8649;R$/kg;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;100.7648;R$/kg;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.0185;R$/kg;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.7258;R$/kg;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;43.8833;R$/kg;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.5228;R$/dz;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;66.4955;R$/sc;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;143.7217;R$/sc;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2603.6454;R$/ton;mensal
+2025-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2302.0473;US$/ton;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;24.1964;R$/kg;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;88.8593;R$/kg;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;104.143;R$/kg;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;96.7676;R$/kg;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.2392;R$/kg;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.5644;R$/kg;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;43.2937;R$/kg;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.5065;R$/dz;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;65.9116;R$/sc;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;146.7075;R$/sc;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2545.4309;R$/ton;mensal
+2025-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2187.1547;US$/ton;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;24.472;R$/kg;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;86.2144;R$/kg;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;106.4759;R$/kg;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;97.4118;R$/kg;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.1417;R$/kg;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.5528;R$/kg;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;42.6367;R$/kg;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.3896;R$/dz;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;66.7192;R$/sc;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;143.4007;R$/sc;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2509.8682;R$/ton;mensal
+2025-07-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2185.6426;US$/ton;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.4277;R$/kg;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;87.2923;R$/kg;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;101.5179;R$/kg;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;93.0518;R$/kg;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.9505;R$/kg;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.2762;R$/kg;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;42.8303;R$/kg;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.1893;R$/dz;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;64.6666;R$/sc;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;134.4222;R$/sc;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2492.3177;R$/ton;mensal
+2025-08-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2167.8549;US$/ton;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.3295;R$/kg;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;86.4826;R$/kg;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;101.4386;R$/kg;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;96.3319;R$/kg;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.8735;R$/kg;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.3603;R$/kg;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;42.8106;R$/kg;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.052;R$/dz;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.6554;R$/sc;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;138.4615;R$/sc;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2388.6021;R$/ton;mensal
+2025-09-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2170.0275;US$/ton;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;22.7331;R$/kg;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;87.4788;R$/kg;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;102.5172;R$/kg;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;94.4064;R$/kg;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.5565;R$/kg;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.4829;R$/kg;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;43.2666;R$/kg;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.9934;R$/dz;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;61.6419;R$/sc;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;135.5106;R$/sc;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2392.4578;R$/ton;mensal
+2025-10-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2173.1374;US$/ton;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.1713;R$/kg;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;87.4818;R$/kg;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;105.8793;R$/kg;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;95.0995;R$/kg;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;10.9015;R$/kg;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.8767;R$/kg;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;43.8724;R$/kg;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.2153;R$/dz;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;65.0088;R$/sc;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;138.2691;R$/sc;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2448.1835;R$/ton;mensal
+2025-11-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2111.6557;US$/ton;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.1249;R$/kg;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;90.4521;R$/kg;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;107.0139;R$/kg;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;96.8555;R$/kg;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;11.1234;R$/kg;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.4992;R$/kg;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;43.5224;R$/kg;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.4479;R$/dz;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;64.8707;R$/sc;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;141.8282;R$/sc;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2603.3129;R$/ton;mensal
+2025-12-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2221.9975;US$/ton;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;23.7348;R$/kg;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;94.5752;R$/kg;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;111.844;R$/kg;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;103.6953;R$/kg;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;11.226;R$/kg;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;19.701;R$/kg;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;45.0816;R$/kg;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.303;R$/dz;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;69.0803;R$/sc;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;143.8788;R$/sc;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2666.971;R$/ton;mensal
+2026-01-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2263.5916;US$/ton;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;25.0972;R$/kg;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;97.5919;R$/kg;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;113.3867;R$/kg;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;107.6785;R$/kg;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;11.056;R$/kg;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;20.5557;R$/kg;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;46.3599;R$/kg;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;14.0783;R$/dz;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;69.5041;R$/sc;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;150.189;R$/sc;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2765.6011;R$/ton;mensal
+2026-02-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2314.5466;US$/ton;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;24.6789;R$/kg;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;100.6818;R$/kg;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;117.7522;R$/kg;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;106.7168;R$/kg;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;11.4511;R$/kg;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;20.5934;R$/kg;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;46.9683;R$/kg;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;14.0657;R$/dz;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;71.0447;R$/sc;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;158.0905;R$/sc;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2789.2036;R$/ton;mensal
+2026-03-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2412.5574;US$/ton;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;24.8845;R$/kg;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;97.8729;R$/kg;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;117.3883;R$/kg;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;111.6855;R$/kg;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;11.5304;R$/kg;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;21.0781;R$/kg;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;45.9606;R$/kg;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.8733;R$/dz;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;71.3581;R$/sc;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;156.5879;R$/sc;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2820.4856;R$/ton;mensal
+2026-04-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2474.0491;US$/ton;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;25.6345;R$/kg;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;101.4358;R$/kg;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;116.4988;R$/kg;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;110.9788;R$/kg;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;11.2566;R$/kg;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;21.1412;R$/kg;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;46.7374;R$/kg;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.8853;R$/dz;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;72.0251;R$/sc;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;156.0819;R$/sc;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2913.8817;R$/ton;mensal
+2026-05-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2368.6739;US$/ton;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;25.5526;R$/kg;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_salmao_kg;proteina;pescado importado;Salmão;MG;;101.752;R$/kg;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_bacalhau_kg;proteina;pescado importado;Bacalhau;MG;;120.7355;R$/kg;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_camarao_kg;proteina;pescado importado;Camarão;MG;;108.3791;R$/kg;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;11.6809;R$/kg;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;20.6906;R$/kg;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;47.4254;R$/kg;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;13.806;R$/dz;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;73.4634;R$/sc;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;158.5568;R$/sc;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2843.7632;R$/ton;mensal
+2026-06-01;Indicador Setorial Histórico Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2429.7054;US$/ton;mensal

@@ -1,0 +1,35 @@
+{
+  "flow": "import",
+  "month_detail": true,
+  "currency": "USD",
+  "groups": {
+    "salmao": {
+      "produto": "Salmão importado",
+      "ncms": [
+        "03021400",
+        "03031300",
+        "03048100"
+      ],
+      "descricao": "Salmão fresco/refrigerado/congelado/filé"
+    },
+    "bacalhau": {
+      "produto": "Bacalhau importado",
+      "ncms": [
+        "03025100",
+        "03036300",
+        "03055100",
+        "03056200"
+      ],
+      "descricao": "Bacalhau fresco/congelado/seco/salgado"
+    },
+    "camarao": {
+      "produto": "Camarão importado",
+      "ncms": [
+        "03061710",
+        "03061790",
+        "03061610"
+      ],
+      "descricao": "Camarões congelados"
+    }
+  }
+}

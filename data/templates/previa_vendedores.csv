@@ -1,0 +1,3 @@
+﻿data_venda;vendedor;cliente;regiao;produto;preco;quantidade_vendida;receita_total;observacao
+10/06/2026;Vendedor Exemplo;Cliente Exemplo;Grande BH / Central;Tilápia;18,90;50;945,00;Exemplo de prévia.
+11/06/2026;Vendedor Exemplo;Cliente Exemplo;Sul de MG;Salmão;89,90;20;1798,00;Exemplo de prévia.

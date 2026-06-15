@@ -1,0 +1,1032 @@
+
+from __future__ import annotations
+
+from io import BytesIO
+
+import pandas as pd
+from sqlalchemy import text
+
+from src.database.connection import get_engine
+
+
+ESTADOS_SUDESTE = ["MG", "SP", "RJ", "ES"]
+CATEGORIAS_PESCADOS = ["Tilápia", "Salmão", "Camarão", "Piramutaba", "Polaca", "Merluza", "Panga"]
+
+
+def _relation_exists(conn, relation_name: str) -> bool:
+    return bool(conn.execute(text("SELECT to_regclass(:name) IS NOT NULL"), {"name": relation_name}).scalar())
+
+
+def _safe_numeric(df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
+    df = df.copy()
+    for col in cols:
+        if col not in df.columns:
+            df[col] = pd.NA
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    return df
+
+
+def _sum_or_na(series: pd.Series):
+    s = pd.to_numeric(series, errors="coerce").dropna()
+    return s.sum() if len(s) else pd.NA
+
+
+def _mean_or_na(series: pd.Series):
+    s = pd.to_numeric(series, errors="coerce").dropna()
+    return s.mean() if len(s) else pd.NA
+
+
+def _classificar_score(score: float) -> str:
+    if score is None or pd.isna(score):
+        return "Sem dados"
+    score = float(score or 0)
+    if score >= 75:
+        return "Alta prioridade"
+    if score >= 55:
+        return "Média prioridade"
+    if score >= 35:
+        return "Baixa prioridade"
+    return "Monitorar"
+
+
+def _base_expansao_municipal(estados: list[str] | None = None) -> pd.DataFrame:
+    estados = estados or ESTADOS_SUDESTE
+    engine = get_engine()
+
+    sql_view = """
+        SELECT
+            codigo_ibge,
+            uf AS estado,
+            nome_uf,
+            municipio,
+            mesorregiao,
+            COALESCE(microrregiao, 'Sem microrregião') AS microrregiao,
+            regiao_comercial,
+            populacao,
+            pib,
+            pib_per_capita,
+            idh,
+            renda_media,
+            pct_masculina,
+            pct_feminina,
+            pct_0_14,
+            pct_15_29,
+            pct_30_44,
+            pct_45_59,
+            pct_60_plus,
+            renda_classe_a,
+            renda_classe_b,
+            renda_classe_c,
+            renda_classe_de,
+            supermercados,
+            restaurantes,
+            peixarias,
+            outros_pdv,
+            fonte_populacao,
+            fonte_pib,
+            fonte_idh,
+            fonte_renda,
+            fonte_demografia,
+            fonte_pdv,
+            status_dados,
+            observacao,
+            data_atualizacao
+        FROM app.vw_expansao_municipio
+        WHERE uf = ANY(:estados)
+    """
+
+    sql_fallback = """
+        SELECT
+            g.codigo_ibge,
+            g.uf AS estado,
+            g.nome_uf,
+            g.municipio,
+            g.mesorregiao,
+            COALESCE(g.microrregiao, 'Sem microrregião') AS microrregiao,
+            g.regiao_comercial,
+            pop.valor AS populacao,
+            pib.valor AS pib,
+            CASE WHEN pop.valor > 0 THEN pib.valor / pop.valor ELSE NULL END AS pib_per_capita,
+            NULL::NUMERIC AS idh,
+            NULL::NUMERIC AS renda_media,
+            NULL::NUMERIC AS pct_masculina,
+            NULL::NUMERIC AS pct_feminina,
+            NULL::NUMERIC AS pct_0_14,
+            NULL::NUMERIC AS pct_15_29,
+            NULL::NUMERIC AS pct_30_44,
+            NULL::NUMERIC AS pct_45_59,
+            NULL::NUMERIC AS pct_60_plus,
+            NULL::NUMERIC AS renda_classe_a,
+            NULL::NUMERIC AS renda_classe_b,
+            NULL::NUMERIC AS renda_classe_c,
+            NULL::NUMERIC AS renda_classe_de,
+            NULL::NUMERIC AS supermercados,
+            NULL::NUMERIC AS restaurantes,
+            NULL::NUMERIC AS peixarias,
+            NULL::NUMERIC AS outros_pdv,
+            CASE WHEN pop.valor IS NOT NULL THEN 'IBGE/SIDRA dw.fato_indicador_municipal' ELSE NULL END AS fonte_populacao,
+            CASE WHEN pib.valor IS NOT NULL THEN 'IBGE/SIDRA dw.fato_indicador_municipal' ELSE NULL END AS fonte_pib,
+            'Pendente: fonte externa/Atlas Brasil' AS fonte_idh,
+            'Pendente: Censo/POF/renda' AS fonte_renda,
+            'Pendente: Censo sexo/faixa etária' AS fonte_demografia,
+            'Pendente: cadastro interno/API externa' AS fonte_pdv,
+            'parcial' AS status_dados,
+            'Fallback sem app.vw_expansao_municipio' AS observacao,
+            NULL::TIMESTAMP AS data_atualizacao
+        FROM dw.dim_geografia g
+        LEFT JOIN LATERAL (
+            SELECT valor
+            FROM dw.fato_indicador_municipal im
+            WHERE im.codigo_ibge = g.codigo_ibge
+              AND im.indicador ILIKE '%popula%'
+            ORDER BY im.data_referencia DESC, im.data_coleta DESC, im.id DESC
+            LIMIT 1
+        ) pop ON TRUE
+        LEFT JOIN LATERAL (
+            SELECT valor
+            FROM dw.fato_indicador_municipal im
+            WHERE im.codigo_ibge = g.codigo_ibge
+              AND im.indicador ILIKE '%PIB%'
+            ORDER BY im.data_referencia DESC, im.data_coleta DESC, im.id DESC
+            LIMIT 1
+        ) pib ON TRUE
+        WHERE g.uf = ANY(:estados)
+    """
+
+    with engine.begin() as conn:
+        if _relation_exists(conn, "app.vw_expansao_municipio"):
+            df = pd.read_sql(text(sql_view), conn, params={"estados": estados})
+        else:
+            df = pd.read_sql(text(sql_fallback), conn, params={"estados": estados})
+
+    numeric_cols = [
+        "populacao", "pib", "pib_per_capita", "idh", "renda_media",
+        "pct_masculina", "pct_feminina", "pct_0_14", "pct_15_29",
+        "pct_30_44", "pct_45_59", "pct_60_plus",
+        "renda_classe_a", "renda_classe_b", "renda_classe_c", "renda_classe_de",
+        "supermercados", "restaurantes", "peixarias", "outros_pdv",
+    ]
+    return _safe_numeric(df, numeric_cols)
+
+
+def _score_pct(series: pd.Series) -> pd.Series:
+    s = pd.to_numeric(series, errors="coerce").fillna(0)
+    max_v = s.max()
+    if max_v <= 0:
+        return pd.Series([pd.NA] * len(s), index=s.index)
+    return s / max_v * 100
+
+
+
+
+def _with_regiao_economica(df: pd.DataFrame) -> pd.DataFrame:
+    """Cria a região econômica/comercial da Análise de Expansão.
+
+    Regra atual, alinhada ao plano:
+    - MG usa a classificação comercial já criada em Região Comercial MG.
+    - SP/RJ/ES usam a mesorregião IBGE como região econômica inicial.
+    - Quando faltar mesorregião, usa microrregião.
+    - Quando faltar tudo, marca como "Sem região econômica".
+
+    Isso mantém a lógica ajustável: depois a empresa pode trocar a regra
+    sem alterar as fórmulas de população, PIB, IDH, IDC e score.
+    """
+    df = df.copy()
+    estado = df.get("estado")
+    regiao_comercial = df.get("regiao_comercial")
+    mesorregiao = df.get("mesorregiao")
+    microrregiao = df.get("microrregiao")
+
+    if "regiao_comercial" not in df.columns:
+        df["regiao_comercial"] = pd.NA
+    if "mesorregiao" not in df.columns:
+        df["mesorregiao"] = pd.NA
+    if "microrregiao" not in df.columns:
+        df["microrregiao"] = pd.NA
+
+    df["regiao_economica"] = df["regiao_comercial"].where(
+        (df["estado"] == "MG") & df["regiao_comercial"].notna() & (df["regiao_comercial"].astype(str).str.strip() != ""),
+        df["mesorregiao"],
+    )
+    df["regiao_economica"] = df["regiao_economica"].fillna(df["microrregiao"])
+    df["regiao_economica"] = df["regiao_economica"].fillna("Sem região econômica")
+    df["regiao_economica"] = df["regiao_economica"].replace("", "Sem região econômica")
+    return df
+
+
+def carregar_regioes_economicas_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    """Resumo por região econômica/comercial para o seletor da Análise de Expansão."""
+    df = _with_regiao_economica(_base_expansao_municipal(estados))
+    if df.empty:
+        return df
+
+    resumo = (
+        df.groupby(["estado", "regiao_economica"], as_index=False)
+        .agg(
+            populacao=("populacao", _sum_or_na),
+            pib=("pib", _sum_or_na),
+            pib_per_capita=("pib_per_capita", _mean_or_na),
+            idh=("idh", _mean_or_na),
+            renda_media=("renda_media", _mean_or_na),
+            supermercados=("supermercados", _sum_or_na),
+            restaurantes=("restaurantes", _sum_or_na),
+            peixarias=("peixarias", _sum_or_na),
+            outros_pdv=("outros_pdv", _sum_or_na),
+            qtd_municipios=("codigo_ibge", "nunique"),
+            qtd_microrregioes=("microrregiao", "nunique"),
+            municipios_com_populacao=("populacao", lambda x: x.notna().sum()),
+            municipios_com_pib=("pib", lambda x: x.notna().sum()),
+            municipios_com_idh=("idh", lambda x: x.notna().sum()),
+        )
+    )
+
+    pop_total = pd.to_numeric(resumo["populacao"], errors="coerce").sum(skipna=True)
+    pib_total = pd.to_numeric(resumo["pib"], errors="coerce").sum(skipna=True)
+
+    resumo["participacao_populacao_pct"] = (
+        pd.to_numeric(resumo["populacao"], errors="coerce") / pop_total * 100 if pop_total else pd.NA
+    )
+    resumo["participacao_pib_pct"] = (
+        pd.to_numeric(resumo["pib"], errors="coerce") / pib_total * 100 if pib_total else pd.NA
+    )
+    resumo["idc_base_regiao"] = (
+        (resumo["participacao_populacao_pct"].fillna(0) + resumo["participacao_pib_pct"].fillna(0)) / 2
+        if pib_total else resumo["participacao_populacao_pct"]
+    )
+
+    score_base = resumo["idc_base_regiao"].fillna(0)
+    if score_base.sum() <= 0:
+        score_base = pd.to_numeric(resumo["populacao"], errors="coerce")
+    resumo["score_regiao"] = _score_pct(score_base)
+    resumo["classificacao_regiao"] = resumo["score_regiao"].apply(_classificar_score)
+
+    return resumo.sort_values(["estado", "score_regiao"], ascending=[True, False], na_position="last")
+
+
+def carregar_municipios_regiao_economica_expansao(
+    estado: str | None = None,
+    regiao_economica: str | None = None,
+) -> pd.DataFrame:
+    """Municípios de uma região econômica/comercial selecionada."""
+    estados = [estado] if estado and estado != "Todos" else ESTADOS_SUDESTE
+    df = _with_regiao_economica(_base_expansao_municipal(estados))
+    if df.empty:
+        return df
+
+    if estado and estado != "Todos":
+        df = df[df["estado"] == estado]
+
+    if regiao_economica and regiao_economica != "Todas":
+        df = df[df["regiao_economica"] == regiao_economica]
+
+    cols = [
+        "estado", "regiao_economica", "municipio", "codigo_ibge", "microrregiao", "mesorregiao",
+        "populacao", "pib", "pib_per_capita", "idh", "renda_media",
+        "supermercados", "restaurantes", "peixarias", "outros_pdv",
+        "fonte_populacao", "fonte_pib", "fonte_idh", "fonte_pdv",
+    ]
+    for col in cols:
+        if col not in df.columns:
+            df[col] = pd.NA
+
+    return df[cols].sort_values(["populacao", "pib"], ascending=False, na_position="last")
+
+
+def carregar_resumo_estado_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    df = _base_expansao_municipal(estados)
+    if df.empty:
+        return df
+
+    resumo = (
+        df.groupby(["estado", "nome_uf"], as_index=False)
+        .agg(
+            populacao=("populacao", _sum_or_na),
+            idh=("idh", _mean_or_na),
+            pib=("pib", _sum_or_na),
+            pib_per_capita=("pib_per_capita", _mean_or_na),
+            qtd_municipios=("codigo_ibge", "nunique"),
+            municipios_com_populacao=("populacao", lambda x: x.notna().sum()),
+            municipios_com_pib=("pib", lambda x: x.notna().sum()),
+        )
+    )
+
+    pop_total = pd.to_numeric(resumo["populacao"], errors="coerce").sum(skipna=True)
+    pib_total = pd.to_numeric(resumo["pib"], errors="coerce").sum(skipna=True)
+
+    resumo["participacao_populacao_pct"] = pd.to_numeric(resumo["populacao"], errors="coerce") / pop_total * 100 if pop_total else pd.NA
+    resumo["participacao_pib_pct"] = pd.to_numeric(resumo["pib"], errors="coerce") / pib_total * 100 if pib_total else pd.NA
+
+    if pib_total:
+        resumo["idc"] = (resumo["participacao_populacao_pct"] + resumo["participacao_pib_pct"]) / 2
+    else:
+        resumo["idc"] = resumo["participacao_populacao_pct"]
+
+    resumo["score_expansao"] = _score_pct(resumo["idc"])
+    resumo["classificacao"] = resumo["score_expansao"].apply(_classificar_score)
+    resumo["status_dados"] = resumo.apply(
+        lambda r: "IBGE população + PIB" if r["municipios_com_pib"] > 0 else (
+            "IBGE população; PIB pendente" if r["municipios_com_populacao"] > 0 else "Pendente carga IBGE"
+        ),
+        axis=1,
+    )
+
+    return resumo.sort_values("score_expansao", ascending=False, na_position="last")
+
+
+def carregar_microrregiao_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    df = _base_expansao_municipal(estados)
+    if df.empty:
+        return df
+
+    resumo = (
+        df.groupby(["estado", "microrregiao"], as_index=False)
+        .agg(
+            populacao=("populacao", _sum_or_na),
+            idh=("idh", _mean_or_na),
+            renda_media=("renda_media", _mean_or_na),
+            pib=("pib", _sum_or_na),
+            pib_per_capita=("pib_per_capita", _mean_or_na),
+            supermercados=("supermercados", _sum_or_na),
+            restaurantes=("restaurantes", _sum_or_na),
+            peixarias=("peixarias", _sum_or_na),
+            outros_pdv=("outros_pdv", _sum_or_na),
+            qtd_municipios=("codigo_ibge", "nunique"),
+            municipios_com_populacao=("populacao", lambda x: x.notna().sum()),
+            municipios_com_pib=("pib", lambda x: x.notna().sum()),
+        )
+    )
+
+    score_base = pd.to_numeric(resumo["pib"], errors="coerce")
+    if score_base.fillna(0).sum() <= 0:
+        score_base = pd.to_numeric(resumo["populacao"], errors="coerce")
+    if score_base.fillna(0).sum() <= 0:
+        score_base = resumo["qtd_municipios"]
+
+    resumo["score"] = _score_pct(score_base)
+    resumo["classificacao"] = resumo["score"].apply(_classificar_score)
+    resumo["status_dados"] = resumo.apply(
+        lambda r: "IBGE população + PIB" if r["municipios_com_pib"] > 0 else (
+            "IBGE população; PIB pendente" if r["municipios_com_populacao"] > 0 else "Pendente carga IBGE"
+        ),
+        axis=1,
+    )
+
+    return resumo.sort_values(["score", "populacao"], ascending=False, na_position="last")
+
+
+def carregar_perfil_demografico_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    df = _base_expansao_municipal(estados)
+    if df.empty:
+        return df
+
+    resumo = (
+        df.groupby(["microrregiao", "estado"], as_index=False)
+        .agg(
+            populacao_total=("populacao", _sum_or_na),
+            pct_masculina=("pct_masculina", _mean_or_na),
+            pct_feminina=("pct_feminina", _mean_or_na),
+            pct_0_14=("pct_0_14", _mean_or_na),
+            pct_15_29=("pct_15_29", _mean_or_na),
+            pct_30_44=("pct_30_44", _mean_or_na),
+            pct_45_59=("pct_45_59", _mean_or_na),
+            pct_60_plus=("pct_60_plus", _mean_or_na),
+            renda_classe_a=("renda_classe_a", _mean_or_na),
+            renda_classe_b=("renda_classe_b", _mean_or_na),
+            renda_classe_c=("renda_classe_c", _mean_or_na),
+            renda_classe_de=("renda_classe_de", _mean_or_na),
+            fonte_demografia=("fonte_demografia", "first"),
+            fonte_renda=("fonte_renda", "first"),
+        )
+    )
+    return resumo.sort_values("populacao_total", ascending=False, na_position="last")
+
+
+def carregar_receita_categoria_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    estados = estados or ESTADOS_SUDESTE
+    engine = get_engine()
+
+    base = carregar_microrregiao_expansao(estados=estados)
+    if base.empty:
+        return base
+    base = base[["microrregiao", "estado"]].copy()
+
+    with engine.begin() as conn:
+        exists = _relation_exists(conn, "app.vw_vendas_analitica")
+        if not exists:
+            for cat in CATEGORIAS_PESCADOS:
+                base[cat] = pd.NA
+            base["total"] = pd.NA
+            base["status_receita"] = "Sem view de vendas carregada"
+            return base
+
+        sql = """
+            SELECT
+                COALESCE(g.microrregiao, 'Sem microrregião') AS microrregiao,
+                v.uf AS estado,
+                COALESCE(NULLIF(v.proteina, ''), NULLIF(v.produto, ''), 'Outros') AS categoria_pescado,
+                SUM(COALESCE(v.valor_venda, 0)) AS receita
+            FROM app.vw_vendas_analitica v
+            LEFT JOIN dw.dim_geografia g
+                ON g.codigo_ibge = v.codigo_ibge
+            WHERE v.uf = ANY(:estados)
+            GROUP BY COALESCE(g.microrregiao, 'Sem microrregião'), v.uf, COALESCE(NULLIF(v.proteina, ''), NULLIF(v.produto, ''), 'Outros')
+        """
+        df = pd.read_sql(text(sql), conn, params={"estados": estados})
+
+    if df.empty:
+        for cat in CATEGORIAS_PESCADOS:
+            base[cat] = pd.NA
+        base["total"] = pd.NA
+        base["status_receita"] = "Sem vendas internas para o recorte"
+        return base
+
+    pivot = df.pivot_table(
+        index=["microrregiao", "estado"],
+        columns="categoria_pescado",
+        values="receita",
+        aggfunc="sum",
+        fill_value=0,
+    ).reset_index()
+
+    out = base.merge(pivot, on=["microrregiao", "estado"], how="left")
+    for cat in CATEGORIAS_PESCADOS:
+        if cat not in out.columns:
+            out[cat] = 0.0
+
+    out[CATEGORIAS_PESCADOS] = out[CATEGORIAS_PESCADOS].fillna(0)
+    out["total"] = out[CATEGORIAS_PESCADOS].sum(axis=1)
+    out["status_receita"] = out["total"].apply(lambda v: "Receita real" if float(v or 0) > 0 else "Sem venda real no recorte")
+
+    return out[["microrregiao", "estado"] + CATEGORIAS_PESCADOS + ["total", "status_receita"]]
+
+
+def calcular_idc_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    df_micro = carregar_microrregiao_expansao(estados=estados)
+    df_receita = carregar_receita_categoria_expansao(estados=estados)
+    if df_micro.empty:
+        return df_micro
+
+    df = df_micro.merge(df_receita[["microrregiao", "estado", "total"]], on=["microrregiao", "estado"], how="left")
+    df["total"] = pd.to_numeric(df["total"], errors="coerce").fillna(0)
+
+    pop_total = pd.to_numeric(df["populacao"], errors="coerce").sum(skipna=True)
+    pib_total = pd.to_numeric(df["pib"], errors="coerce").sum(skipna=True)
+    receita_total = df["total"].sum(skipna=True)
+
+    df["participacao_populacao_pct"] = pd.to_numeric(df["populacao"], errors="coerce") / pop_total * 100 if pop_total else pd.NA
+    df["participacao_pib_pct"] = pd.to_numeric(df["pib"], errors="coerce") / pib_total * 100 if pib_total else pd.NA
+
+    if pib_total:
+        df["idc_base"] = (df["participacao_populacao_pct"] + df["participacao_pib_pct"]) / 2
+    else:
+        df["idc_base"] = df["participacao_populacao_pct"]
+
+    df["participacao_receita_pct"] = df["total"] / receita_total * 100 if receita_total else 0
+    df["over_under_share_pct"] = df["participacao_receita_pct"] - df["idc_base"].fillna(0)
+    df["receita_esperada_idc"] = receita_total * (df["idc_base"].fillna(0) / 100) if receita_total else 0.0
+    df["oportunidade"] = df["receita_esperada_idc"] - df["total"]
+    df["margin_pool_pct"] = df["oportunidade"] / receita_total * 100 if receita_total else 0.0
+
+    df["score"] = (df["idc_base"].fillna(0) - df["over_under_share_pct"]).clip(lower=0)
+    df["score"] = _score_pct(df["score"])
+    df["classificacao"] = df["score"].apply(_classificar_score)
+    df["observacao_idc"] = df.apply(
+        lambda r: "IDC com população + PIB" if pd.notna(r.get("pib")) and float(r.get("pib") or 0) > 0 else "IDC usando população; PIB pendente",
+        axis=1,
+    )
+
+    return df.sort_values("score", ascending=False, na_position="last")
+
+
+def _normalizar_serie_0_100(series: pd.Series) -> pd.Series:
+    """Normaliza uma série para 0-100 dentro do recorte.
+
+    Usada no simulador para transformar renda, PDV e perfil demográfico em
+    escalas comparáveis. Se todos os valores forem zero/nulos, retorna 50
+    como neutro para não penalizar fonte ainda não carregada.
+    """
+    s = pd.to_numeric(series, errors="coerce")
+    if s.notna().sum() == 0:
+        return pd.Series([50.0] * len(s), index=s.index)
+
+    s = s.fillna(s.median(skipna=True) if s.notna().sum() else 0)
+    max_v = s.max(skipna=True)
+    min_v = s.min(skipna=True)
+
+    if pd.isna(max_v) or max_v <= 0:
+        return pd.Series([50.0] * len(s), index=s.index)
+
+    # Quando a variação é pequena, usa proporção simples para evitar divisão por zero.
+    if max_v == min_v:
+        return pd.Series([100.0 if max_v > 0 else 50.0] * len(s), index=s.index)
+
+    return (s / max_v * 100).clip(lower=0, upper=100)
+
+
+def _preparar_fatores_simulador_idc(df: pd.DataFrame, estados: list[str] | None = None) -> pd.DataFrame:
+    """Adiciona todos os fatores usados no IDC simulado.
+
+    Fatores finais em escala 0-100:
+    - fator_populacao
+    - fator_pib
+    - fator_masculino
+    - fator_feminino
+    - fator_renda
+    - fator_pib_per_capita
+    - fator_pdv
+    """
+    out = df.copy()
+
+    demo = carregar_perfil_demografico_expansao(estados=estados)
+    if not demo.empty:
+        cols_demo = [
+            "microrregiao", "estado", "pct_masculina", "pct_feminina",
+            "pct_15_29", "pct_30_44", "pct_45_59",
+            "renda_classe_a", "renda_classe_b", "renda_classe_c", "renda_classe_de",
+        ]
+        cols_demo = [c for c in cols_demo if c in demo.columns]
+        out = out.merge(demo[cols_demo], on=["microrregiao", "estado"], how="left", suffixes=("", "_demo"))
+
+    # População e PIB já são participações relativas do recorte.
+    out["fator_populacao"] = pd.to_numeric(out.get("participacao_populacao_pct"), errors="coerce").fillna(0)
+    out["fator_pib"] = pd.to_numeric(out.get("participacao_pib_pct"), errors="coerce").fillna(0)
+
+    # Gênero: usa o percentual demográfico da região e normaliza pelo maior valor do recorte.
+    out["fator_masculino"] = _normalizar_serie_0_100(out.get("pct_masculina", pd.Series(index=out.index, dtype=float)))
+    out["fator_feminino"] = _normalizar_serie_0_100(out.get("pct_feminina", pd.Series(index=out.index, dtype=float)))
+
+    # Renda: prioriza regiões com maior renda média proxy/oficial.
+    out["fator_renda"] = _normalizar_serie_0_100(out.get("renda_media", pd.Series(index=out.index, dtype=float)))
+
+    # PIB per capita: mede intensidade econômica por habitante.
+    # Entra no lugar da antiga faixa etária no simulador.
+    out["fator_pib_per_capita"] = _normalizar_serie_0_100(out.get("pib_per_capita", pd.Series(index=out.index, dtype=float)))
+
+    # PDV: soma supermercados, restaurantes, peixarias e outros pontos.
+    pdv_total = (
+        pd.to_numeric(out.get("supermercados", 0), errors="coerce").fillna(0)
+        + pd.to_numeric(out.get("restaurantes", 0), errors="coerce").fillna(0)
+        + pd.to_numeric(out.get("peixarias", 0), errors="coerce").fillna(0)
+        + pd.to_numeric(out.get("outros_pdv", 0), errors="coerce").fillna(0)
+    )
+    out["pdv_total"] = pdv_total
+    out["fator_pdv"] = _normalizar_serie_0_100(pdv_total)
+
+    return out
+
+
+def simular_idc_expansao(
+    peso_populacao: float = 30,
+    peso_pib: float = 25,
+    peso_renda: float = 15,
+    peso_pib_per_capita: float = 15,
+    peso_masculino: float = 5,
+    peso_feminino: float = 5,
+    peso_pdv: float = 5,
+    estados: list[str] | None = None,
+) -> pd.DataFrame:
+    df = calcular_idc_expansao(estados=estados)
+    if df.empty:
+        return df
+
+    df = _preparar_fatores_simulador_idc(df, estados=estados)
+
+    pesos_brutos = {
+        "fator_populacao": float(peso_populacao or 0),
+        "fator_pib": float(peso_pib or 0),
+        "fator_renda": float(peso_renda or 0),
+        "fator_pib_per_capita": float(peso_pib_per_capita or 0),
+        "fator_masculino": float(peso_masculino or 0),
+        "fator_feminino": float(peso_feminino or 0),
+        "fator_pdv": float(peso_pdv or 0),
+    }
+
+    soma_pesos = sum(pesos_brutos.values())
+    if soma_pesos <= 0:
+        pesos_brutos = {
+            "fator_populacao": 30.0,
+            "fator_pib": 25.0,
+            "fator_renda": 15.0,
+            "fator_pib_per_capita": 15.0,
+            "fator_masculino": 5.0,
+            "fator_feminino": 5.0,
+            "fator_pdv": 5.0,
+        }
+        soma_pesos = 100.0
+
+    # Mesmo se a tela enviar 99/101 por arredondamento, o cálculo normaliza para 100%.
+    pesos_norm = {col: peso / soma_pesos for col, peso in pesos_brutos.items()}
+
+    df["idc_simulado"] = 0.0
+    for col, peso_norm in pesos_norm.items():
+        df["idc_simulado"] += pd.to_numeric(df[col], errors="coerce").fillna(0) * peso_norm
+
+    df["score_simulado"] = _score_pct(df["idc_simulado"])
+    df["nova_classificacao"] = df["score_simulado"].apply(_classificar_score)
+    df["diferenca_idc"] = df["idc_simulado"] - df["idc_base"].fillna(0)
+
+    df["peso_total_simulador"] = round(sum(pesos_brutos.values()), 6)
+    df["peso_populacao_pct"] = pesos_norm["fator_populacao"] * 100
+    df["peso_pib_pct"] = pesos_norm["fator_pib"] * 100
+    df["peso_renda_pct"] = pesos_norm["fator_renda"] * 100
+    df["peso_pib_per_capita_pct"] = pesos_norm["fator_pib_per_capita"] * 100
+    df["peso_masculino_pct"] = pesos_norm["fator_masculino"] * 100
+    df["peso_feminino_pct"] = pesos_norm["fator_feminino"] * 100
+    df["peso_pdv_pct"] = pesos_norm["fator_pdv"] * 100
+
+    df["status_simulador"] = (
+        "IDC simulado com pesos normalizados para 100%; fatores demografia/renda/PDV usam fonte carregada ou proxy marcado no app"
+    )
+
+    cols_prioritarias = [
+        "microrregiao", "estado",
+        "idc_base", "idc_simulado", "diferenca_idc",
+        "score", "score_simulado", "classificacao", "nova_classificacao",
+        "participacao_populacao_pct", "participacao_pib_pct",
+        "fator_populacao", "fator_pib", "fator_renda", "fator_pib_per_capita",
+        "fator_masculino", "fator_feminino", "fator_pdv", "pdv_total",
+        "peso_total_simulador",
+        "peso_populacao_pct", "peso_pib_pct", "peso_renda_pct", "peso_pib_per_capita_pct",
+        "peso_masculino_pct", "peso_feminino_pct", "peso_pdv_pct",
+        "status_simulador",
+    ]
+    cols = [c for c in cols_prioritarias if c in df.columns] + [c for c in df.columns if c not in cols_prioritarias]
+    return df[cols].sort_values("score_simulado", ascending=False, na_position="last")
+
+def exportar_bases_expansao_excel(parametros: dict | None = None, estados: list[str] | None = None) -> bytes:
+    parametros = parametros or {}
+    sheets = {
+        "Resumo_Estado": carregar_resumo_estado_expansao(estados=estados),
+        "Microrregiao_Indicadores": carregar_microrregiao_expansao(estados=estados),
+        "Perfil_Demografico": carregar_perfil_demografico_expansao(estados=estados),
+        "Receita_Categoria": carregar_receita_categoria_expansao(estados=estados),
+        "IDC_Base": calcular_idc_expansao(estados=estados),
+        "IDC_Simulado": simular_idc_expansao(estados=estados, **parametros),
+        "Parametros_Simulador": pd.DataFrame([parametros]),
+        "Dicionario": pd.DataFrame([
+            {"campo": "IDH", "descricao": "Campo preparado. Não preenchido com zero falso; depende de fonte externa confiável."},
+            {"campo": "PIB", "descricao": "Carregado via IBGE/SIDRA quando disponível."},
+            {"campo": "População", "descricao": "Carregada via IBGE/SIDRA quando disponível."},
+            {"campo": "PDV", "descricao": "Supermercados/restaurantes/peixarias dependem de fonte externa/cadastro."},
+            {"campo": "IDC Base", "descricao": "Média entre participação de população e participação de PIB; se PIB ausente, usa população."},
+        ]),
+    }
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        for name, df in sheets.items():
+            df.to_excel(writer, index=False, sheet_name=name[:31])
+    return output.getvalue()
+
+
+# ============================================================
+# HOTFIX — Expansão Receita Manual + IDC Estratégico + 4 casas
+# ============================================================
+
+PESOS_IDC_ESTRATEGICO_PADRAO = {
+    "fator_populacao": 30.0,
+    "fator_pib": 25.0,
+    "fator_renda": 15.0,
+    "fator_pib_per_capita": 15.0,
+    "fator_masculino": 5.0,
+    "fator_feminino": 5.0,
+    "fator_pdv": 5.0,
+}
+
+
+def _round4_df(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    for col in out.columns:
+        if pd.api.types.is_float_dtype(out[col]) or pd.api.types.is_integer_dtype(out[col]):
+            out[col] = pd.to_numeric(out[col], errors="ignore")
+            try:
+                out[col] = out[col].round(4)
+            except Exception:
+                pass
+    return out
+
+
+def _calcular_fatores_idc_em_df(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    out["fator_populacao"] = pd.to_numeric(out.get("participacao_populacao_pct"), errors="coerce").fillna(0)
+    out["fator_pib"] = pd.to_numeric(out.get("participacao_pib_pct"), errors="coerce").fillna(0)
+    out["fator_renda"] = _normalizar_serie_0_100(out.get("renda_media", pd.Series(index=out.index, dtype=float)))
+    out["fator_pib_per_capita"] = _normalizar_serie_0_100(out.get("pib_per_capita", pd.Series(index=out.index, dtype=float)))
+    out["fator_masculino"] = _normalizar_serie_0_100(out.get("pct_masculina", pd.Series(index=out.index, dtype=float)))
+    out["fator_feminino"] = _normalizar_serie_0_100(out.get("pct_feminina", pd.Series(index=out.index, dtype=float)))
+
+    pdv_total = (
+        pd.to_numeric(out.get("supermercados", 0), errors="coerce").fillna(0)
+        + pd.to_numeric(out.get("restaurantes", 0), errors="coerce").fillna(0)
+        + pd.to_numeric(out.get("peixarias", 0), errors="coerce").fillna(0)
+        + pd.to_numeric(out.get("outros_pdv", 0), errors="coerce").fillna(0)
+    )
+    out["pdv_total"] = pdv_total
+    out["fator_pdv"] = _normalizar_serie_0_100(pdv_total)
+    return out
+
+
+def _aplicar_idc_estrategico_padrao(df: pd.DataFrame, prefixo: str = "") -> pd.DataFrame:
+    out = _calcular_fatores_idc_em_df(df)
+    col_idc = f"idc_base{prefixo}"
+    col_macro = f"idc_macro{prefixo}"
+
+    # Mantém a fórmula antiga como IDC macro para comparação.
+    out[col_macro] = (
+        (pd.to_numeric(out.get("participacao_populacao_pct"), errors="coerce").fillna(0)
+         + pd.to_numeric(out.get("participacao_pib_pct"), errors="coerce").fillna(0)) / 2
+    )
+
+    out[col_idc] = 0.0
+    for fator, peso in PESOS_IDC_ESTRATEGICO_PADRAO.items():
+        out[col_idc] += pd.to_numeric(out.get(fator), errors="coerce").fillna(0) * (peso / 100.0)
+
+    return out
+
+
+def _categoria_pescado_sql_case(alias_col: str = "grupo_produto") -> str:
+    return f"""
+        CASE
+            WHEN LOWER({alias_col}) LIKE '%til%pia%' OR LOWER({alias_col}) LIKE '%tilapia%' THEN 'Tilápia'
+            WHEN LOWER({alias_col}) LIKE '%salm%o%' OR LOWER({alias_col}) LIKE '%salmao%' THEN 'Salmão'
+            WHEN LOWER({alias_col}) LIKE '%camar%' THEN 'Camarão'
+            WHEN LOWER({alias_col}) LIKE '%piramutaba%' THEN 'Piramutaba'
+            WHEN LOWER({alias_col}) LIKE '%polaca%' THEN 'Polaca'
+            WHEN LOWER({alias_col}) LIKE '%merluza%' THEN 'Merluza'
+            WHEN LOWER({alias_col}) LIKE '%panga%' THEN 'Panga'
+            ELSE 'Outros'
+        END
+    """
+
+
+def carregar_regioes_economicas_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    df = _with_regiao_economica(_base_expansao_municipal(estados))
+    if df.empty:
+        return df
+
+    resumo = (
+        df.groupby(["estado", "regiao_economica"], as_index=False)
+        .agg(
+            populacao=("populacao", _sum_or_na),
+            pib=("pib", _sum_or_na),
+            pib_per_capita=("pib_per_capita", _mean_or_na),
+            idh=("idh", _mean_or_na),
+            renda_media=("renda_media", _mean_or_na),
+            pct_masculina=("pct_masculina", _mean_or_na),
+            pct_feminina=("pct_feminina", _mean_or_na),
+            supermercados=("supermercados", _sum_or_na),
+            restaurantes=("restaurantes", _sum_or_na),
+            peixarias=("peixarias", _sum_or_na),
+            outros_pdv=("outros_pdv", _sum_or_na),
+            qtd_municipios=("codigo_ibge", "nunique"),
+            qtd_microrregioes=("microrregiao", "nunique"),
+            municipios_com_populacao=("populacao", lambda x: x.notna().sum()),
+            municipios_com_pib=("pib", lambda x: x.notna().sum()),
+            municipios_com_idh=("idh", lambda x: x.notna().sum()),
+        )
+    )
+
+    pop_total = pd.to_numeric(resumo["populacao"], errors="coerce").sum(skipna=True)
+    pib_total = pd.to_numeric(resumo["pib"], errors="coerce").sum(skipna=True)
+
+    resumo["participacao_populacao_pct"] = pd.to_numeric(resumo["populacao"], errors="coerce") / pop_total * 100 if pop_total else pd.NA
+    resumo["participacao_pib_pct"] = pd.to_numeric(resumo["pib"], errors="coerce") / pib_total * 100 if pib_total else pd.NA
+
+    resumo = _aplicar_idc_estrategico_padrao(resumo, prefixo="_regiao")
+    resumo["score_regiao"] = _score_pct(resumo["idc_base_regiao"])
+    resumo["classificacao_regiao"] = resumo["score_regiao"].apply(_classificar_score)
+
+    return _round4_df(resumo.sort_values(["estado", "score_regiao"], ascending=[True, False], na_position="last"))
+
+
+def carregar_microrregiao_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    df = _base_expansao_municipal(estados)
+    if df.empty:
+        return df
+
+    resumo = (
+        df.groupby(["estado", "microrregiao"], as_index=False)
+        .agg(
+            populacao=("populacao", _sum_or_na),
+            idh=("idh", _mean_or_na),
+            renda_media=("renda_media", _mean_or_na),
+            pib=("pib", _sum_or_na),
+            pib_per_capita=("pib_per_capita", _mean_or_na),
+            pct_masculina=("pct_masculina", _mean_or_na),
+            pct_feminina=("pct_feminina", _mean_or_na),
+            supermercados=("supermercados", _sum_or_na),
+            restaurantes=("restaurantes", _sum_or_na),
+            peixarias=("peixarias", _sum_or_na),
+            outros_pdv=("outros_pdv", _sum_or_na),
+            qtd_municipios=("codigo_ibge", "nunique"),
+            municipios_com_populacao=("populacao", lambda x: x.notna().sum()),
+            municipios_com_pib=("pib", lambda x: x.notna().sum()),
+        )
+    )
+
+    pop_total = pd.to_numeric(resumo["populacao"], errors="coerce").sum(skipna=True)
+    pib_total = pd.to_numeric(resumo["pib"], errors="coerce").sum(skipna=True)
+    resumo["participacao_populacao_pct"] = pd.to_numeric(resumo["populacao"], errors="coerce") / pop_total * 100 if pop_total else pd.NA
+    resumo["participacao_pib_pct"] = pd.to_numeric(resumo["pib"], errors="coerce") / pib_total * 100 if pib_total else pd.NA
+
+    resumo = _aplicar_idc_estrategico_padrao(resumo)
+    resumo["score"] = _score_pct(resumo["idc_base"])
+    resumo["classificacao"] = resumo["score"].apply(_classificar_score)
+    resumo["status_dados"] = resumo.apply(
+        lambda r: "IBGE população + PIB + IDC estratégico" if r["municipios_com_pib"] > 0 else (
+            "IBGE população; PIB pendente" if r["municipios_com_populacao"] > 0 else "Pendente carga IBGE"
+        ),
+        axis=1,
+    )
+
+    return _round4_df(resumo.sort_values(["score", "populacao"], ascending=False, na_position="last"))
+
+
+def _receita_manual_12m_por_micro(estados: list[str]) -> pd.DataFrame:
+    engine = get_engine()
+    with engine.begin() as conn:
+        if not _relation_exists(conn, "app.fato_receita_manual_expansao"):
+            return pd.DataFrame()
+
+        # Usa a última venda carregada como referência para os últimos 12 meses,
+        # evitando classificar base antiga como sem venda se o arquivo histórico estiver congelado.
+        max_data = conn.execute(text("""
+            SELECT MAX(data_competencia)
+            FROM app.fato_receita_manual_expansao
+            WHERE estado = ANY(:estados)
+        """), {"estados": estados}).scalar()
+
+        if not max_data:
+            return pd.DataFrame()
+
+        sql = f"""
+            WITH params AS (
+                SELECT CAST(:max_data AS DATE) AS data_ref,
+                       CAST(:max_data AS DATE) - INTERVAL '12 months' AS data_inicio
+            ),
+            base AS (
+                SELECT
+                    COALESCE(g.microrregiao, 'Sem microrregião') AS microrregiao,
+                    r.estado,
+                    r.categoria_pescado,
+                    r.data_competencia,
+                    r.vlr_total_liquido
+                FROM app.fato_receita_manual_expansao r
+                LEFT JOIN dw.dim_geografia g
+                    ON UPPER(TRIM(g.uf)) = UPPER(TRIM(r.estado))
+                   AND UPPER(TRIM(g.municipio)) = UPPER(TRIM(r.cidade))
+                WHERE r.estado = ANY(:estados)
+            ),
+            agg AS (
+                SELECT
+                    b.microrregiao,
+                    b.estado,
+                    b.categoria_pescado,
+                    SUM(CASE WHEN b.data_competencia >= p.data_inicio THEN COALESCE(b.vlr_total_liquido, 0) ELSE 0 END) AS receita_12m,
+                    SUM(COALESCE(b.vlr_total_liquido, 0)) AS receita_total_historica,
+                    MAX(b.data_competencia) AS ultima_venda
+                FROM base b
+                CROSS JOIN params p
+                GROUP BY b.microrregiao, b.estado, b.categoria_pescado
+            )
+            SELECT *
+            FROM agg
+        """
+        return pd.read_sql(text(sql), conn, params={"estados": estados, "max_data": max_data})
+
+
+def carregar_receita_categoria_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    estados = estados or ESTADOS_SUDESTE
+    engine = get_engine()
+
+    base = carregar_microrregiao_expansao(estados=estados)
+    if base.empty:
+        return base
+    base = base[["microrregiao", "estado", "renda_media"]].copy()
+
+    df = _receita_manual_12m_por_micro(estados)
+
+    # Fallback: view analítica antiga, se a base manual ainda não foi carregada.
+    if df.empty:
+        with engine.begin() as conn:
+            exists = _relation_exists(conn, "app.vw_vendas_analitica")
+            if exists:
+                sql = """
+                    SELECT
+                        COALESCE(g.microrregiao, 'Sem microrregião') AS microrregiao,
+                        v.uf AS estado,
+                        COALESCE(NULLIF(v.proteina, ''), NULLIF(v.produto, ''), 'Outros') AS categoria_pescado,
+                        SUM(COALESCE(v.valor_venda, 0)) AS receita_12m,
+                        SUM(COALESCE(v.valor_venda, 0)) AS receita_total_historica,
+                        MAX(v.data_venda) AS ultima_venda
+                    FROM app.vw_vendas_analitica v
+                    LEFT JOIN dw.dim_geografia g
+                        ON g.codigo_ibge = v.codigo_ibge
+                    WHERE v.uf = ANY(:estados)
+                      AND v.data_venda >= (CURRENT_DATE - INTERVAL '12 months')
+                    GROUP BY COALESCE(g.microrregiao, 'Sem microrregião'), v.uf, COALESCE(NULLIF(v.proteina, ''), NULLIF(v.produto, ''), 'Outros')
+                """
+                try:
+                    df = pd.read_sql(text(sql), conn, params={"estados": estados})
+                except Exception:
+                    df = pd.DataFrame()
+
+    if df.empty:
+        for cat in CATEGORIAS_PESCADOS:
+            base[cat] = 0.0
+        base["total"] = 0.0
+        base["receita_media_12m"] = 0.0
+        base["ultima_venda"] = pd.NaT
+        base["status_receita"] = "Sem venda nos últimos 12 meses"
+        return _round4_df(base[["microrregiao", "estado", "renda_media"] + CATEGORIAS_PESCADOS + ["total", "receita_media_12m", "ultima_venda", "status_receita"]])
+
+    pivot = df.pivot_table(
+        index=["microrregiao", "estado"],
+        columns="categoria_pescado",
+        values="receita_12m",
+        aggfunc="sum",
+        fill_value=0,
+    ).reset_index()
+
+    status = (
+        df.groupby(["microrregiao", "estado"], as_index=False)
+        .agg(
+            total=("receita_12m", "sum"),
+            ultima_venda=("ultima_venda", "max"),
+        )
+    )
+    status["receita_media_12m"] = pd.to_numeric(status["total"], errors="coerce").fillna(0) / 12
+    status["status_receita"] = status["ultima_venda"].apply(
+        lambda d: "Sem venda nos últimos 12 meses" if pd.isna(d) else f"Última venda: {pd.to_datetime(d).strftime('%d/%m/%Y')}"
+    )
+    status.loc[pd.to_numeric(status["total"], errors="coerce").fillna(0) <= 0, "status_receita"] = "Sem venda nos últimos 12 meses"
+
+    out = base.merge(pivot, on=["microrregiao", "estado"], how="left")
+    out = out.merge(status, on=["microrregiao", "estado"], how="left")
+
+    for cat in CATEGORIAS_PESCADOS:
+        if cat not in out.columns:
+            out[cat] = 0.0
+
+    out[CATEGORIAS_PESCADOS] = out[CATEGORIAS_PESCADOS].fillna(0)
+    out["total"] = pd.to_numeric(out["total"], errors="coerce").fillna(0)
+    out["receita_media_12m"] = pd.to_numeric(out["receita_media_12m"], errors="coerce").fillna(0)
+    out["status_receita"] = out["status_receita"].fillna("Sem venda nos últimos 12 meses")
+
+    return _round4_df(out[["microrregiao", "estado", "renda_media"] + CATEGORIAS_PESCADOS + ["total", "receita_media_12m", "ultima_venda", "status_receita"]])
+
+
+def calcular_idc_expansao(estados: list[str] | None = None) -> pd.DataFrame:
+    df_micro = carregar_microrregiao_expansao(estados=estados)
+    df_receita = carregar_receita_categoria_expansao(estados=estados)
+    if df_micro.empty:
+        return df_micro
+
+    df = df_micro.merge(
+        df_receita[["microrregiao", "estado", "total", "receita_media_12m", "ultima_venda", "status_receita"]],
+        on=["microrregiao", "estado"],
+        how="left"
+    )
+    df["total"] = pd.to_numeric(df["total"], errors="coerce").fillna(0)
+
+    # idc_macro = fórmula antiga; idc_base = IDC estratégico com todos os fatores.
+    receita_total = df["total"].sum(skipna=True)
+    df["participacao_receita_pct"] = df["total"] / receita_total * 100 if receita_total else 0
+    df["over_under_share_pct"] = df["participacao_receita_pct"] - df["idc_base"].fillna(0)
+    df["receita_esperada_idc"] = receita_total * (df["idc_base"].fillna(0) / 100) if receita_total else 0.0
+    df["oportunidade"] = df["receita_esperada_idc"] - df["total"]
+    df["margin_pool_pct"] = df["oportunidade"] / receita_total * 100 if receita_total else 0.0
+
+    df["score"] = (df["idc_base"].fillna(0) - df["over_under_share_pct"]).clip(lower=0)
+    df["score"] = _score_pct(df["score"])
+    df["classificacao"] = df["score"].apply(_classificar_score)
+    df["observacao_idc"] = "IDC estratégico: população, PIB, renda, PIB per capita, gênero e PDV"
+
+    return _round4_df(df.sort_values("score", ascending=False, na_position="last"))
+
+
+def exportar_bases_expansao_excel(parametros: dict | None = None, estados: list[str] | None = None) -> bytes:
+    parametros = parametros or {}
+    sheets = {
+        "Resumo_Estado": carregar_resumo_estado_expansao(estados=estados),
+        "Regioes_Economicas": carregar_regioes_economicas_expansao(estados=estados),
+        "Municipios": carregar_municipios_regiao_economica_expansao(estado=None, regiao_economica="Todas"),
+        "Microrregiao_Indicadores": carregar_microrregiao_expansao(estados=estados),
+        "Perfil_Demografico": carregar_perfil_demografico_expansao(estados=estados),
+        "Receita_Categoria": carregar_receita_categoria_expansao(estados=estados),
+        "IDC_Estrategico": calcular_idc_expansao(estados=estados),
+        "IDC_Simulado": simular_idc_expansao(estados=estados, **parametros),
+        "Parametros_Simulador": pd.DataFrame([parametros]),
+        "Dicionario": pd.DataFrame([
+            {"campo": "IDC Macro", "descricao": "Fórmula antiga: média entre participação de população e participação de PIB."},
+            {"campo": "IDC Estratégico", "descricao": "Índice principal: população, PIB, renda, PIB per capita, gênero e pontos de venda."},
+            {"campo": "Receita manual", "descricao": "Base manual: parceiro, cidade, estado, data_competencia, grupo_produto e vlr_total_liquido."},
+            {"campo": "Status receita", "descricao": "Mostra a última venda por região ou Sem venda nos últimos 12 meses."},
+            {"campo": "PDV", "descricao": "Pode ser proxy até existir base oficial de pontos de venda."},
+        ]),
+    }
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        for name, df in sheets.items():
+            if isinstance(df, pd.DataFrame):
+                df.to_excel(writer, index=False, sheet_name=name[:31])
+    return output.getvalue()

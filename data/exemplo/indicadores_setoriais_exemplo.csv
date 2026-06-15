@@ -1,0 +1,271 @@
+data;fonte;indicador;categoria;subcategoria;produto;uf;regiao;valor;unidade;periodicidade
+2024-01-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.1255;R$/kg;mensal
+2024-01-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.7863;R$/kg;mensal
+2024-01-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.8313;R$/kg;mensal
+2024-01-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;34.5156;R$/kg;mensal
+2024-01-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.1419;R$/dz;mensal
+2024-01-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;62.5478;R$/sc;mensal
+2024-01-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;128.4707;R$/sc;mensal
+2024-01-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2252.498;R$/ton;mensal
+2024-01-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1842.7778;US$/ton;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;17.8652;R$/kg;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9493;R$/kg;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.1668;R$/kg;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;34.5874;R$/kg;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9454;R$/dz;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.2656;R$/sc;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;127.8241;R$/sc;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2298.3581;R$/ton;mensal
+2024-02-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1884.7095;US$/ton;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.8359;R$/kg;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9201;R$/kg;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.5387;R$/kg;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.1409;R$/kg;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.1433;R$/dz;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;62.467;R$/sc;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;131.8262;R$/sc;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2339.738;R$/ton;mensal
+2024-03-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1863.2347;US$/ton;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.4266;R$/kg;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.3463;R$/kg;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.503;R$/kg;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.6383;R$/kg;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.4656;R$/dz;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;64.2547;R$/sc;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;133.0738;R$/sc;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2367.8861;R$/ton;mensal
+2024-04-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1926.3947;US$/ton;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.2682;R$/kg;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2661;R$/kg;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.7707;R$/kg;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.4456;R$/kg;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.5057;R$/dz;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.1695;R$/sc;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;129.1762;R$/sc;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2374.5675;R$/ton;mensal
+2024-05-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1898.2457;US$/ton;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.8557;R$/kg;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.0271;R$/kg;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.359;R$/kg;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.6447;R$/kg;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.3186;R$/dz;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;64.4111;R$/sc;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;129.4532;R$/sc;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2381.5408;R$/ton;mensal
+2024-06-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1987.1012;US$/ton;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.2946;R$/kg;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2201;R$/kg;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.2556;R$/kg;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.7902;R$/kg;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.175;R$/dz;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;64.4721;R$/sc;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;134.346;R$/sc;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2426.4277;R$/ton;mensal
+2024-07-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1955.4925;US$/ton;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.3387;R$/kg;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.2626;R$/kg;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.641;R$/kg;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.792;R$/kg;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.0375;R$/dz;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;64.1197;R$/sc;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;129.399;R$/sc;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2372.1732;R$/ton;mensal
+2024-08-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1989.1521;US$/ton;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.4795;R$/kg;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9408;R$/kg;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.4465;R$/kg;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.8768;R$/kg;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.4796;R$/dz;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;64.2623;R$/sc;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;128.6803;R$/sc;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2365.8623;R$/ton;mensal
+2024-09-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1947.4;US$/ton;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.8682;R$/kg;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9644;R$/kg;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.5015;R$/kg;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.6239;R$/kg;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9569;R$/dz;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;65.5366;R$/sc;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;129.3307;R$/sc;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2334.0712;R$/ton;mensal
+2024-10-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1890.5784;US$/ton;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.663;R$/kg;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.8818;R$/kg;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.2885;R$/kg;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.3878;R$/kg;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.7523;R$/dz;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.2027;R$/sc;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;131.4466;R$/sc;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2369.5093;R$/ton;mensal
+2024-11-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1965.9293;US$/ton;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.283;R$/kg;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.5083;R$/kg;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.1107;R$/kg;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.5882;R$/kg;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9328;R$/dz;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;62.4613;R$/sc;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;128.3387;R$/sc;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2307.9818;R$/ton;mensal
+2024-12-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1907.369;US$/ton;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.8904;R$/kg;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.8509;R$/kg;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.1275;R$/kg;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;34.6603;R$/kg;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.8272;R$/dz;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;61.9051;R$/sc;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;129.3885;R$/sc;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2385.5627;R$/ton;mensal
+2025-01-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1888.8708;US$/ton;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.0758;R$/kg;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.6368;R$/kg;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.5233;R$/kg;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.4253;R$/kg;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.7968;R$/dz;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.6372;R$/sc;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;126.6333;R$/sc;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2281.5672;R$/ton;mensal
+2025-02-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1889.9845;US$/ton;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;18.5922;R$/kg;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.7496;R$/kg;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.0518;R$/kg;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.5453;R$/kg;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.6407;R$/dz;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;61.4653;R$/sc;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;128.8633;R$/sc;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2393.5058;R$/ton;mensal
+2025-03-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1872.3344;US$/ton;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.1454;R$/kg;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.361;R$/kg;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.9967;R$/kg;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.5445;R$/kg;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.556;R$/dz;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.026;R$/sc;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;127.2511;R$/sc;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2325.7813;R$/ton;mensal
+2025-04-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1955.6263;US$/ton;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.2792;R$/kg;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.4521;R$/kg;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.9117;R$/kg;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.707;R$/kg;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.6603;R$/dz;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;62.9821;R$/sc;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;130.9113;R$/sc;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2388.0128;R$/ton;mensal
+2025-05-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1931.8241;US$/ton;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.6029;R$/kg;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.4623;R$/kg;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;14.7971;R$/kg;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.3406;R$/kg;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9855;R$/dz;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;63.3589;R$/sc;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;127.2221;R$/sc;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2345.5961;R$/ton;mensal
+2025-06-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;1971.0198;US$/ton;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;19.6162;R$/kg;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.8835;R$/kg;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.4233;R$/kg;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;35.2591;R$/kg;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.8912;R$/dz;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;65.4676;R$/sc;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;128.618;R$/sc;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2381.1948;R$/ton;mensal
+2025-07-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2024.0534;US$/ton;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.2138;R$/kg;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.7654;R$/kg;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.5308;R$/kg;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.9666;R$/kg;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;11.9895;R$/dz;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;64.4996;R$/sc;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;131.5337;R$/sc;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2445.36;R$/ton;mensal
+2025-08-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2007.3008;US$/ton;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.6427;R$/kg;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9308;R$/kg;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.8418;R$/kg;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.1384;R$/kg;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.2418;R$/dz;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;66.046;R$/sc;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;135.7756;R$/sc;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2455.5326;R$/ton;mensal
+2025-09-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2007.9718;US$/ton;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.6547;R$/kg;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.8815;R$/kg;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.4554;R$/kg;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.7727;R$/kg;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.6643;R$/dz;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;67.0864;R$/sc;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;137.1468;R$/sc;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2517.6712;R$/ton;mensal
+2025-10-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2019.0473;US$/ton;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.3757;R$/kg;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.1123;R$/kg;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.0835;R$/kg;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;38.2501;R$/kg;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.7036;R$/dz;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;66.8122;R$/sc;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;135.8797;R$/sc;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2501.421;R$/ton;mensal
+2025-11-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2071.4406;US$/ton;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.703;R$/kg;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9253;R$/kg;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.163;R$/kg;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.2863;R$/kg;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.7145;R$/dz;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;68.1135;R$/sc;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;136.224;R$/sc;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2602.7984;R$/ton;mensal
+2025-12-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2141.0972;US$/ton;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.2658;R$/kg;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;9.0675;R$/kg;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.5587;R$/kg;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.421;R$/kg;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.836;R$/dz;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;68.7036;R$/sc;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;137.3049;R$/sc;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2587.1277;R$/ton;mensal
+2026-01-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2062.9817;US$/ton;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.348;R$/kg;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.9305;R$/kg;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.0518;R$/kg;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.1425;R$/kg;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.8028;R$/dz;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;67.1591;R$/sc;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;134.9781;R$/sc;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2570.4282;R$/ton;mensal
+2026-02-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2122.7796;US$/ton;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.0378;R$/kg;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.6918;R$/kg;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;16.0056;R$/kg;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.1606;R$/kg;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.5194;R$/dz;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;68.6517;R$/sc;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;135.9976;R$/sc;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2563.2702;R$/ton;mensal
+2026-03-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2105.8872;US$/ton;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.6303;R$/kg;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.643;R$/kg;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.7666;R$/kg;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;36.9306;R$/kg;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.3093;R$/dz;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;68.494;R$/sc;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;134.5095;R$/sc;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2521.4345;R$/ton;mensal
+2026-04-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2120.0838;US$/ton;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;20.7929;R$/kg;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.6583;R$/kg;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.8494;R$/kg;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.9916;R$/kg;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.0086;R$/dz;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;66.6682;R$/sc;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;133.3818;R$/sc;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2578.1947;R$/ton;mensal
+2026-05-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2122.5049;US$/ton;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_tilapia_kg;proteina;pescado;Tilápia;MG;;21.452;R$/kg;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_frango_kg;proteina;concorrente;Frango;MG;;8.5166;R$/kg;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_suino_kg;proteina;concorrente;Suíno;MG;;15.0855;R$/kg;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_bovino_kg;proteina;concorrente;Bovino;MG;;37.4325;R$/kg;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_ovos_duzia;proteina;concorrente;Ovos;MG;;12.2759;R$/dz;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_milho_sc;graos_racao;insumo;Milho;MG;;67.4807;R$/sc;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_soja_sc;graos_racao;insumo;Soja;MG;;136.9841;R$/sc;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_farelo_soja_ton;graos_racao;insumo;Farelo de soja;MG;;2531.1792;R$/ton;mensal
+2026-06-01;Indicador Setorial Exemplo;preco_fish_meal_ton;graos_racao;insumo global;Farinha de peixe;BR;;2031.6793;US$/ton;mensal

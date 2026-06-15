@@ -1,0 +1,15 @@
+.\.venv\Scripts\python.exe scripts\apply_etapas24_28.py
+
+.\.venv\Scripts\python.exe scripts\run_censo_demografico_2022.py --estados MG,SP,RJ,ES
+
+.\.venv\Scripts\python.exe scripts\run_pdv_proxy.py --estados MG,SP,RJ,ES
+
+.\.venv\Scripts\python.exe scripts\criar_templates_etapas27_28.py
+
+.\.venv\Scripts\python.exe scripts\load_compra_manual_file.py --arquivo "data\input\base_compra_manual.csv"
+
+.\.venv\Scripts\python.exe scripts\load_previa_vendedores_file.py --arquivo "data\input\previa_vendedores.csv"
+
+.\.venv\Scripts\python.exe scripts\run_comex_refinado.py --ano-inicio 2020 --ano-fim 2026 --delay 12 --max-tentativas 2
+
+.\.venv\Scripts\python.exe scripts\diagnosticar_v2_plano.py

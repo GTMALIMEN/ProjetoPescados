@@ -1,0 +1,252 @@
+Inicio
+
+1. Fontes que eu usaria
+Sobre o primeiro passo:
+Vamos utilizar as API's por regiões ex: UF:MG região Central(no caso BH e regiões metropolitana), MG regial norte ... assim em diante, pegando dados daquelas regiões, e quais produtos de proteína e mais consumidos naquela região, assim em diante. com mapa da região( e quando não estiver selecionado se o mapa do brasil, e dando possibilidade para uma expansão "Global se necessário"), adicionando qual seria melhor adicionar um vendedor ou um promotor na região, e ver se está tudo certo 
+Sobre fonte de dados, vamos utilizar todas necessárias para ter precisão, vamos trabalhar com estática aplicada, probabilidade e IA para ajudar em tomadas de decisões 
+
+----------------------------------------------------------------------------------------------------------
+
+2. O que o app deve responder
+
+Eu faria o app responder perguntas de negócio, não só mostrar gráfico.(o app não tem que responder apenas perguntas comerciais e sim a todos os cenários, do pior cenário possível para o melhor como se fosse uma escala de 1 a 10, respondendo cada numero 1,2,3,4,5,6,7,8,9,10) dando todas as opções.
+
+Perguntas comerciais
+Pergunta	Dados usados
+Vendas de pescado estão caindo por preço, sazonalidade ou mercado?	Vendas internas + IPCA + dólar + histórico
+Salmão está sofrendo impacto do dólar?	Vendas salmão + dólar + importação
+Tilápia está ganhando espaço contra frango/suíno?	Vendas internas + CEPEA proteína
+Cliente está comprando menos por região ou por produto?	Vendas + cidade + renda IBGE
+Qual produto pode encarecer nos próximos meses?	Dólar + Comex + grãos + fish meal
+Qual vendedor tem oportunidade em clientes premium?	Vendas + renda por região + mix de produtos
+
+-------------------------------------------------------------------------------------------------------------
+
+3. Indicadores que eu criaria
+1. Índice de pressão de custo
+
+Mistura:
+
+milho
+soja/farelo
+farinha de peixe
+dólar
+preço internacional
+
+Uso:
+
+Avisar quando o custo provável de produção/aquisição de pescado pode subir.
+
+2. Índice de competitividade entre proteínas(ajudar o MKT tomar decisões de ações ex por época ex frango caiu 8% e tilápia subiu 4% como podemos alcançar os 6 ou 8% dela)
+
+Compara pescado com:
+
+frango
+suíno
+boi
+ovos
+
+Uso:
+
+Saber se o pescado está ficando caro ou barato em relação às outras proteínas.
+
+Exemplo de alerta:
+
+“Frango caiu 8% no trimestre e tilápia subiu 4%. Risco de substituição no varejo.”
+
+
+3. Índice de sensibilidade ao dólar
+
+Produtos mais sensíveis:
+
+salmão
+bacalhau
+merluza
+camarão importado
+pescados congelados importados
+
+Uso:
+
+Ver quais produtos têm venda mais afetada quando o dólar sobe.
+
+4. Índice de oportunidade por região(muito importante)
+
+Mistura:
+
+população
+renda
+histórico de compra
+quantidade de clientes
+ticket médio
+mix premium
+potencial de consumo
+
+Uso:
+
+Encontrar cidades, bairros ou redes onde vale aumentar venda de produto premium.
+
+5. Alerta de ruptura ou queda de demanda
+
+Mistura:
+
+queda de volume vendido
+redução de frequência
+inflação de alimentos
+dólar
+preço concorrente
+sazonalidade
+
+Uso:
+
+Alertar antes de o problema aparecer no faturamento final do mês.
+
+4. Estrutura do banco
+
+Eu criaria assim no PostgreSQL:
+
+dim_data
+dim_indicador
+dim_fonte
+fato_indicador_externo
+fato_vendas
+fato_cliente
+fato_produto
+fato_previsao
+fato_alerta
+
+A tabela mais importante para dados externos seria:
+
+CREATE TABLE fato_indicador_externo (
+    id SERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    fonte TEXT NOT NULL,
+    indicador TEXT NOT NULL,
+    categoria TEXT,
+    valor NUMERIC,
+    unidade TEXT,
+    periodicidade TEXT,
+    data_coleta TIMESTAMP DEFAULT NOW()
+);
+
+Exemplo de registros:
+
+data	fonte	indicador	categoria	valor	unidade
+2026-05-01	BCB	IPCA	inflação	0.46	% mês
+2026-05-01	BCB	Dólar venda	câmbio	5.23	R$/US$
+2026-05-01	CONAB	Milho MG	grãos	62.50	R$/sc
+2026-05-01	CEPEA	Tilápia	pescado	9.80	R$/kg
+2026-05-01	FRED/FMI	Fish Meal	insumo global	1992.00	US$/ton
+
+--------------------------------------------------------------------------------------------------------------
+
+5. Páginas do app(essa parte o App deve ficar extremamente organizado sem bagunça para não haver confusões de dedos)
+
+Página 1 — Visão Geral
+
+Cards:
+
+faturamento do mês
+volume vendido
+ticket médio
+projeção de fechamento
+dólar atual/média do mês
+IPCA alimentos
+pressão de custo
+alerta de mercado
+Página 2 — Radar Econômico
+
+Gráficos:
+
+dólar x venda de importados
+IPCA alimentos x volume vendido
+Selic x comportamento geral
+inflação x ticket médio
+Página 3 — Radar de Proteínas
+
+Gráficos:
+
+pescado x frango
+pescado x suíno
+pescado x boi
+tilápia x frango
+mix de proteínas por mês
+
+Essa aba seria muito boa para análise comercial.
+
+Página 4 — Radar de Grãos e Ração
+
+Gráficos:
+
+milho
+soja
+farelo de soja
+fish meal
+índice de pressão de custo
+variação mensal e trimestral
+
+Essa aba conecta diretamente com aquicultura e custo de produção.
+
+Página 5 — Importação e Comércio Exterior
+
+Gráficos:
+
+importação de salmão
+importação de bacalhau
+importação de camarão
+origem dos produtos
+dólar x volume importado
+preço médio importado
+Página 6 — Oportunidade por Região
+
+Usando IBGE:
+
+população por cidade
+renda média
+clientes ativos
+faturamento por cidade
+ticket médio
+potencial não explorado
+
+Essa página pode virar um diferencial absurdo no seu portfólio.
+
+Página 7 — IA / Previsão
+
+Modelos:
+
+previsão de faturamento
+previsão de volume
+previsão por produto
+previsão por vendedor
+risco de queda de cliente
+alerta de produto sensível ao dólar
+
+--------------------------------------------------------------------------------------------------------------
+
+
+6. MVP que eu faria primeiro
+
+Não começa com tudo. Eu faria a primeira versão assim:
+
+MVP 1
+
+Fontes:
+
+Vendas internas
+Banco Central
+IBGE
+CONAB ou CEPEA
+
+Funcionalidades:
+
+Coletar dólar, IPCA, IPCA alimentos e Selic do BCB
+Coletar população/renda do IBGE
+Coletar milho/soja ou tilápia/frango
+Cruzar com vendas internas
+Criar dashboard com correlação simples
+Criar alertas automáticos
+
+Vamos deixar tudo 100% vamos tentar prever tudo que der utilizando formulas estatísticas probabilidade(mas não vamos dar certeza vamos sempre lembrar de informar q e probabilidade) vamos utilizar variações para isso utilizando indicadores macro econômicos, micro econômicos, tudo que tem direito e sempre mantendo extremamente organizado 
+
+Dentro do app terá gráficos para analise tudo que for necessário 
+
+Temos que utilizar as ferramentas: Engenharia de dados, Ciência de dados, estatística, probabilidade, Machine Learning, Economia aplicada, IA, Logica

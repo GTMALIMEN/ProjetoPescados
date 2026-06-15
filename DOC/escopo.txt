@@ -1,0 +1,566 @@
+escopo
+Projeto: Radar Pescados IA
+
+Objetivo: criar um app de inteligência de mercado para pescados, proteínas e insumos, usando engenharia de dados, ciência de dados, estatística, probabilidade, machine learning, economia aplicada, IA e lógica de negócio para apoiar decisões comerciais, regionais e estratégicas.
+
+O app não vai só mostrar gráficos. Ele vai responder:
+
+“Qual é o cenário da região, de 1 a 10?”
+“Qual proteína está mais forte ali?”
+“Vale colocar vendedor?”
+“Vale colocar promotor?”
+“Qual produto tem mais potencial?”
+“Qual produto pode sofrer com dólar, inflação, grãos ou concorrência?”
+“Qual a probabilidade de queda, expansão ou oportunidade?”
+
+Sempre deixando claro:
+
+Isso é estimativa probabilística, não certeza absoluta.(Ótimo)
+
+----------------------------------------------------------------------------------
+
+1. Camadas geográficas do app
+
+A estrutura regional ficaria assim:
+
+   Nível                |      Exemplo	                                |  Uso
+Brasil	                | mapa nacional	                                |visão geral
+UF	                | MG, SP, RJ, ES	                        |análise estadual
+Região IBGE      	| intermediária/imediata	                |padrão oficial
+Região comercial	| Central, Norte MG, Sul MG, Triângulo etc.	|gestão interna
+Município	        | BH, Contagem, Betim, Montes Claros	        |análise local
+Bairro/setor censitário | futuro 	                                |análise fina de mercado
+
+O IBGE será a base oficial para localidades, agregados estatísticos, divisão regional e dados geográficos. A API de dados do IBGE disponibiliza consultas de agregados, localidades e outros serviços, enquanto as divisões regionais oficiais ajudam a organizar regiões intermediárias e imediatas.
+
+Quando nada estiver selecionado, o app mostra o Brasil inteiro.
+Quando selecionar MG, entra em Minas Gerais(Não só MG e sim qual UF,"SP, RJ, SP, SC, PR").
+Depois pode entrar em Central/BH e Região Metropolitana, Norte de MG, Sul de MG, Triângulo, Zona da Mata, Vale do Aço, e assim por diante.
+
+----------------------------------------------------------------------------------------------------------------------------
+
+2. Fontes de dados principais
+2.1 Fontes econômicas
+   Fonte	Dados
+	Banco Central SGS	dólar, Selic, inflação, juros, câmbio
+	IBGE/SIDRA	IPCA, IPCA alimentos, renda, população
+	IPEA Data	indicadores complementares
+
+	O SGS do Banco Central existe justamente para consolidar e disponibilizar séries econômico-financeiras, e será uma das fontes mais limpas para 			automação via API
+
+2.2 Fontes regionais e demográficas
+	Fonte	Dados
+	IBGE Censo	população, renda, domicílios
+	IBGE Localidades	UF, municípios, códigos IBGE
+	IBGE malhas	mapas e geometrias
+	POF/IBGE	padrão de consumo alimentar
+
+	A POF do IBGE será importante para estimar padrões de consumo, mas aqui precisamos separar bem: consumo regional detalhado pode ser estimado, não 		necessariamente medido diretamente no nível exato de região comercial.
+
+2.3 Fontes de proteínas, grãos e insumos
+
+	Fonte	Dados
+	CEPEA	boi, frango, suíno, ovos, milho, soja, tilápia, trigo
+	CONAB	preços agropecuários, milho, soja, grãos
+	IBGE PPM	pecuária e aquicultura municipal
+	FRED/FMI	fish meal, commodities internacionais
+
+	O CEPEA possui indicadores de preços agropecuários para produtos como boi, frango, suíno, ovos, milho, soja, tilápia e trigo.
+	A Conab realiza pesquisa sistemática de preços de mais de 112 produtos agropecuários e possui séries distribuídas por unidades da federação.
+	A PPM do IBGE cobre produção pecuária e aquicultura, útil para entender produção regional de peixes, tilápia, camarão e outros itens.
+
+2.4 Fontes de comércio exterior
+
+	| Fonte           | Dados                                |
+	| --------------- | ------------------------------------ |
+	| Comex Stat/MDIC | importação/exportação por NCM        |
+	| MDIC base bruta | país, UF, NCM, valor FOB, kg líquido |
+	| FRED/FMI        | preços globais de commodities        |
+
+--------------------------------------------------------------------------------------------------------------------------
+3. Motor de cenários: escala de 1 a 10
+
+Essa será uma das partes mais importantes.
+
+| Nota | Situação           | Interpretação                  |
+| ---: | ------------------ | ------------------------------ |
+|    1 | Crítico extremo    | risco muito alto, ação urgente |
+|    2 | Muito ruim         | queda forte ou pressão elevada |
+|    3 | Ruim               | tendência negativa clara       |
+|    4 | Atenção            | risco moderado                 |
+|    5 | Neutro             | sem sinal forte                |
+|    6 | Levemente positivo | oportunidade pequena           |
+|    7 | Bom                | oportunidade clara             |
+|    8 | Muito bom          | expansão recomendável          |
+|    9 | Excelente          | forte potencial                |
+|   10 | Ideal              | prioridade máxima              |
+
+Exemplo:
+| Região                     | Produto             | Cenário | Ação                                  |
+| -------------------------- | ------------------- | ------: | ------------------------------------- |
+| Grande BH                  | Salmão              |    7/10 | ação premium e monitoramento do dólar |
+| Norte MG                   | Tilápia             |    8/10 | avaliar vendedor                      |
+| Central MG                 | Camarão             |    6/10 | campanha pontual                      |
+| Região com queda de volume | Pescados importados |    3/10 | revisar preço, mix e margem           |
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+4. Indicadores principais
+
+4.1 Índice de Pressão de Custo
+
+Mistura:
+
+milho;
+soja;
+farelo de soja;
+farinha de peixe;
+dólar;
+preço internacional;
+inflação de alimentos;
+importação.
+
+Uso:
+
+Medir se o custo provável dos produtos pode subir.
+
+
+4.2 Índice de Competitividade entre Proteínas
+
+Compara:
+
+pescado;
+frango;
+suíno;
+boi;
+ovos.
+
+Uso:
+
+Ajudar o marketing a decidir campanhas.
+
+Exemplo:
+
+“Frango caiu 8% e tilápia subiu 4%. O app sugere campanha para recuperar competitividade, com foco em preço, mix econômico ou comunicação de valor nutricional.”
+
+4.3 Índice de Sensibilidade ao Dólar
+
+Produtos principais:
+
+salmão;
+bacalhau;
+merluza;
+camarão importado;
+pescados congelados importados.
+
+Uso:
+
+Medir quais produtos sofrem mais quando o dólar sobe.
+
+4.4 Índice de Oportunidade por Região
+
+Mistura:
+
+população;
+renda;
+histórico de compra;
+clientes ativos;
+ticket médio;
+mix premium;
+potencial de consumo;
+região comercial;
+presença de vendedores;
+presença de promotores;
+distância/logística.
+
+Uso:
+
+Encontrar onde vender mais, onde abrir mercado e onde colocar vendedor/promotor.
+
+4.5 Alerta de Ruptura ou Queda de Demanda
+
+
+Mistura:
+
+queda de volume;
+queda de frequência;
+queda de clientes ativos;
+inflação;
+dólar;
+preço de proteínas concorrentes;
+sazonalidade;
+redução de mix;
+queda de ticket médio.
+
+Uso:
+
+Avisar antes de o problema aparecer no resultado final do mês.
+
+
+-------------------------------------------------------------------------------------------------
+5. Decisão: vendedor, promotor, campanha ou monitoramento
+
+O app precisa ter uma tela de recomendação.
+
+| Situação encontrada                        | Recomendação                      |
+| ------------------------------------------ | --------------------------------- |
+| Alta oportunidade + poucos clientes        | colocar vendedor                  |
+| Muitos clientes + baixa execução em loja   | colocar promotor                  |
+| Produto perdendo para proteína concorrente | campanha de marketing             |
+| Região com renda alta + mix premium baixo  | ação para salmão/camarão/bacalhau |
+| Região com queda forte                     | ação corretiva antes de expandir  |
+| Região estável e madura                    | manter equipe                     |
+| Região com baixo potencial                 | apenas monitorar                  |
+
+Exemplo de saída:
+
+Norte de MG — cenário 8/10
+Alta oportunidade, baixa penetração atual, população relevante e espaço para abertura de clientes.
+Recomendação: adicionar vendedor.
+Confiança: 68%.
+Observação: estimativa baseada em dados regionais, vendas internas e comportamento de mercado.
+
+--------------------------------------------------------------------------------------------------
+
+6. Estrutura do banco revisada
+
+Eu manteria sua ideia original, mas ampliaria para suportar regiões, mapas, cenário e recomendações.
+
+dim_data
+dim_fonte
+dim_indicador
+dim_geografia
+dim_regiao_comercial
+dim_produto
+dim_proteina
+dim_cliente
+dim_vendedor
+
+fato_vendas
+fato_indicador_externo
+fato_precos_proteinas
+fato_precos_graos
+fato_comex
+fato_populacao_renda
+fato_consumo_estimado
+fato_oportunidade_regional
+fato_previsao
+fato_alerta
+fato_recomendacao
+
+A tabela base de indicadores externos continua sendo essencial:
+
+CREATE TABLE fato_indicador_externo (
+    id SERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    fonte TEXT NOT NULL,
+    indicador TEXT NOT NULL,
+    categoria TEXT,
+    valor NUMERIC,
+    unidade TEXT,
+    periodicidade TEXT,
+    data_coleta TIMESTAMP DEFAULT NOW()
+);
+
+
+Mas eu adicionaria esta:
+
+CREATE TABLE fato_recomendacao (
+    id SERIAL PRIMARY KEY,
+    data_referencia DATE NOT NULL,
+    uf TEXT,
+    regiao_comercial TEXT,
+    municipio TEXT,
+    produto_grupo TEXT,
+    score_cenario INT,
+    score_oportunidade NUMERIC,
+    score_risco NUMERIC,
+    tipo_recomendacao TEXT,
+    acao_sugerida TEXT,
+    justificativa TEXT,
+    confianca NUMERIC,
+    status TEXT DEFAULT 'pendente',
+    data_criacao TIMESTAMP DEFAULT NOW()
+);
+
+E esta para geografia:
+
+CREATE TABLE dim_geografia (
+    id SERIAL PRIMARY KEY,
+    codigo_ibge TEXT,
+    pais TEXT,
+    uf TEXT,
+    municipio TEXT,
+    regiao_intermediaria TEXT,
+    regiao_imediata TEXT,
+    regiao_metropolitana TEXT,
+    regiao_comercial TEXT,
+    latitude NUMERIC,
+    longitude NUMERIC
+);
+
+-----------------------------------------------------------
+
+7. Páginas organizadas do app
+
+Para não virar bagunça, eu faria o menu assim:
+
+1. Visão Geral
+
+Cards:
+
+faturamento do mês;
+volume vendido;
+ticket médio;
+projeção de fechamento;
+dólar atual/média do mês;
+IPCA alimentos;
+pressão de custo;
+alerta de mercado;
+cenário geral 1 a 10.
+2. Mapa de Mercado
+
+Filtros:
+
+Brasil;
+UF;
+região;
+município;
+produto;
+proteína;
+canal;
+período.
+
+Camadas:
+
+vendas;
+população;
+renda;
+clientes ativos;
+oportunidade;
+risco;
+cenário 1 a 10;
+recomendação vendedor/promotor.
+3. Radar Econômico
+
+Gráficos:
+
+dólar x venda de importados;
+IPCA alimentos x volume;
+Selic x comportamento geral;
+inflação x ticket médio;
+renda x mix premium.
+4. Radar de Proteínas
+
+Gráficos:
+
+pescado x frango;
+pescado x suíno;
+pescado x boi;
+pescado x ovos;
+tilápia x frango;
+mix de proteínas por mês;
+competitividade por região.
+5. Radar de Grãos e Ração
+
+Gráficos:
+
+milho;
+soja;
+farelo de soja;
+fish meal;
+índice de pressão de custo;
+variação mensal;
+variação trimestral.
+6. Importação e Comércio Exterior
+
+Gráficos:
+
+importação de salmão;
+importação de bacalhau;
+importação de camarão;
+origem dos produtos;
+dólar x volume importado;
+preço médio importado;
+risco de abastecimento.
+7. Oportunidade por Região
+
+Mostra:
+
+população por cidade;
+renda média;
+clientes ativos;
+faturamento por cidade;
+ticket médio;
+potencial não explorado;
+produto recomendado;
+vendedor/promotor recomendado;
+cenário 1 a 10.
+8. IA / Previsão
+
+Modelos:
+
+previsão de faturamento;
+previsão de volume;
+previsão por produto;
+previsão por vendedor;
+previsão por região;
+risco de queda de cliente;
+alerta de produto sensível ao dólar;
+cenário pessimista, base e otimista.
+
+9. Central de Recomendações
+
+Essa página lista decisões.
+
+| Região    | Nota | Recomendação                   | Confiança |
+| --------- | ---: | ------------------------------ | --------: |
+| Grande BH |    8 | promotor em redes estratégicas |       74% |
+| Norte MG  |    8 | adicionar vendedor             |       68% |
+| Sul MG    |    6 | campanha de tilápia            |       61% |
+| Triângulo |    5 | monitorar                      |       55% |
+
+
+------------------------------------------------------------------------------------------
+
+
+8. Fórmulas e métodos que vamos usar
+Estatística aplicada:
+média móvel;
+variação mensal;
+variação trimestral;
+correlação;
+regressão;
+desvio padrão;
+z-score;
+curva ABC;
+sazonalidade;
+elasticidade;
+intervalo de confiança;
+análise de tendência;
+análise de cohort;
+detecção de anomalias.
+
+Probabilidade:
+probabilidade de queda;
+probabilidade de crescimento;
+probabilidade de churn;
+probabilidade de oportunidade regional;
+probabilidade de sensibilidade a preço;
+probabilidade de impacto cambial.
+
+Machine Learning:
+
+| Objetivo                     | Modelo                            |
+| ---------------------------- | --------------------------------- |
+| prever faturamento           | regressão, Random Forest, XGBoost |
+| prever volume                | séries temporais, regressão       |
+| detectar anomalias           | z-score, Isolation Forest         |
+| classificar risco de cliente | classificação                     |
+| agrupar clientes             | K-Means, DBSCAN                   |
+| recomendar produto           | sistema de recomendação           |
+| criar score regional         | modelo supervisionado + regras    |
+
+-----------------------------------------------------------------------------
+9. MVP 1 correto
+
+O primeiro MVP deve ser forte, mas controlado.
+MVP 1 — Radar Regional Econômico
+
+Fontes:
+
+vendas internas;
+Banco Central;
+IBGE;
+CONAB;
+CEPEA;
+Comex Stat básico.
+
+Funcionalidades:
+
+carregar vendas internas;
+coletar dólar, Selic, IPCA e IPCA alimentos;
+coletar população e renda por município;
+coletar preços de milho, soja, frango, boi, suíno e tilápia;
+criar mapa Brasil/MG/regiões;
+criar score de oportunidade regional;
+criar score de risco;
+criar cenário 1 a 10;
+criar recomendação vendedor/promotor/campanha/monitoramento;
+criar dashboard com gráficos e alertas.
+
+---------------------------------------------------------------------------
+
+10. Ordem de construção
+
+Eu faria nessa ordem:
+
+Estrutura do projeto
+Streamlit;
+PostgreSQL;
+pastas organizadas;
+.env;
+logs.
+Banco de dados
+dimensões;
+fatos;
+tabelas de indicadores;
+tabelas de recomendações.
+Coletor BCB
+dólar;
+Selic;
+IPCA;
+IPCA alimentos.
+Coletor IBGE
+localidades;
+população;
+renda;
+regiões;
+dados para mapa.
+Carga de vendas internas
+produto;
+cliente;
+cidade;
+vendedor;
+valor;
+volume;
+data.
+Primeiro mapa
+Brasil;
+MG;
+região comercial;
+município.
+Primeiros scores
+oportunidade;
+risco;
+cenário 1 a 10.
+Primeiras recomendações
+vendedor;
+promotor;
+campanha;
+monitorar.
+Módulo de proteínas
+pescado x frango;
+pescado x suíno;
+pescado x boi;
+tilápia x frango.
+Módulo IA
+previsão;
+probabilidade;
+intervalo de confiança;
+cenário pessimista/base/otimista.
+
+----------------------------------------------------------------------------------
+
+11. Definição final do app
+
+A definição oficial ficaria assim:
+
+O Radar Pescados IA é um sistema de inteligência de mercado para empresas de pescados e proteínas, integrando dados internos de vendas, APIs públicas, indicadores econômicos, dados regionais, preços agropecuários, comércio exterior, grãos, ração, proteínas concorrentes e modelos estatísticos/probabilísticos para analisar regiões, prever cenários de 1 a 10, identificar riscos e oportunidades, recomendar ações comerciais, campanhas de marketing e expansão de vendedores ou promotores.
+
+------------------------------------------------
+
+Mais uma coisa para trabalhar com estatística aplicada, economia e probalidade, machine learning, ciência de dados temos que ter histórico de dados, todos os dados que formos necessitar termos que pegar o histórico ex desde 2000 pois temos 26 anos de histórico de dados para conseguir trabalhar com menos erros, e ter essas bases salvas no postgres assim por diante
+
+
+
