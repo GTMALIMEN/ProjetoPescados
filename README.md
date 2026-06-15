@@ -1,3 +1,4 @@
+https://projetopescados-wscfj2qoztdevsyeqdrzyi.streamlit.app/
 # Radar Pescados IA
 
 Sistema de inteligência comercial, econômica e setorial para empresas de pescados.
