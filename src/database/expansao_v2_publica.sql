@@ -168,6 +168,8 @@ CREATE TABLE IF NOT EXISTS app.fato_previa_vendedores (
 CREATE INDEX IF NOT EXISTS idx_previa_vendedores_produto_data
 ON app.fato_previa_vendedores (produto, data_venda);
 
+DROP VIEW IF EXISTS app.vw_diagnostico_v2_plano CASCADE;
+
 CREATE OR REPLACE VIEW app.vw_diagnostico_v2_plano AS
 SELECT 'expansao_populacao' AS item,
        COUNT(*) FILTER (WHERE populacao IS NOT NULL) AS qtd_preenchida,

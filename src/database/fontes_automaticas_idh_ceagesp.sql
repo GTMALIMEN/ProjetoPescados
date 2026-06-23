@@ -8,6 +8,8 @@ ALTER TABLE app.fato_expansao_municipio ADD COLUMN IF NOT EXISTS idhm_ano INTEGE
 ALTER TABLE app.fato_ceagesp_pescados ADD COLUMN IF NOT EXISTS chave_registro TEXT;
 CREATE UNIQUE INDEX IF NOT EXISTS uq_fato_ceagesp_pescados_chave ON app.fato_ceagesp_pescados (chave_registro) WHERE chave_registro IS NOT NULL;
 CREATE OR REPLACE VIEW app.vw_idhm_municipal AS SELECT codigo_ibge, municipio, uf, ano, idhm, idhm_renda, idhm_longevidade, idhm_educacao, ranking, fonte, url_fonte, data_carga FROM app.fato_idhm_municipal;
+DROP VIEW IF EXISTS app.vw_diagnostico_v2_plano CASCADE;
+
 CREATE OR REPLACE VIEW app.vw_diagnostico_v2_plano AS
 SELECT 'expansao_populacao' AS item, COUNT(*) FILTER (WHERE populacao IS NOT NULL) AS qtd_preenchida, COUNT(*) AS qtd_total, CASE WHEN COUNT(*) FILTER (WHERE populacao IS NOT NULL)>0 THEN 'OK' ELSE 'PENDENTE' END AS status FROM app.vw_expansao_municipio WHERE uf IN ('MG','SP','RJ','ES')
 UNION ALL SELECT 'expansao_pib', COUNT(*) FILTER (WHERE pib IS NOT NULL), COUNT(*), CASE WHEN COUNT(*) FILTER (WHERE pib IS NOT NULL)>0 THEN 'OK' ELSE 'PENDENTE_CARGA_IBGE_SIDRA' END FROM app.vw_expansao_municipio WHERE uf IN ('MG','SP','RJ','ES')

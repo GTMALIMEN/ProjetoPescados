@@ -495,24 +495,6 @@ def calcular_idc_expansao(estados: list[str] | None = None) -> pd.DataFrame:
         axis=1,
     )
 
-    # Compatibilidade classificação:
-    # A view nova usa classificacao_score; telas antigas esperam classificacao.
-    if "classificacao" not in df.columns:
-        if "classificacao_score" in df.columns:
-            df["classificacao"] = df["classificacao_score"]
-        elif "score" in df.columns:
-            score_tmp = pd.to_numeric(df["score"], errors="coerce").fillna(0)
-            df["classificacao"] = pd.cut(
-                score_tmp,
-                bins=[-1, 35, 55, 75, 101],
-                labels=["Monitorar", "Baixa", "Média", "Alta"]
-            ).astype(str)
-        else:
-            df["classificacao"] = "Monitorar"
-
-    if "classificacao_score" not in df.columns:
-        df["classificacao_score"] = df["classificacao"]
-
     return df.sort_values("score", ascending=False, na_position="last")
 
 
@@ -1140,24 +1122,23 @@ def calcular_idc_expansao(estados: list[str] | None = None) -> pd.DataFrame:
     receita_total = df["total"].sum(skipna=True)
     df["participacao_receita_pct"] = df["total"] / receita_total * 100 if receita_total else 0.0
     # Compatibilidade IDC:
-    # A view nova usa idc_planejado/idc/idc_final/score_idc.
-    # O código antigo ainda esperava idc_base.
-    if "idc_base" not in df.columns:
-        for col_idc in ["idc_planejado", "idc_final", "idc", "score_idc", "score"]:
-            if col_idc in df.columns:
-                df["idc_base"] = pd.to_numeric(df[col_idc], errors="coerce").fillna(0)
-                break
-        else:
-            df["idc_base"] = 0
+# A view nova usa idc_planejado/idc/idc_final/score_idc.
+# O código antigo ainda esperava idc_base.
+if "idc_base" not in df.columns:
+    for col_idc in ["idc_planejado", "idc_final", "idc", "score_idc", "score"]:
+        if col_idc in df.columns:
+            df["idc_base"] = pd.to_numeric(df[col_idc], errors="coerce").fillna(0)
+            break
+    else:
+        df["idc_base"] = 0
 
-    if "participacao_receita_pct" not in df.columns:
-        df["participacao_receita_pct"] = 0
+if "participacao_receita_pct" not in df.columns:
+    df["participacao_receita_pct"] = 0
 
-    df["over_under_share_pct"] = (
-        pd.to_numeric(df["participacao_receita_pct"], errors="coerce").fillna(0)
-        - pd.to_numeric(df["idc_base"], errors="coerce").fillna(0)
-    )
-
+df["over_under_share_pct"] = (
+    pd.to_numeric(df["participacao_receita_pct"], errors="coerce").fillna(0)
+    - pd.to_numeric(df["idc_base"], errors="coerce").fillna(0)
+)
     df["receita_esperada_idc"] = receita_total * (pd.to_numeric(df["idc_base"], errors="coerce").fillna(0) / 100) if receita_total else 0.0
     df["oportunidade"] = df["receita_esperada_idc"] - df["total"]
     df["margin_pool_pct"] = df["oportunidade"] / receita_total * 100 if receita_total else 0.0
