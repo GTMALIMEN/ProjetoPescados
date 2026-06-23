@@ -11,6 +11,14 @@ TEMPLATES = {
         'unidade': 'kg', 'preco_minimo': 12.50, 'preco_comum': 14.00, 'preco_maximo': 16.00,
         'fonte': 'CEAGESP manual', 'url_fonte': 'https://ceagesp.gov.br/cotacoes/'
     }]),
+    'cepea_manual.csv': pd.DataFrame([{
+        'data_inicio_periodo': '2026-06-15', 'data_fim_periodo': '2026-06-19',
+        'periodo_original': '15 - 19/06/2026', 'produto': 'Tilápia',
+        'regiao_cepea': 'Triângulo Mineiro/Alto Paranaíba', 'uf': 'MG',
+        'preco_rs_kg': 10.00, 'variacao_semana_pct': 0.00, 'unidade': 'R$/kg',
+        'url_fonte': 'https://www.cepea.org.br/br/indicador/tilapia.aspx',
+        'observacao': 'Preencher com valor oficial copiado do CEPEA'
+    }]),
     'base_compra_manual.csv': pd.DataFrame([{
         'data': '2026-06-01', 'fornecedor': 'Fornecedor Exemplo', 'marca': 'Marca Exemplo',
         'produto': 'Tilápia', 'categoria': 'Pescado', 'preco_compra': 13.75,

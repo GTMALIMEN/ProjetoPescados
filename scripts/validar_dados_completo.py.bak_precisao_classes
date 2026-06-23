@@ -1,0 +1,649 @@
+﻿from pathlib import Path
+import sys
+from sqlalchemy import text
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from src.database.connection import get_engine
+
+
+RUN_GRUPO = "VALIDACAO_COMPLETA_OFICIAL"
+
+
+def table_exists(conn, schema, table):
+    return conn.execute(
+        text("""
+            SELECT COUNT(*)
+            FROM information_schema.tables
+            WHERE table_schema = :schema
+              AND table_name = :table
+        """),
+        {"schema": schema, "table": table},
+    ).scalar() > 0
+
+
+def col_exists(conn, schema, table, col):
+    return conn.execute(
+        text("""
+            SELECT COUNT(*)
+            FROM information_schema.columns
+            WHERE table_schema = :schema
+              AND table_name = :table
+              AND column_name = :col
+        """),
+        {"schema": schema, "table": table, "col": col},
+    ).scalar() > 0
+
+
+def cols_exist(conn, schema, table, cols):
+    return all(col_exists(conn, schema, table, c) for c in cols)
+
+
+def get_columns(conn, schema, table):
+    rows = conn.execute(
+        text("""
+            SELECT column_name
+            FROM information_schema.columns
+            WHERE table_schema = :schema
+              AND table_name = :table
+        """),
+        {"schema": schema, "table": table},
+    ).fetchall()
+
+    return {r[0] for r in rows}
+
+
+def pick_col(cols, options):
+    for c in options:
+        if c in cols:
+            return c
+    return None
+
+
+def q(col):
+    return '"' + str(col).replace('"', '""') + '"'
+
+
+
+def salvar_resultado(conn, tabela, regra, status, qtd, detalhe):
+    conn.execute(
+        text("""
+            INSERT INTO app.validacao_dados_resultado (
+                grupo_validacao,
+                tabela,
+                regra,
+                status,
+                qtd_problemas,
+                detalhe
+            )
+            VALUES (
+                :grupo,
+                :tabela,
+                :regra,
+                :status,
+                :qtd,
+                :detalhe
+            )
+        """),
+        {
+            "grupo": RUN_GRUPO,
+            "tabela": tabela,
+            "regra": regra,
+            "status": status,
+            "qtd": int(qtd or 0),
+            "detalhe": detalhe,
+        },
+    )
+
+
+def validar(conn, tabela, regra, sql, ok_msg, erro_msg, severidade="ERRO"):
+    try:
+        qtd = conn.execute(text(sql)).scalar()
+        qtd = int(qtd or 0)
+
+        if qtd == 0:
+            status = "OK"
+            detalhe = ok_msg
+        else:
+            status = severidade
+            detalhe = erro_msg
+
+        salvar_resultado(conn, tabela, regra, status, qtd, detalhe)
+
+        icon = "✅" if status == "OK" else ("⚠️" if status == "ALERTA" else "❌")
+        print(f"{icon} {tabela} | {regra} | {status} | problemas={qtd}")
+
+    except Exception as e:
+        salvar_resultado(conn, tabela, regra, "FALHA_VALIDACAO", 1, str(e))
+        print(f"⚠️ {tabela} | {regra} | FALHA_VALIDACAO | {e}")
+
+
+def main():
+    engine = get_engine()
+
+    with engine.begin() as conn:
+        conn.execute(text("CREATE SCHEMA IF NOT EXISTS app"))
+
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS app.validacao_dados_resultado (
+                id BIGSERIAL PRIMARY KEY,
+                grupo_validacao TEXT NOT NULL,
+                tabela TEXT NOT NULL,
+                regra TEXT NOT NULL,
+                status TEXT NOT NULL,
+                qtd_problemas INTEGER DEFAULT 0,
+                detalhe TEXT,
+                executado_em TIMESTAMP DEFAULT NOW()
+            )
+        """))
+
+        print("\n==============================")
+        print("VALIDAÇÃO COMPLETA — FONTES")
+        print("==============================")
+
+        if table_exists(conn, "app", "catalogo_fonte_dados"):
+            validar(
+                conn,
+                "app.catalogo_fonte_dados",
+                "Fonte oficial sem origem ou descrição",
+                """
+                SELECT COUNT(*)
+                FROM app.catalogo_fonte_dados
+                WHERE oficial = TRUE
+                  AND (
+                        origem IS NULL OR TRIM(origem) = ''
+                        OR descricao IS NULL OR TRIM(descricao) = ''
+                  )
+                """,
+                "Todas as fontes oficiais possuem origem e descrição.",
+                "Há fonte oficial sem origem ou descrição."
+            )
+
+        if table_exists(conn, "app", "auditoria_fonte_dados"):
+            validar(
+                conn,
+                "app.auditoria_fonte_dados",
+                "Últimas cargas com status de erro",
+                """
+                SELECT COUNT(*)
+                FROM app.auditoria_fonte_dados
+                WHERE executado_em >= NOW() - INTERVAL '7 days'
+                  AND status ILIKE '%ERRO%'
+                """,
+                "Sem cargas recentes com erro.",
+                "Existem cargas recentes com erro."
+            )
+
+        print("\n==============================")
+        print("VALIDAÇÃO BASE MUNICIPAL OFICIAL")
+        print("==============================")
+
+        if table_exists(conn, "app", "fato_expansao_municipio"):
+            validar(
+                conn,
+                "app.fato_expansao_municipio",
+                "Duplicidade por código IBGE",
+                """
+                SELECT COUNT(*)
+                FROM (
+                    SELECT codigo_ibge, COUNT(*) qtd
+                    FROM app.fato_expansao_municipio
+                    WHERE codigo_ibge IS NOT NULL
+                    GROUP BY codigo_ibge
+                    HAVING COUNT(*) > 1
+                ) x
+                """,
+                "Sem duplicidade por código IBGE.",
+                "Existem códigos IBGE duplicados."
+            )
+
+            validar(
+                conn,
+                "app.fato_expansao_municipio",
+                "Campos geográficos obrigatórios nulos",
+                """
+                SELECT COUNT(*)
+                FROM app.fato_expansao_municipio
+                WHERE codigo_ibge IS NULL
+                   OR uf IS NULL OR TRIM(uf) = ''
+                   OR municipio IS NULL OR TRIM(municipio) = ''
+                   OR microrregiao IS NULL OR TRIM(microrregiao) = ''
+                """,
+                "Campos geográficos obrigatórios preenchidos.",
+                "Existem campos geográficos obrigatórios nulos."
+            )
+
+            validar(
+                conn,
+                "app.fato_expansao_municipio",
+                "População, PIB, PIB per capita ou IDH nulos",
+                """
+                SELECT COUNT(*)
+                FROM app.fato_expansao_municipio
+                WHERE uf IN ('MG','SP','RJ','ES')
+                  AND (
+                        populacao IS NULL
+                        OR pib IS NULL
+                        OR pib_per_capita IS NULL
+                        OR idh IS NULL
+                  )
+                """,
+                "População, PIB, PIB per capita e IDH preenchidos.",
+                "Existem população, PIB, PIB per capita ou IDH nulos."
+            )
+
+            validar(
+                conn,
+                "app.fato_expansao_municipio",
+                "Valores públicos negativos",
+                """
+                SELECT COUNT(*)
+                FROM app.fato_expansao_municipio
+                WHERE uf IN ('MG','SP','RJ','ES')
+                  AND (
+                        populacao < 0
+                        OR pib < 0
+                        OR pib_per_capita < 0
+                        OR idh < 0
+                        OR renda_media < 0
+                        OR renda_mediana < 0
+                  )
+                """,
+                "Sem valores públicos negativos.",
+                "Existem valores públicos negativos."
+            )
+
+            validar(
+                conn,
+                "app.fato_expansao_municipio",
+                "IDH fora da faixa 0 a 1",
+                """
+                SELECT COUNT(*)
+                FROM app.fato_expansao_municipio
+                WHERE uf IN ('MG','SP','RJ','ES')
+                  AND (idh < 0 OR idh > 1)
+                """,
+                "IDH dentro da faixa 0 a 1.",
+                "Existem valores de IDH fora da faixa 0 a 1."
+            )
+
+            if cols_exist(conn, "app", "fato_expansao_municipio", ["pib", "populacao", "pib_per_capita"]):
+                validar(
+                    conn,
+                    "app.fato_expansao_municipio",
+                    "PIB per capita incompatível com PIB / população",
+                    """
+                    SELECT COUNT(*)
+                    FROM app.fato_expansao_municipio
+                    WHERE uf IN ('MG','SP','RJ','ES')
+                      AND populacao > 0
+                      AND pib IS NOT NULL
+                      AND pib_per_capita IS NOT NULL
+                      AND ABS((pib / populacao) - pib_per_capita) > GREATEST(1, pib_per_capita * 0.05)
+                    """,
+                    "PIB per capita compatível com PIB / população.",
+                    "Há PIB per capita incompatível com PIB / população.",
+                    severidade="ALERTA"
+                )
+
+            if cols_exist(conn, "app", "fato_expansao_municipio", [
+                "pct_masculina", "pct_feminina", "pct_15_29", "pct_30_44"
+            ]):
+                validar(
+                    conn,
+                    "app.fato_expansao_municipio",
+                    "Percentuais demográficos fora de 0 a 100",
+                    """
+                    SELECT COUNT(*)
+                    FROM app.fato_expansao_municipio
+                    WHERE uf IN ('MG','SP','RJ','ES')
+                      AND (
+                            pct_masculina < 0 OR pct_masculina > 100
+                            OR pct_feminina < 0 OR pct_feminina > 100
+                            OR pct_15_29 < 0 OR pct_15_29 > 100
+                            OR pct_30_44 < 0 OR pct_30_44 > 100
+                      )
+                    """,
+                    "Percentuais demográficos dentro da faixa 0–100.",
+                    "Existem percentuais demográficos fora da faixa 0–100."
+                )
+
+                validar(
+                    conn,
+                    "app.fato_expansao_municipio",
+                    "Masculino + feminino diferente de 100",
+                    """
+                    SELECT COUNT(*)
+                    FROM app.fato_expansao_municipio
+                    WHERE uf IN ('MG','SP','RJ','ES')
+                      AND pct_masculina IS NOT NULL
+                      AND pct_feminina IS NOT NULL
+                      AND ABS((pct_masculina + pct_feminina) - 100) > 1
+                    """,
+                    "Masculino + feminino próximo de 100%.",
+                    "Há municípios com masculino + feminino diferente de 100%."
+                )
+
+            if cols_exist(conn, "app", "fato_expansao_municipio", [
+                "supermercados", "restaurantes", "peixarias", "outros_pdv", "total_pdv"
+            ]):
+                validar(
+                    conn,
+                    "app.fato_expansao_municipio",
+                    "PDV total incompatível com soma dos PDVs",
+                    """
+                    SELECT COUNT(*)
+                    FROM app.fato_expansao_municipio
+                    WHERE uf IN ('MG','SP','RJ','ES')
+                      AND ABS(
+                            COALESCE(total_pdv,0)
+                            - (
+                                COALESCE(supermercados,0)
+                                + COALESCE(restaurantes,0)
+                                + COALESCE(peixarias,0)
+                                + COALESCE(outros_pdv,0)
+                              )
+                          ) > 1
+                    """,
+                    "Total PDV compatível com soma dos PDVs.",
+                    "Há total_pdv incompatível com soma dos PDVs."
+                )
+
+            if cols_exist(conn, "app", "fato_expansao_municipio", [
+                "domicilios_particulares_ocupados",
+                "moradores_domicilios_particulares_ocupados",
+                "moradores_por_domicilio"
+            ]):
+                validar(
+                    conn,
+                    "app.fato_expansao_municipio",
+                    "Moradores por domicílio nulo ou fora da faixa esperada",
+                    """
+                    SELECT COUNT(*)
+                    FROM app.fato_expansao_municipio
+                    WHERE uf IN ('MG','SP','RJ','ES')
+                      AND (
+                            moradores_por_domicilio IS NULL
+                            OR moradores_por_domicilio <= 0
+                            OR moradores_por_domicilio > 10
+                      )
+                    """,
+                    "Moradores por domicílio preenchido e dentro da faixa esperada.",
+                    "Existem moradores por domicílio nulos ou fora da faixa esperada."
+                )
+
+                validar(
+                    conn,
+                    "app.fato_expansao_municipio",
+                    "Média de moradores incompatível com moradores / domicílios",
+                    """
+                    SELECT COUNT(*)
+                    FROM app.fato_expansao_municipio
+                    WHERE uf IN ('MG','SP','RJ','ES')
+                      AND domicilios_particulares_ocupados > 0
+                      AND moradores_domicilios_particulares_ocupados IS NOT NULL
+                      AND moradores_por_domicilio IS NOT NULL
+                      AND ABS(
+                            moradores_por_domicilio
+                            - (moradores_domicilios_particulares_ocupados / domicilios_particulares_ocupados)
+                          ) > 0.2
+                    """,
+                    "Média de moradores compatível com moradores / domicílios.",
+                    "Há média de moradores incompatível com moradores / domicílios."
+                )
+
+        print("\n==============================")
+        print("VALIDAÇÃO VIEW IDC")
+        print("==============================")
+
+        if table_exists(conn, "app", "vw_idc_completo_atual"):
+            validar(
+                conn,
+                "app.vw_idc_completo_atual",
+                "Duplicidade por estado + microrregião",
+                """
+                SELECT COUNT(*)
+                FROM (
+                    SELECT estado, microrregiao, COUNT(*) qtd
+                    FROM app.vw_idc_completo_atual
+                    GROUP BY estado, microrregiao
+                    HAVING COUNT(*) > 1
+                ) x
+                """,
+                "Sem duplicidade por estado/microrregião.",
+                "Existem duplicidades na view IDC."
+            )
+
+            validar(
+                conn,
+                "app.vw_idc_completo_atual",
+                "IDC ou score fora da faixa 0 a 100",
+                """
+                SELECT COUNT(*)
+                FROM app.vw_idc_completo_atual
+                WHERE idc_base IS NULL
+                   OR idc_base < 0
+                   OR idc_base > 100
+                   OR score < 0
+                   OR score > 100
+                """,
+                "IDC e score dentro da faixa 0–100.",
+                "IDC ou score fora da faixa 0–100."
+            )
+
+            validar(
+                conn,
+                "app.vw_idc_completo_atual",
+                "Fontes principais ausentes",
+                """
+                SELECT COUNT(*)
+                FROM app.vw_idc_completo_atual
+                WHERE fonte_renda IS NULL OR TRIM(fonte_renda) = ''
+                   OR fonte_demografia IS NULL OR TRIM(fonte_demografia) = ''
+                   OR fonte_pdv IS NULL OR TRIM(fonte_pdv) = ''
+                """,
+                "Fontes principais preenchidas.",
+                "Existem fontes principais ausentes."
+            )
+
+        print("\n==============================")
+        print("VALIDAÇÃO CLASSES DE RENDA A-E")
+        print("==============================")
+
+        if table_exists(conn, "app", "fato_classe_renda_oficial_regiao"):
+            validar(
+                conn,
+                "app.fato_classe_renda_oficial_regiao",
+                "Classes A-E nulas",
+                """
+                SELECT COUNT(*)
+                FROM app.fato_classe_renda_oficial_regiao
+                WHERE classe_a_pct IS NULL
+                   OR classe_b_pct IS NULL
+                   OR classe_c_pct IS NULL
+                   OR classe_d_pct IS NULL
+                   OR classe_e_pct IS NULL
+                """,
+                "Classes A-E preenchidas.",
+                "Existem classes A-E nulas."
+            )
+
+            validar(
+                conn,
+                "app.fato_classe_renda_oficial_regiao",
+                "Classes A-E negativas",
+                """
+                SELECT COUNT(*)
+                FROM app.fato_classe_renda_oficial_regiao
+                WHERE classe_a_pct < 0
+                   OR classe_b_pct < 0
+                   OR classe_c_pct < 0
+                   OR classe_d_pct < 0
+                   OR classe_e_pct < 0
+                """,
+                "Classes A-E sem valores negativos.",
+                "Existem classes A-E negativas."
+            )
+
+            validar(
+                conn,
+                "app.fato_classe_renda_oficial_regiao",
+                "Soma Classes A-E fora de 95 a 105",
+                """
+                SELECT COUNT(*)
+                FROM app.fato_classe_renda_oficial_regiao
+                WHERE COALESCE(classe_a_pct,0)
+                    + COALESCE(classe_b_pct,0)
+                    + COALESCE(classe_c_pct,0)
+                    + COALESCE(classe_d_pct,0)
+                    + COALESCE(classe_e_pct,0) NOT BETWEEN 95 AND 105
+                """,
+                "Soma das classes A-E dentro da faixa esperada.",
+                "Soma das classes A-E fora da faixa esperada."
+            )
+
+        print("\n==============================")
+        print("VALIDAÇÃO SÉRIES ECONÔMICAS")
+        print("==============================")
+
+        if table_exists(conn, "dw", "fato_serie_historica"):
+            cols_series = get_columns(conn, "dw", "fato_serie_historica")
+
+            indicador_col = pick_col(cols_series, [
+                "indicador",
+                "nome_indicador",
+                "codigo_indicador",
+                "serie",
+                "codigo_serie",
+                "fonte",
+                "nome_serie",
+            ])
+
+            data_col = pick_col(cols_series, [
+                "data_referencia",
+                "dt_referencia",
+                "data",
+                "data_ref",
+                "periodo",
+                "ano_mes",
+                "mes",
+                "data_competencia",
+                "dt_competencia",
+            ])
+
+            valor_col = pick_col(cols_series, [
+                "valor",
+                "vlr",
+                "valor_serie",
+                "valor_observado",
+                "valor_indicador",
+            ])
+
+            geo_col = pick_col(cols_series, [
+                "codigo_geografia",
+                "codigo_ibge",
+                "uf",
+                "estado",
+                "regiao",
+                "geografia",
+            ])
+
+            if not indicador_col or not data_col or not valor_col:
+                salvar_resultado(
+                    conn,
+                    "dw.fato_serie_historica",
+                    "Estrutura mínima para validação de séries",
+                    "ALERTA",
+                    1,
+                    "Não foi possível validar duplicidade/valor porque faltam colunas esperadas. "
+                    f"Colunas encontradas: {sorted(cols_series)}"
+                )
+                print("⚠️ dw.fato_serie_historica | Estrutura mínima para validação de séries | ALERTA | problemas=1")
+                print("   Colunas encontradas:", sorted(cols_series))
+            else:
+                if geo_col:
+                    group_expr = f"{q(indicador_col)}, {q(data_col)}, COALESCE({q(geo_col)}::text, '')"
+                else:
+                    group_expr = f"{q(indicador_col)}, {q(data_col)}"
+
+                validar(
+                    conn,
+                    "dw.fato_serie_historica",
+                    "Duplicidade por indicador + data + geografia disponível",
+                    f"""
+                    SELECT COUNT(*)
+                    FROM (
+                        SELECT {group_expr}, COUNT(*) qtd
+                        FROM dw.fato_serie_historica
+                        GROUP BY {group_expr}
+                        HAVING COUNT(*) > 1
+                    ) x
+                    """,
+                    "Sem duplicidade em séries históricas.",
+                    "Existem duplicidades em séries históricas.",
+                    severidade="ALERTA"
+                )
+
+                validar(
+                    conn,
+                    "dw.fato_serie_historica",
+                    "Séries históricas com valor nulo",
+                    f"""
+                    SELECT COUNT(*)
+                    FROM dw.fato_serie_historica
+                    WHERE {q(valor_col)} IS NULL
+                    """,
+                    "Séries históricas sem valores nulos.",
+                    "Existem séries históricas com valor nulo.",
+                    severidade="ALERTA"
+                )
+
+                salvar_resultado(
+                    conn,
+                    "dw.fato_serie_historica",
+                    "Colunas usadas na validação de séries",
+                    "OK",
+                    0,
+                    f"indicador={indicador_col}; data={data_col}; valor={valor_col}; geografia={geo_col or 'não usada'}"
+                )
+                print(
+                    "✅ dw.fato_serie_historica | Colunas usadas na validação | OK | "
+                    f"indicador={indicador_col}; data={data_col}; valor={valor_col}; geografia={geo_col or 'não usada'}"
+                )
+
+        print("\n==============================")
+        print("RESULTADO FINAL")
+        print("==============================")
+
+        erros = conn.execute(text("""
+            SELECT COUNT(*)
+            FROM app.validacao_dados_resultado
+            WHERE grupo_validacao = :grupo
+              AND executado_em >= NOW() - INTERVAL '10 minutes'
+              AND status IN ('ERRO', 'FALHA_VALIDACAO')
+        """), {"grupo": RUN_GRUPO}).scalar()
+
+        alertas = conn.execute(text("""
+            SELECT COUNT(*)
+            FROM app.validacao_dados_resultado
+            WHERE grupo_validacao = :grupo
+              AND executado_em >= NOW() - INTERVAL '10 minutes'
+              AND status = 'ALERTA'
+        """), {"grupo": RUN_GRUPO}).scalar()
+
+        print(f"Erros críticos: {erros}")
+        print(f"Alertas: {alertas}")
+
+        if erros:
+            print("\n❌ Existem erros críticos. Corrigir antes de considerar a base validada.")
+            raise SystemExit(1)
+
+        print("\n✅ Validação completa finalizada sem erros críticos.")
+        if alertas:
+            print("⚠️ Existem alertas para revisar, mas não bloqueiam a execução.")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,99 @@
+RELATÓRIO DE CORREÇÃO — MODELOS EM BRANCO E PRÉVIA NORMALIZADA
+
+1. Problema corrigido
+
+O app ainda podia disponibilizar modelos Excel já preenchidos com linhas de exemplo.
+Isso era perigoso porque o usuário poderia baixar o modelo e importar sem apagar a linha de exemplo, gravando dados falsos na base.
+
+Também havia risco de o ambiente local estar com uma versão antiga de src/services/importacoes_manuais_service.py sem a função _relation_exists, gerando:
+
+NameError: name '_relation_exists' is not defined
+
+2. Correções aplicadas
+
+2.1 Modelos Excel
+
+Todos os modelos em modelos_importacao agora estão em branco, com somente cabeçalho, dicionário e instruções:
+
+- modelo_cepea_manual.xlsx
+- modelo_ceagesp_pescados.xlsx
+- modelo_receita_vendas_expansao.xlsx
+- modelo_scanntech_mercado_privado.xlsx
+- modelo_curva_mercado_categoria.xlsx
+- modelo_key_account_lojas.xlsx
+- modelo_compra_manual.xlsx
+- modelo_previa_vendedores.xlsx
+
+Nenhum deles vem mais com linha de exemplo preenchida.
+
+2.2 Download dos modelos no app
+
+O app agora aponta modelos físicos também para:
+
+- compra_manual
+- previa_vendedores
+
+Antes esses dois tipos podiam cair no gerador automático de template.
+
+2.3 Gerador automático de template
+
+A função gerar_template_excel() foi alterada para gerar modelo em branco, sem linha de exemplo.
+
+2.4 Prévia de importação
+
+A prévia continua mostrando a base normalizada, ou seja, como os dados entrarão nas tabelas atuais.
+
+Para CEPEA:
+- o gráfico usa preco_ajustado / PREÇO AJUSTADO.
+
+Para CEAGESP:
+- o gráfico usa preco_comum.
+
+Para Receita Expansão:
+- TOP obrigatório: 1100 - VENDA DE MERCADORIA.
+
+2.5 Bases antigas de input
+
+A pasta data/input foi limpa para evitar confusão com bases antigas/proxy ou planilhas preenchidas dentro do pacote.
+
+2.6 Histórico de importações
+
+carregar_historico_importacoes() agora verifica se app.importacao_manual_log existe antes de consultar.
+Isso evita erro em bancos ainda não inicializados.
+
+2.7 _relation_exists
+
+A função _relation_exists está presente no topo de importacoes_manuais_service.py.
+Ela é usada para verificar se tabelas/views existem antes de limpar/publicar dados auxiliares.
+
+3. Validação executada
+
+- python -m py_compile app.py src/services/importacoes_manuais_service.py src/services/previsao_mercado_service.py: OK
+- python -m compileall -q app.py src scripts: OK
+- pytest -q: 95 passed, 8 skipped
+
+Os 8 testes pulados dependem de psycopg/banco real no ambiente local.
+
+4. Como testar no PC
+
+1. Substituir a pasta atual pelo ZIP corrigido.
+2. Rodar:
+
+python -m streamlit run app.py
+
+3. Ir em Importações Manuais.
+4. Baixar qualquer modelo Excel.
+5. Verificar que o arquivo vem apenas com cabeçalho, sem linha exemplo preenchida.
+6. Preencher com dados reais.
+7. Importar usando o modo recomendado:
+
+Limpar base antiga e carregar somente este arquivo
+
+5. Observação
+
+Se o erro _relation_exists continuar aparecendo, o app local ainda está usando arquivo antigo.
+Nesse caso, substituir especificamente este arquivo:
+
+src/services/importacoes_manuais_service.py
+
+pelo arquivo presente neste ZIP.

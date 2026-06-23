@@ -12,7 +12,7 @@ from src.etl.load_receita_manual_expansao import carregar_receita_manual_expansa
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Carregar receita manual da Análise de Expansão")
-    parser.add_argument("--arquivo", required=True, help="CSV/XLSX com parceiro, cidade, estado, data_competencia, grupo_produto, vlr_total_liquido")
+    parser.add_argument("--arquivo", required=True, help="CSV/XLSX com parceiro, cidade, estado, data_competencia, grupo_produto, vlr_total_liquido e TOP=1100 - VENDA DE MERCADORIA")
     args = parser.parse_args()
 
     resumo = carregar_receita_manual_expansao(args.arquivo)

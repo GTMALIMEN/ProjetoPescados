@@ -1,3 +1,1 @@
-﻿data_referencia;produto;classificacao;unidade;preco_minimo;preco_comum;preco_maximo;fonte;url_fonte;observacao
-10/06/2026;Tilápia;Inteira;kg;12,00;14,50;17,00;CEAGESP Manual;https://ceagesp.gov.br/cotacoes/;"Exemplo; substituir pelos dados reais da cotação."
-10/06/2026;Salmão;Filé;kg;65,00;72,00;80,00;CEAGESP Manual;https://ceagesp.gov.br/cotacoes/;"Exemplo; substituir pelos dados reais da cotação."
+Data;Produto;Classificação;Uni/Peso;Menor;Comum;Maior;Quilo

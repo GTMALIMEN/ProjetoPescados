@@ -1,0 +1,72 @@
+RELATÓRIO — AJUSTE MODELOS MANUAIS / CEPEA / RECEITA EXPANSÃO
+
+1. CEPEA MANUAL
+
+Ajuste solicitado:
+- Utilizar a coluna PREÇO AJUSTADO no gráfico.
+
+Correção aplicada:
+- O importador CEPEA Manual agora reconhece a coluna PREÇO AJUSTADO.
+- O campo interno passou a ser preco_ajustado.
+- O campo preco_rs_kg foi mantido apenas como compatibilidade/legado.
+- A publicação no DW usa valor = preco_ajustado.
+- A view app.vw_cepea_tilapia_manual_historico usa COALESCE(preco_ajustado, preco_rs_kg) AS valor.
+- O gráfico CEPEA/CEPEA Manual usa o campo valor/preco já alimentado pelo PREÇO AJUSTADO.
+
+Modelo CEPEA compatível:
+- Categoria -> data_inicio_periodo
+- À vista R$ -> data_fim_periodo
+- À vista US$ -> periodo_original
+- ANO -> produto
+- Mês -> regiao_cepea
+- Mês/Ano -> uf
+- PREÇO AJUSTADO -> preco_ajustado
+
+2. RECEITA EXPANSÃO
+
+Ajuste solicitado:
+- TOP deve ser obrigatório e precisa ser 1100 - VENDA DE MERCADORIA.
+
+Correção aplicada:
+- A base receita_expansao agora tem TOP obrigatório.
+- O único TOP aceito é: 1100 - VENDA DE MERCADORIA.
+- O importador aceita 1100 e normaliza para 1100 - VENDA DE MERCADORIA.
+- Qualquer outro TOP é rejeitado na validação.
+- A tabela app.fato_receita_manual_expansao recebe as novas colunas:
+  - volume
+  - produto
+  - top
+- O script terminal load_receita_manual_expansao também valida TOP.
+
+Objetivo da trava:
+- Garantir que a Receita Expansão use venda faturada/mercadoria vendida.
+- Evitar mistura de pedido de venda com venda real.
+- Proteger Margin Pool, receita real, over/under share e análises de expansão.
+
+3. MODELOS DE IMPORTAÇÃO
+
+O app agora prioriza os arquivos estáticos em modelos_importacao/ no botão Baixar modelo Excel.
+Se o arquivo não existir, usa o gerador dinâmico como fallback.
+
+Modelos atualizados no pacote:
+- modelo_cepea_manual.xlsx
+- modelo_ceagesp_pescados.xlsx
+- modelo_receita_vendas_expansao.xlsx
+- modelo_key_account_lojas.xlsx
+- modelo_curva_mercado_categoria.xlsx
+- modelo_scanntech_mercado_privado.xlsx
+
+4. VALIDAÇÃO LOCAL FEITA
+
+- compileall app.py/src/scripts: OK
+- validação modelo CEPEA Manual: OK
+- validação modelo CEAGESP: OK
+- validação modelo Receita Expansão com TOP 1100: OK
+- validação modelo Mercado Privado: OK
+- validação modelo Key Account corrigido: OK
+- validação modelo Curva Mercado corrigido: OK
+
+5. OBSERVAÇÃO
+
+A gravação real no PostgreSQL/Supabase precisa ser testada no seu ambiente, porque depende da conexão do .env e das tabelas existentes.
+O código já inclui ALTER TABLE de segurança para criar as novas colunas de Receita Expansão antes do insert.

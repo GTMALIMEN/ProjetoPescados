@@ -64,6 +64,8 @@ FROM app.fato_ceagesp_pescados
 ORDER BY data_referencia DESC, produto;
 
 -- Diagnóstico V2 ajustado: CEAGESP agora é manual/controlado.
+DROP VIEW IF EXISTS app.vw_diagnostico_v2_plano CASCADE;
+
 CREATE OR REPLACE VIEW app.vw_diagnostico_v2_plano AS
 SELECT 'expansao_populacao' AS item,
        COUNT(*) FILTER (WHERE populacao IS NOT NULL) AS qtd_preenchida,

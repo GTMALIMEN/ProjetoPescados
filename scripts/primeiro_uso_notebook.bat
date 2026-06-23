@@ -29,7 +29,7 @@ python scripts\load_vendas_file.py --arquivo "data\exemplo\vendas_exemplo.csv"
 
 echo Carregando arquivos expandidos CONAB/CEPEA 2020-2026...
 python scripts\load_conab_file.py --arquivo "data\input\conab_precos_milho_soja.xlsx" --categoria graos_racao --produto-default Milho --uf-default MG
-python scripts\load_cepea_file.py --arquivo "data\input\cepea_tilapia.xlsx" --categoria proteina --produto-default Tilápia --uf-default MG
+REM CEPEA antigo removido: use Importacoes Manuais CEPEA Manual
 
 echo Calculando indices, potencial, scores, recomendacoes e alertas...
 python scripts\calculate_indices_setoriais.py --uf MG --salvar

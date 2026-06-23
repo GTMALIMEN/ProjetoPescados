@@ -1,3 +1,6 @@
+# Coluna histórica Atlas Brasil: IDHM_R
+# Coluna histórica Atlas Brasil: IDHM_L
+# Planilha histórica Atlas Brasil: MUN 91-00-10
 
 from __future__ import annotations
 

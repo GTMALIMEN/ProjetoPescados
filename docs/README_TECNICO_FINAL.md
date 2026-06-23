@@ -1,3 +1,9 @@
+
+
+## Modo manual controlado CEPEA/CEAGESP
+
+CEPEA e CEAGESP não usam mais proxy, scraper, Playwright ou coleta automática. Use somente a aba **Importações Manuais** com os modelos novos e o modo **Limpar base antiga e carregar somente este arquivo**.
+
 # Radar Pescados IA — README Técnico FINAL
 
 ## 1. Resumo Executivo
@@ -139,7 +145,7 @@ radar_pescados_ia/
 │   │   ├── bcb_collector.py
 │   │   ├── ibge_collector.py
 │   │   ├── conab_collector.py
-│   │   ├── cepea_collector.py
+│   │   ├── [removido] CEPEA agora é manual
 │   │   ├── comex_collector.py
 │   │   └── fred_collector.py
 │   │

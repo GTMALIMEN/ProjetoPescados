@@ -29,7 +29,7 @@ if exist data\exemplo\vendas_exemplo.csv (
 )
 
 if exist data\input\cepea_tilapia.xlsx (
-    python scripts\load_cepea_file.py --arquivo "data\input\cepea_tilapia.xlsx" --categoria proteina --produto-default Tilápia --uf-default MG
+REM CEPEA antigo removido: use Importacoes Manuais CEPEA Manual
 )
 
 if exist data\input\conab_precos_milho_soja.xlsx (
@@ -61,7 +61,7 @@ if exist scripts\generate_executive_report.py (
     python scripts\generate_executive_report.py --uf MG --usuario Marcos
 )
 
-python scripts\run_ceagesp_pescados.py
+REM CEAGESP automatico removido: use Importacoes Manuais CEAGESP Manual
 
 python scripts\diagnosticar_v2_plano.py
 python scripts\check_db.py

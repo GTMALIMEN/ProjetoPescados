@@ -1,3 +1,9 @@
+
+
+## Modo manual controlado CEPEA/CEAGESP
+
+CEPEA e CEAGESP não usam mais proxy, scraper, Playwright ou coleta automática. Use somente a aba **Importações Manuais** com os modelos novos e o modo **Limpar base antiga e carregar somente este arquivo**.
+
 # Radar Pescados IA
 
 Projeto de inteligência de mercado para pescados, proteínas, grãos, ração, economia, importação e regiões comerciais.
@@ -910,7 +916,7 @@ python scripts\load_conab_file.py --arquivo "data\input\conab_precos.xlsx" --cat
 Exporte a planilha no site do CEPEA e coloque em `data/input/`.
 
 ```bash
-python scripts\load_cepea_file.py --arquivo "data\input\cepea_tilapia.xlsx" --categoria proteina --produto-default Tilápia --uf-default MG
+python scripts\load_cepea_manual_file.py --criar-estrutura --substituir-tudo --arquivo "data\input\cepea_manual.xlsx"
 ```
 
 ## Recalcular índices
@@ -983,7 +989,7 @@ python scripts\run_comex_pescados.py --ano-inicio 2024 --ano-fim 2026 --delay 30
 ```bash
 python scripts\load_conab_file.py --arquivo "data/input/conab_precos_milho_soja.xlsx" --categoria graos_racao --produto-default Milho --uf-default MG
 
-python scripts\load_cepea_file.py --arquivo "data/input/cepea_tilapia.xlsx" --categoria proteina --produto-default Tilápia --uf-default MG
+python scripts\load_cepea_manual_file.py --criar-estrutura --substituir-tudo --arquivo "data/input/cepea_manual.xlsx"
 
 python scripts\calculate_indices_setoriais.py --uf MG --salvar
 python scripts\check_db.py

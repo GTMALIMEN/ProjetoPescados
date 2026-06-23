@@ -1,0 +1,286 @@
+RELATÓRIO DE CORREÇÃO — CEPEA E CEAGESP AUTOMÁTICOS
+
+1. OBJETIVO
+
+Corrigir a governança das bases CEPEA e CEAGESP para evitar que dados manuais/proxy apareçam como fonte oficial no app.
+
+O problema identificado era que a tela CEPEA lia dw.fato_indicador_setorial usando:
+
+    WHERE fonte ILIKE '%CEPEA%'
+
+Isso misturava:
+- CEPEA oficial;
+- planilhas manuais importadas;
+- proxies;
+- possíveis registros de camarão lançados indevidamente como CEPEA.
+
+A correção separa oficialmente:
+
+- CEPEA oficial = scraping da página pública CEPEA Tilápia;
+- CEPEA_MANUAL_IMPORTADO = planilhas/proxies antigos;
+- CEAGESP = scraping/formulário oficial ou carga manual controlada como fallback.
+
+
+2. ARQUIVOS NOVOS
+
+2.1 src/collectors/cepea_collector.py
+
+Novo coletor oficial do CEPEA para tilápia.
+
+Ele acessa:
+
+    https://www.cepea.org.br/br/indicador/tilapia.aspx
+
+Extrai:
+- período semanal;
+- região;
+- preço R$/kg;
+- variação semanal;
+- produto = Tilápia;
+- conceito = preço à vista pago ao produtor independente;
+- periodicidade = semanal.
+
+Campos gerados para dw.fato_indicador_setorial:
+
+    data
+    fonte = CEPEA
+    indicador = preco_tilapia_cepea_produtor_independente
+    categoria = proteina
+    subcategoria = oficial_site_produtor_independente
+    produto = Tilápia
+    uf
+    regiao
+    valor
+    unidade = R$/kg
+    periodicidade = semanal
+
+Também faz parsing robusto de períodos como:
+
+    15 - 19/06/2026
+    29/06 - 03/07/2026
+    30/12/2025 - 03/01/2026
+    19/06/2026
+
+
+2.2 scripts/run_cepea_oficial.py
+
+Novo script de carga oficial CEPEA.
+
+Comando recomendado:
+
+    python scripts\run_cepea_oficial.py --renomear-manual-antigo
+
+O que faz:
+
+1. Busca a página oficial CEPEA Tilápia.
+2. Salva auditoria resumida em raw.fonte_automatica_payload.
+3. Salva detalhe bruto em raw.cepea_tilapia_payload.
+4. Salva série analítica em dw.fato_indicador_setorial.
+5. Opcionalmente renomeia registros antigos CEPEA manuais/proxy para CEPEA_MANUAL_IMPORTADO.
+
+A opção --renomear-manual-antigo preserva os dados antigos, mas impede que eles apareçam como CEPEA oficial.
+
+
+2.3 scripts/validar_cepea_ceagesp_fontes.py
+
+Novo script de validação específico para CEPEA/CEAGESP.
+
+Comando:
+
+    python scripts\validar_cepea_ceagesp_fontes.py
+
+Ele verifica:
+
+- registros CEPEA por fonte/subcategoria/produto/unidade/periodicidade;
+- se ainda existe fonte='CEPEA' que não seja oficial;
+- se ainda existe camarão marcado como CEPEA;
+- se existe CEPEA oficial semanal carregado;
+- resumo da tabela CEAGESP;
+- quantidade de preços CEAGESP com preco_comum nulo.
+
+
+2.4 docs/FONTES_AUTOMATICAS_CEPEA_CEAGESP.md
+
+Nova documentação operacional para rodar CEPEA e CEAGESP automáticos.
+
+
+3. ARQUIVOS ALTERADOS
+
+3.1 src/services/previsao_mercado_service.py
+
+A função carregar_cepea_series foi corrigida.
+
+Antes:
+
+    WHERE fonte ILIKE '%CEPEA%'
+
+Agora:
+
+    WHERE fonte = 'CEPEA'
+      AND subcategoria ILIKE 'oficial_%'
+
+Resultado:
+
+- CEPEA_MANUAL_IMPORTADO não aparece mais como CEPEA oficial;
+- planilhas antigas não contaminam a tela;
+- camarão não aparece como CEPEA;
+- a comparação CEPEA x CEAGESP fica conceitualmente correta.
+
+
+3.2 scripts/load_cepea_file.py
+
+Agora esse loader não grava mais fonte='CEPEA'.
+
+Antes:
+
+    fonte = CEPEA
+    subcategoria = fonte_real
+
+Agora:
+
+    fonte = CEPEA_MANUAL_IMPORTADO
+    subcategoria = manual_importado
+
+Assim, qualquer planilha carregada manualmente fica separada da fonte oficial.
+
+
+3.3 src/etl/load_fontes_reais.py
+
+O loader genérico agora aceita subcategoria_default.
+
+Isso permite separar:
+
+- fonte_real;
+- manual_importado;
+- proxy;
+- oficial_site.
+
+
+3.4 app.py
+
+Atualização de textos na tela:
+
+- CEPEA agora é descrito como scraper oficial da página pública de tilápia;
+- CEAGESP agora orienta usar scraping oficial primeiro e carga manual apenas como fallback;
+- foi adicionado título explícito de Comparação CEPEA x CEAGESP.
+
+
+3.5 scripts/rodar_fontes_automaticas.bat
+
+Agora inclui:
+
+    python scripts\run_cepea_oficial.py --renomear-manual-antigo
+
+E mantém CEAGESP automático:
+
+    python scripts\run_ceagesp_automatico.py --dias-busca 21
+
+Também deixa o Playwright documentado como fallback:
+
+    python scripts\run_ceagesp_playwright.py --dias-busca 60 --max-datas 12
+
+
+3.6 src/database/fontes_reais.sql
+
+Atualizei o catálogo do CEPEA de arquivo_excel para scraping_site_publico e a URL de referência passou a ser a página pública da tilápia.
+
+
+3.7 src/services/pipeline_service.py
+
+Incluída etapa automática:
+
+    Carregar CEPEA oficial site
+
+com:
+
+    scripts/run_cepea_oficial.py --renomear-manual-antigo
+
+
+4. CEAGESP
+
+O projeto já possuía dois coletores CEAGESP:
+
+1. src/collectors/ceagesp_collector.py
+   - usa requests;
+   - tenta POST/GET no formulário;
+   - não trava o pipeline.
+
+2. src/collectors/ceagesp_playwright_collector.py
+   - usa navegador headless;
+   - melhor fallback quando o formulário depende de comportamento do navegador.
+
+Mantive os dois e ajustei a orientação do app/documentação.
+
+Comandos:
+
+    python scripts\run_ceagesp_automatico.py --dias-busca 21
+
+Fallback:
+
+    python scripts\run_ceagesp_playwright.py --dias-busca 60 --max-datas 12
+
+
+5. VALIDAÇÃO REALIZADA NO PACOTE
+
+Executado:
+
+    python -m compileall -q src scripts app.py
+
+Resultado:
+
+    OK
+
+Executados testes principais sem banco:
+
+    pytest -q tests/test_hotfix_ceagesp_arrow.py tests/test_hotfix_expansao_receita_cepea.py tests/test_hotfix_layout_v21.py tests/test_layout_v21_validado.py tests/test_etapa22_abas_principais.py tests/test_hotfix_idc_pesos_100.py tests/test_hotfix_idh_atlas_raw_xlsx.py
+
+Resultado:
+
+    20 passed
+
+O pytest completo ainda depende de:
+
+- psycopg instalado;
+- banco PostgreSQL configurado;
+- schemas/tabelas criados.
+
+No meu ambiente de validação não havia psycopg nem conexão com o seu banco real, então os testes dependentes de banco não foram considerados como validação de carga real.
+
+
+6. COMO RODAR AGORA NO SEU PC
+
+Depois de extrair o ZIP:
+
+    pip install -r requirements.txt
+
+Rodar CEPEA oficial:
+
+    python scripts\run_cepea_oficial.py --renomear-manual-antigo
+
+Rodar CEAGESP automático:
+
+    python scripts\run_ceagesp_automatico.py --dias-busca 21
+
+Se não vier CEAGESP:
+
+    python scripts\run_ceagesp_playwright.py --dias-busca 60 --max-datas 12
+
+Validar:
+
+    python scripts\validar_cepea_ceagesp_fontes.py
+    python scripts\validar_dados_completo.py
+
+Abrir app:
+
+    python -m streamlit run app.py
+
+
+7. OBSERVAÇÕES IMPORTANTES
+
+- CEPEA oficial neste pacote é somente Tilápia.
+- Camarão não deve ficar como CEPEA.
+- Camarão deve vir de CEAGESP, ComexStat, compra interna, fornecedor ou base manual controlada.
+- CEPEA Tilápia é preço ao produtor independente, não varejo, não filé e não preço interno da empresa.
+- CEAGESP é preço de venda no atacado, não preço pago ao produtor.
+- Comparar CEPEA x CEAGESP é útil, mas os conceitos são diferentes.
+

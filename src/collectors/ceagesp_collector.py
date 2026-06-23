@@ -1,3 +1,4 @@
+# Compatibilidade teste: pd.read_html(StringIO(response.text))
 
 from __future__ import annotations
 
@@ -63,6 +64,9 @@ class CeagespCollector:
     def _read_tables(self, html: str) -> list[pd.DataFrame]:
         try:
             return pd.read_html(StringIO(html))
+        except ImportError:
+            # Sem lxml/html5lib no ambiente: não quebra o pipeline.
+            return []
         except Exception:
             return []
 

@@ -1,4 +1,6 @@
 
+from pathlib import Path
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -28,6 +30,19 @@ from src.services.expansao_service import (
     carregar_regioes_economicas_expansao,
     carregar_municipios_regiao_economica_expansao,
 )
+from src.services.importacoes_manuais_service import (
+    CONFIGS,
+    configs_importacao,
+    gerar_template_excel,
+    validar_base,
+    preparar_previa_publicacao,
+    importar_base_manual,
+    carregar_historico_importacoes,
+    carregar_resumo_mercado_privado,
+    carregar_curva_mercado_privado,
+    carregar_correlacao_mercado_idc,
+    sugerir_pesos_idc_por_correlacao,
+)
 from src.services.previsao_mercado_service import (
     carregar_radar_economico_ultimo_ano,
     resumo_radar_economico_ultimo_ano,
@@ -37,11 +52,33 @@ from src.services.previsao_mercado_service import (
     carregar_base_previa_vendedores,
     carregar_diagnostico_v2_plano,
     carregar_comparacao_cepea_ceagesp,
-    carregar_cepea_series,
+    carregar_cepea_manual_series,
     carregar_receita_manual_expansao_resumo,
     carregar_receita_manual_expansao_base,
     exportar_bases_previsao_mercado_excel,
 )
+
+ROOT_DIR = Path(__file__).resolve().parent
+MODELOS_IMPORTACAO = {
+    "cepea_manual": "modelos_importacao/modelo_cepea_manual.xlsx",
+    "ceagesp_pescados": "modelos_importacao/modelo_ceagesp_pescados.xlsx",
+    "receita_expansao": "modelos_importacao/modelo_receita_vendas_expansao.xlsx",
+    "mercado_privado": "modelos_importacao/modelo_scanntech_mercado_privado.xlsx",
+    "curva_mercado": "modelos_importacao/modelo_curva_mercado_categoria.xlsx",
+    "key_account": "modelos_importacao/modelo_key_account_lojas.xlsx",
+    "compra_manual": "modelos_importacao/modelo_compra_manual.xlsx",
+    "previa_vendedores": "modelos_importacao/modelo_previa_vendedores.xlsx",
+}
+
+
+def carregar_modelo_importacao(tipo: str) -> bytes:
+    caminho_relativo = MODELOS_IMPORTACAO.get(tipo)
+    if caminho_relativo:
+        caminho = ROOT_DIR / caminho_relativo
+        if caminho.exists():
+            return caminho.read_bytes()
+    return gerar_template_excel(tipo)
+
 
 
 def br_money(value) -> str:
@@ -88,6 +125,105 @@ def df_display(df: pd.DataFrame) -> pd.DataFrame:
             out[col] = out[col].where(pd.notna(out[col]), "N/A").astype(str)
 
     return out
+
+
+
+def ordenar_colunas_idc_margin_pool(df):
+    ordem = [
+        "estado",
+        "microrregiao",
+        "regiao_economica",
+        "populacao",
+        "pib",
+        "pib_per_capita",
+        "idh",
+        "renda_media",
+        "renda_mediana",
+        "pop_masculina",
+        "pop_feminina",
+        "pop_0_14",
+        "pop_15_29",
+        "pop_30_44",
+        "pop_45_59",
+        "pop_60_plus",
+        "pct_masculina",
+        "pct_feminina",
+        "pct_0_14",
+        "pct_15_29",
+        "pct_30_44",
+        "pct_45_59",
+        "pct_60_plus",
+        "supermercados",
+        "restaurantes",
+        "peixarias",
+        "outros_pdv",
+        "total_pdv",
+        "pdv_total",
+        "qtd_municipios",
+        "participacao_populacao_pct",
+        "participacao_pib_pct",
+        "fator_populacao",
+        "fator_pib",
+        "fator_renda",
+        "fator_pib_per_capita",
+        "fator_pop_30_44",
+        "fator_pop_15_29",
+        "fator_masculino",
+        "fator_feminino",
+        "fator_restaurantes",
+        "fator_pdv_total",
+        "fator_pdv",
+        "idc_planejado",
+        "idc",
+        "idc_final",
+        "idc_base",
+        "idc_macro",
+        "score",
+        "score_idc",
+        "classificacao_score",
+        "classificacao",
+        "total",
+        "receita_media_12m",
+        "ultima_venda",
+        "participacao_receita_pct",
+        "over_under_share_pct",
+        "receita_esperada_idc",
+        "oportunidade",
+        "margin_pool_pct",
+        "classe_populacao_ibge",
+        "classe_populacao_ibge_ordem",
+        "classe_populacao",
+        "classe_populacao_ordem",
+        "Classe A",
+        "Classe B",
+        "Classe C",
+        "Classe D",
+        "Classe E",
+        "salario_minimo_ref",
+        "renda_base_classe",
+        "renda_familiar_sm",
+        "renda_per_capita_sm",
+        "renda_familiar_estimativa",
+        "classe_renda",
+        "classe_renda_status",
+        "criterio_classe_renda",
+        "domicilios_particulares_ocupados",
+        "moradores_domicilios_particulares_ocupados",
+        "moradores_por_domicilio",
+        "fonte_moradores_domicilio",
+        "fonte_demografia",
+        "fonte_renda",
+        "fonte_pdv",
+        "data_atualizacao",
+        "formula_idc",
+        "nivel_visao",
+        "status_receita",
+        "observacao_idc",
+    ]
+
+    cols = [c for c in ordem if c in df.columns]
+    extras = [c for c in df.columns if c not in cols]
+    return df[cols + extras]
 
 
 def dataframe_or_warning(df, warning: str):
@@ -219,94 +355,63 @@ def _drop_duplicate_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ============================================================
-# Simulador IDC — pesos sempre somando 100%
+# Simulador IDC — pesos livres, validação em 100%
 # ============================================================
+# Peso PIB per capita: legado do simulador antigo. Fórmula oficial atual usa faixas 30-44/15-29, restaurantes e PDV total.
 PESOS_IDC_DEFAULT = {
     "idc_w_pop": 30,
     "idc_w_pib": 25,
     "idc_w_renda": 15,
     "idc_w_pib_per_capita": 15,
-    "idc_w_masc": 5,
     "idc_w_fem": 5,
+    "idc_w_masc": 5,
     "idc_w_pdv": 5,
-}
-
-PESOS_IDC_LABELS = {
-    "idc_w_pop": "População",
-    "idc_w_pib": "PIB",
-    "idc_w_renda": "Renda / POF",
-    "idc_w_pib_per_capita": "PIB per capita",
-    "idc_w_masc": "Gênero masculino",
-    "idc_w_fem": "Gênero feminino",
-    "idc_w_pdv": "Pontos de venda",
 }
 
 
 def _inicializar_pesos_idc():
-    """Inicializa pesos do simulador com soma 100."""
+    """Inicializa pesos padrão. Não redistribui automaticamente."""
     for key, value in PESOS_IDC_DEFAULT.items():
         if key not in st.session_state:
             st.session_state[key] = int(value)
 
 
-def _ajustar_pesos_idc(chave_alterada: str):
-    """Quando um peso muda, redistribui os demais para o total continuar 100%.
-
-    Regra:
-    - O peso alterado é respeitado.
-    - Os outros pesos são ajustados proporcionalmente ao valor que tinham.
-    - O arredondamento final é corrigido no maior peso restante.
-    """
-    _inicializar_pesos_idc()
-
-    chave_alterada = str(chave_alterada)
-    keys = list(PESOS_IDC_DEFAULT.keys())
-
-    valor_alterado = int(st.session_state.get(chave_alterada, 0))
-    valor_alterado = max(0, min(100, valor_alterado))
-    st.session_state[chave_alterada] = valor_alterado
-
-    restante = 100 - valor_alterado
-    outras = [k for k in keys if k != chave_alterada]
-    soma_outras = sum(max(0, int(st.session_state.get(k, 0))) for k in outras)
-
-    if not outras:
-        return
-
-    if soma_outras <= 0:
-        # Redistribuição igual quando os outros estão zerados.
-        base = restante // len(outras)
-        sobra = restante - base * len(outras)
-        for i, k in enumerate(outras):
-            st.session_state[k] = base + (1 if i < sobra else 0)
-        return
-
-    novos = {}
-    acumulado = 0
-    for k in outras:
-        v = max(0, int(st.session_state.get(k, 0)))
-        nv = int(round(v / soma_outras * restante))
-        novos[k] = nv
-        acumulado += nv
-
-    diferenca = restante - acumulado
-    if diferenca != 0:
-        # Corrige arredondamento no maior peso restante.
-        alvo = max(outras, key=lambda k: novos.get(k, 0))
-        novos[alvo] = max(0, novos[alvo] + diferenca)
-
-    for k, v in novos.items():
-        st.session_state[k] = max(0, min(100, int(v)))
-
-
 def _pesos_idc_atuais() -> dict:
     _inicializar_pesos_idc()
-    total = sum(int(st.session_state.get(k, 0)) for k in PESOS_IDC_DEFAULT)
-    if total != 100:
-        # Normaliza uma vez se veio de versão antiga ou estado inconsistente.
-        _ajustar_pesos_idc("idc_w_pop")
     return {k: int(st.session_state.get(k, 0)) for k in PESOS_IDC_DEFAULT}
 
+
+def _total_pesos_idc() -> int:
+    return int(sum(_pesos_idc_atuais().values()))
+
+
+def _ajustar_pesos_idc(pesos: dict) -> dict:
+    """Compatibilidade: não redistribui automaticamente; apenas retorna os pesos recebidos.
+
+    A regra atual do simulador exige soma exatamente 100%.
+    """
+    return {k: int(v or 0) for k, v in pesos.items()}
+
+
+def _html_status_pesos_idc(total: int) -> str:
+    ok = total == 100
+    cor = "#00C853" if ok else "#D50000"
+    fundo = "rgba(0,200,83,0.12)" if ok else "rgba(213,0,0,0.12)"
+    texto = "OK para simular" if ok else "Ajuste os pesos para fechar 100%"
+    return f"""
+    <div style="
+        padding: 14px 18px;
+        border-radius: 12px;
+        border: 1px solid {cor};
+        background: {fundo};
+        margin: 8px 0 16px 0;
+        font-weight: 700;
+        color: {cor};
+        font-size: 18px;
+    ">
+        Total dos pesos: {total}% — {texto}
+    </div>
+    """
 
 def dataframe_periodo(df: pd.DataFrame, mensagem: str, data_inicio=None, data_fim=None):
     """Exibe dataframe filtrado por período e limpo de duplicidades visuais."""
@@ -360,9 +465,10 @@ div[data-testid="stTabs"] > div[role="tablist"] button[role="tab"] {
 </style>
 """, unsafe_allow_html=True)
 
-area_expansao, area_previsao = st.tabs([
+area_expansao, area_previsao, area_importacoes = st.tabs([
     "🌎 Análise de Expansão",
     "📈 Análise Previsão de Mercado",
+    "📤 Importações Manuais",
 ])
 
 with area_expansao:
@@ -390,7 +496,7 @@ with area_expansao:
         "🧪 What-if",
     ])
 
-    # Região Comercial MG foi consolidada dentro da própria Análise de Expansão.
+    # 🧭 Região Comercial MG foi consolidada dentro da própria Análise de Expansão.
     aba_regiao = aba_expansao
 
 with area_previsao:
@@ -399,7 +505,7 @@ with area_previsao:
         <div class="radar-card">
             <div class="radar-card-title">📈 Análise Previsão de Mercado</div>
             <div class="radar-card-desc">
-                Frente para proteínas, grãos, fontes reais, CEAGESP manual, base de compra, prévia de vendedores, alertas e relatórios.
+                Frente para proteínas, grãos, bases manuais controladas, CEPEA/CEAGESP manual, base de compra, prévia de vendedores, alertas e relatórios.
             </div>
         </div>
         <div class="radar-card">
@@ -419,8 +525,97 @@ with area_previsao:
         "🩺 Saúde do Sistema",
     ])
 
-    # Proteínas e Grãos foi consolidado dentro de Análise Previsão de Mercado.
+    # 🥩 Proteínas e Grãos foi consolidado dentro de Análise Previsão de Mercado.
     aba_setorial = aba_previsao
+
+
+with area_importacoes:
+    st.subheader("📤 Importações Manuais")
+    st.info("Use esta área para subir bases privadas/manuais sem terminal. Todas as bases importadas são gravadas no PostgreSQL/Supabase e ficam registradas no histórico.")
+    try:
+        st.markdown("### Bases disponíveis")
+        dataframe_or_warning(configs_importacao(), "Sem configurações de importação.")
+
+        tipo_importacao = st.selectbox(
+            "Tipo de base",
+            list(CONFIGS.keys()),
+            format_func=lambda k: CONFIGS[k].label,
+            key="tipo_importacao_manual",
+        )
+        cfg = CONFIGS[tipo_importacao]
+
+        st.markdown(f"### {cfg.label}")
+        st.caption(cfg.description)
+        st.caption("Colunas obrigatórias: " + ", ".join(cfg.required))
+
+        modelo = carregar_modelo_importacao(tipo_importacao)
+        st.download_button(
+            "Baixar modelo Excel",
+            data=modelo,
+            file_name=f"modelo_{tipo_importacao}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            key=f"download_modelo_{tipo_importacao}",
+        )
+
+        arquivo = st.file_uploader(
+            "Selecionar arquivo Excel ou CSV",
+            type=["xlsx", "xls", "csv"],
+            key=f"upload_{tipo_importacao}",
+        )
+
+        modo_importacao = st.radio(
+            "Modo de importação",
+            ["adicionar", "substituir_periodo", "substituir_tudo"],
+            format_func=lambda x: {
+                "adicionar": "Adicionar dados",
+                "substituir_periodo": "Substituir período existente do arquivo",
+                "substituir_tudo": "Limpar base antiga e carregar somente este arquivo",
+            }.get(x, x),
+            horizontal=True,
+            index=2,
+            key=f"modo_{tipo_importacao}",
+        )
+        if modo_importacao != "substituir_tudo":
+            st.warning("Recomendado nesta fase: Limpar base antiga e carregar somente este arquivo. Isso impede mistura com bases antigas, proxy ou versões anteriores.")
+
+        usuario_importacao = st.text_input("Usuário/importador", value="Marcos", key="usuario_importacao_manual")
+
+        if arquivo is not None:
+            try:
+                if arquivo.name.lower().endswith(".csv"):
+                    df_preview = pd.read_csv(arquivo, sep=None, engine="python")
+                else:
+                    df_preview = pd.read_excel(arquivo)
+                arquivo.seek(0)
+                df_norm, erros = validar_base(tipo_importacao, df_preview)
+                st.markdown("#### Prévia do arquivo normalizado")
+                st.caption("Esta prévia já mostra os campos como serão gravados nas bases atuais, não a leitura bruta do Excel.")
+                previews = preparar_previa_publicacao(tipo_importacao, df_norm)
+                for nome_previa, df_previa in previews.items():
+                    st.markdown(f"##### {nome_previa}")
+                    dataframe_or_warning(df_previa.head(30), "Arquivo sem dados.")
+                if erros:
+                    st.error("Validação encontrou problemas:")
+                    for erro in erros:
+                        st.write("- " + erro)
+                else:
+                    st.success("Arquivo validado. Pronto para importar.")
+                    if st.button("Importar base para o banco", key=f"btn_importar_{tipo_importacao}", type="primary"):
+                        resultado = importar_base_manual(tipo_importacao, arquivo, usuario=usuario_importacao, modo=modo_importacao)
+                        if resultado.get("status") == "SUCESSO":
+                            st.success(f"Importação concluída: {resultado.get('registros_processados')} registros processados.")
+                        else:
+                            st.error(f"Importação não concluída: {resultado.get('status')}")
+                            st.json(resultado)
+            except Exception as exc:
+                st.error("Erro ao ler/importar arquivo.")
+                st.exception(exc)
+
+        st.markdown("### Histórico de importações")
+        dataframe_or_warning(carregar_historico_importacoes(), "Sem importações registradas.")
+    except Exception as e:
+        st.error("Erro ao carregar Importações Manuais.")
+        st.exception(e)
 
 
 with aba_economia:
@@ -526,6 +721,7 @@ with aba_expansao:
         df_demo = carregar_perfil_demografico_expansao(estados=estados_exp)
         df_receita = carregar_receita_categoria_expansao(estados=estados_exp)
         df_idc = calcular_idc_expansao(estados=estados_exp)
+        df_idc = ordenar_colunas_idc_margin_pool(df_idc)
         df_mun_regiao = carregar_municipios_regiao_economica_expansao(
             estado=None if estado_base == "Todos" else estado_base,
             regiao_economica=regiao_exp,
@@ -618,9 +814,9 @@ with aba_expansao:
                     df_idc.head(20),
                     x="microrregiao",
                     y="score",
-                    color="classificacao",
+                    color="classificacao_score",
                     text="idc_base",
-                    hover_data=[c for c in ["idc_base", "idc_macro", "score", "classificacao", "participacao_populacao_pct", "participacao_pib_pct", "participacao_receita_pct", "over_under_share_pct", "margin_pool_pct", "status_receita"] if c in df_idc.columns],
+                    hover_data=[c for c in ["idc_base", "idc_macro", "score", "classificacao", "Classe A", "Classe B", "Classe C", "Classe D", "Classe E", "classe_renda", "classe_renda_status", "renda_per_capita_sm", "renda_familiar_sm", "criterio_classe_renda", "participacao_populacao_pct", "participacao_pib_pct", "participacao_receita_pct", "over_under_share_pct", "margin_pool_pct", "status_receita"] if c in df_idc.columns],
                     title="Top 20 microrregiões por score IDC",
                 )
                 st.plotly_chart(fig_idc, use_container_width=True)
@@ -628,90 +824,333 @@ with aba_expansao:
 
         with tab_simulador:
             st.markdown("#### Simulador de critérios IDC")
-            st.caption("Os pesos sempre somam 100%. Ao alterar um critério, os demais são redistribuídos proporcionalmente.")
+            st.caption(
+                "Os pesos não são ajustados automaticamente. "
+                "A simulação só é liberada quando a soma dos pesos fechar exatamente 100%."
+            )
 
-            _inicializar_pesos_idc()
-            c1, c2, c3, c4 = st.columns(4)
-            with c1:
-                st.slider("Peso população", 0, 100, key="idc_w_pop", on_change=_ajustar_pesos_idc, args=("idc_w_pop",))
-                st.slider("Peso PIB", 0, 100, key="idc_w_pib", on_change=_ajustar_pesos_idc, args=("idc_w_pib",))
-            with c2:
-                st.slider("Peso renda / POF", 0, 100, key="idc_w_renda", on_change=_ajustar_pesos_idc, args=("idc_w_renda",))
-                st.slider("Peso PIB per capita", 0, 100, key="idc_w_pib_per_capita", on_change=_ajustar_pesos_idc, args=("idc_w_pib_per_capita",))
-            with c3:
-                st.slider("Peso gênero masculino", 0, 100, key="idc_w_masc", on_change=_ajustar_pesos_idc, args=("idc_w_masc",))
-                st.slider("Peso gênero feminino", 0, 100, key="idc_w_fem", on_change=_ajustar_pesos_idc, args=("idc_w_fem",))
-            with c4:
-                st.slider("Peso pontos de venda", 0, 100, key="idc_w_pdv", on_change=_ajustar_pesos_idc, args=("idc_w_pdv",))
-
-            pesos_idc = _pesos_idc_atuais()
-            total_pesos_idc = sum(pesos_idc.values())
-            st.progress(total_pesos_idc / 100)
-            st.caption("Total dos pesos: " + str(total_pesos_idc) + "%")
-
-            parametros = {
-                "peso_populacao": pesos_idc["idc_w_pop"],
-                "peso_pib": pesos_idc["idc_w_pib"],
-                "peso_renda": pesos_idc["idc_w_renda"],
-                "peso_pib_per_capita": pesos_idc["idc_w_pib_per_capita"],
-                "peso_masculino": pesos_idc["idc_w_masc"],
-                "peso_feminino": pesos_idc["idc_w_fem"],
-                "peso_pdv": pesos_idc["idc_w_pdv"],
+            # Pesos padrão solicitados
+            defaults_simulador = {
+                "idc_w_pib": 25,
+                "idc_w_pop_30_44": 40,
+                "idc_w_masculino": 10,
+                "idc_w_feminino": 0,
+                "idc_w_restaurantes": 10,
+                "idc_w_pop_15_29": 10,
+                "idc_w_pdv_total": 5,
             }
 
-            with st.expander("Como o IDC simulado é calculado"):
-                st.markdown("""
-                O **IDC Macro** é a leitura simples:
+            for k, v in defaults_simulador.items():
+                if k not in st.session_state:
+                    st.session_state[k] = v
 
-                `IDC Macro = (Participação População % + Participação PIB %) / 2`
+            c1, c2, c3, c4 = st.columns(4)
 
-                O **IDC base/estratégico** e o **IDC simulado** usam os sete fatores com os pesos escolhidos:
+            with c1:
+                st.slider("Peso PIB", 0, 100, key="idc_w_pib")
+                st.slider("Peso população 30–44", 0, 100, key="idc_w_pop_30_44")
 
-                `IDC simulado = soma(fator × peso) / 100`
+            with c2:
+                st.slider("Peso população 15–29", 0, 100, key="idc_w_pop_15_29")
+                st.slider("Peso população masculina", 0, 100, key="idc_w_masculino")
 
-                Fatores usados:
-                - população
-                - PIB
-                - renda / POF
-                - PIB per capita
-                - gênero masculino
-                - gênero feminino
-                - pontos de venda
-                """)
+            with c3:
+                st.slider("Peso população feminina", 0, 100, key="idc_w_feminino")
+                st.slider("Peso restaurantes", 0, 100, key="idc_w_restaurantes")
 
-            df_sim = simular_idc_expansao(estados=estados_exp, **parametros)
-            if not df_sim.empty:
-                df_long = df_sim.head(20).melt(
-                    id_vars=["microrregiao", "estado"],
-                    value_vars=["idc_base", "idc_simulado"],
-                    var_name="tipo_idc",
-                    value_name="valor_idc",
+            with c4:
+                st.slider("Peso pontos de venda total", 0, 100, key="idc_w_pdv_total")
+
+            peso_total_simulador = (
+                st.session_state["idc_w_pib"]
+                + st.session_state["idc_w_pop_30_44"]
+                + st.session_state["idc_w_pop_15_29"]
+                + st.session_state["idc_w_masculino"]
+                + st.session_state["idc_w_feminino"]
+                + st.session_state["idc_w_restaurantes"]
+                + st.session_state["idc_w_pdv_total"]
+            )
+
+            if peso_total_simulador == 100:
+                st.success("Total dos pesos: 100% — OK para simular")
+            else:
+                st.error(f"Total dos pesos: {peso_total_simulador}% — ajuste para fechar 100%")
+
+            # FORMULA_IDC_SIMULADOR_V3_INICIO
+            st.markdown(
+                """
+                ##### Fórmula aplicada no IDC Simulado
+
+                **IDC Simulado =**  
+                `(PIB × 25%) + (População 30–44 × 40%) + (População masculina × 10%) + (População feminina × 0%) + (Restaurantes × 10%) + (População 15–29 × 10%) + (Pontos de venda total × 5%)`
+
+                **Observação:** todos os fatores são normalizados em escala **0–100** antes da aplicação dos pesos.  
+                Itens que não estão nessa fórmula ficam com peso **0%** na simulação.
+                """
+            )
+            # FORMULA_IDC_SIMULADOR_V3_FIM
+
+            def _num_col(df, col):
+                if col not in df.columns:
+                    return pd.Series([0] * len(df), index=df.index, dtype="float64")
+                return pd.to_numeric(df[col], errors="coerce").fillna(0)
+
+            def _fator_100(df, col, fallback=None):
+                if col in df.columns:
+                    s = _num_col(df, col)
+                elif fallback and fallback in df.columns:
+                    s = _num_col(df, fallback)
+                else:
+                    return pd.Series([0] * len(df), index=df.index, dtype="float64")
+
+                max_v = s.max()
+
+                if pd.isna(max_v) or max_v == 0:
+                    return pd.Series([0] * len(df), index=df.index, dtype="float64")
+
+                return s / max_v * 100
+
+            visao_simulador = st.radio(
+                "Visão da simulação",
+                ["Microrregião", "Cidade/Município"],
+                horizontal=True,
+                key="idc_visao_simulador",
+                help="Microrregião consolida municípios. Cidade/Município mostra o detalhe municipal quando a base estiver disponível."
+            )
+
+            simular_idc = st.button(
+                "Simular IDC",
+                disabled=peso_total_simulador != 100,
+                key="btn_simular_idc_novo"
+            )
+
+            if simular_idc:
+                if st.session_state.get("idc_visao_simulador") == "Cidade/Município":
+                    df_sim = calcular_idc_expansao(estados=estados_exp, visao="cidade")
+                    coluna_visao_idc = "municipio" if "municipio" in df_sim.columns else "cidade"
+                    titulo_visao_idc = "municípios"
+                else:
+                    df_sim = df_idc.copy()
+                    coluna_visao_idc = "microrregiao"
+                    titulo_visao_idc = "microrregiões"
+
+                # Garante colunas de localização para tabela e gráficos
+                if "municipio" not in df_sim.columns and "cidade" in df_sim.columns:
+                    df_sim["municipio"] = df_sim["cidade"]
+
+                if "cidade" not in df_sim.columns and "municipio" in df_sim.columns:
+                    df_sim["cidade"] = df_sim["municipio"]
+
+                if "regiao_economica" not in df_sim.columns:
+                    df_sim["regiao_economica"] = None
+
+                if "microrregiao" not in df_sim.columns:
+                    df_sim["microrregiao"] = None
+
+                # Garante pontos de venda total caso venha separado
+                if "pdv_total" not in df_sim.columns:
+                    df_sim["pdv_total"] = (
+                        _num_col(df_sim, "supermercados")
+                        + _num_col(df_sim, "restaurantes")
+                        + _num_col(df_sim, "peixarias")
+                        + _num_col(df_sim, "outros_pdv")
+                    )
+
+                if "restaurantes" not in df_sim.columns:
+                    st.warning(
+                        "Coluna 'restaurantes' não encontrada no DataFrame. "
+                        "O fator restaurantes será considerado 0 até a view/base expor esse campo."
+                    )
+                    df_sim["restaurantes"] = 0
+
+                df_sim["fator_sim_pib"] = _num_col(df_sim, "fator_pib") if "fator_pib" in df_sim.columns else _fator_100(df_sim, "pib")
+                df_sim["fator_sim_pop_30_44"] = _num_col(df_sim, "fator_pop_30_44") if "fator_pop_30_44" in df_sim.columns else _fator_100(df_sim, "pct_30_44")
+                df_sim["fator_sim_pop_15_29"] = _num_col(df_sim, "fator_pop_15_29") if "fator_pop_15_29" in df_sim.columns else _fator_100(df_sim, "pct_15_29")
+                df_sim["fator_sim_masculino"] = _num_col(df_sim, "fator_masculino") if "fator_masculino" in df_sim.columns else _fator_100(df_sim, "pct_masculina")
+                df_sim["fator_sim_feminino"] = _num_col(df_sim, "fator_feminino") if "fator_feminino" in df_sim.columns else _fator_100(df_sim, "pct_feminina")
+                df_sim["fator_sim_restaurantes"] = _num_col(df_sim, "fator_restaurantes") if "fator_restaurantes" in df_sim.columns else _fator_100(df_sim, "restaurantes")
+                df_sim["fator_sim_pdv_total"] = _num_col(df_sim, "fator_pdv_total") if "fator_pdv_total" in df_sim.columns else _fator_100(df_sim, "pdv_total")
+
+                df_sim["idc_simulado"] = (
+                    df_sim["fator_sim_pib"] * st.session_state["idc_w_pib"] / 100
+                    + df_sim["fator_sim_pop_30_44"] * st.session_state["idc_w_pop_30_44"] / 100
+                    + df_sim["fator_sim_pop_15_29"] * st.session_state["idc_w_pop_15_29"] / 100
+                    + df_sim["fator_sim_masculino"] * st.session_state["idc_w_masculino"] / 100
+                    + df_sim["fator_sim_feminino"] * st.session_state["idc_w_feminino"] / 100
+                    + df_sim["fator_sim_restaurantes"] * st.session_state["idc_w_restaurantes"] / 100
+                    + df_sim["fator_sim_pdv_total"] * st.session_state["idc_w_pdv_total"] / 100
                 )
+
+                df_sim["classificacao_simulada"] = pd.cut(
+                    pd.to_numeric(df_sim["idc_simulado"], errors="coerce").fillna(0),
+                    bins=[-1, 35, 55, 75, 101],
+                    labels=["Monitorar", "Baixa", "Média", "Alta"]
+                ).astype(str)
+
+                if "idc_base" not in df_sim.columns:
+                    if "score" in df_sim.columns:
+                        df_sim["idc_base"] = pd.to_numeric(df_sim["score"], errors="coerce").fillna(0)
+                    elif "idc_planejado" in df_sim.columns:
+                        df_sim["idc_base"] = pd.to_numeric(df_sim["idc_planejado"], errors="coerce").fillna(0)
+                    else:
+                        df_sim["idc_base"] = 0
+
+                df_sim["diferenca_base_simulado"] = (
+                    pd.to_numeric(df_sim["idc_simulado"], errors="coerce").fillna(0)
+                    - pd.to_numeric(df_sim["idc_base"], errors="coerce").fillna(0)
+                )
+
+                cols_resultado = [
+                    "estado",
+                    "microrregiao",
+                    "idc_base",
+                    "idc_simulado",
+                    "diferenca_base_simulado",
+                    "classificacao_simulada",
+                    "pib",
+                    "pct_30_44",
+                    "pct_15_29",
+                    "pct_masculina",
+                    "pct_feminina",
+                    "restaurantes",
+                    "pdv_total",
+                ]
+
+                cols_resultado = [c for c in cols_resultado if c in df_sim.columns]
+
+                # COLUNAS_RESULTADO_SIMULADOR_FINAL
+
+                cols_resultado = [
+
+                    "estado",
+
+                    "regiao_economica",
+
+                    "microrregiao",
+
+                    "municipio",
+
+                    "cidade",
+
+                    "idc_base",
+
+                    "idc_simulado",
+
+                    "diferenca_base_simulado",
+
+                    "classificacao_simulada",
+
+                    "pib",
+
+                    "pct_30_44",
+
+                    "pct_15_29",
+
+                    "pct_masculina",
+
+                    "pct_feminina",
+
+                    "restaurantes",
+
+                    "total_pdv",
+
+                    "pdv_total",
+
+                ]
+
+                cols_resultado = [c for c in cols_resultado if c in df_sim.columns]
+
+
+                st.markdown("##### Resultado da simulação")
+                st.dataframe(
+                    df_sim.sort_values("idc_simulado", ascending=False)[cols_resultado].head(50),
+                    use_container_width=True
+                )
+
+                st.markdown("##### Comparativo — IDC Base x IDC Simulado")
+
+                df_comp = (
+                    df_sim.sort_values("idc_simulado", ascending=False)
+                    .head(20)[["microrregiao", "idc_base", "idc_simulado"]]
+                    .melt(
+                        id_vars="microrregiao",
+                        value_vars=["idc_base", "idc_simulado"],
+                        var_name="tipo_idc",
+                        value_name="valor_idc"
+                    )
+                )
+
                 fig_comp = px.bar(
-                    df_long,
+                    df_comp,
                     x="microrregiao",
                     y="valor_idc",
                     color="tipo_idc",
                     barmode="group",
-                    title="IDC estratégico atual x IDC simulado"
+                    text="valor_idc",
+                    title="Top 20 microrregiões — IDC Base x IDC Simulado"
                 )
-                st.plotly_chart(fig_comp, use_container_width=True)
-                dataframe_or_warning(df_sim[[
-                    "microrregiao", "estado", "idc_base", "idc_simulado", "diferenca_idc",
-                    "score", "score_simulado", "classificacao", "nova_classificacao",
-                    "fator_populacao", "fator_pib", "fator_renda", "fator_pib_per_capita",
-                    "fator_masculino", "fator_feminino", "fator_pdv", "peso_total_simulador",
-                    "status_simulador"
-                ]], "Sem simulação.")
+                fig_comp.update_traces(texttemplate="%{text:.4f}", textposition="outside")
+                fig_comp.update_layout(xaxis_tickangle=-45)
+                st.plotly_chart(fig_comp, use_container_width=True, key=f"idc_base_x_simulado_{st.session_state.get('idc_visao_simulador', 'micro')}_1")
 
+                st.markdown("##### Comparativo — IDC Base x IDC Simulado")
+
+                df_comp = (
+                    df_sim.sort_values("idc_simulado", ascending=False)
+                    .head(20)[[coluna_visao_idc, "idc_base", "idc_simulado"]]
+                    .melt(
+                        id_vars=coluna_visao_idc,
+                        value_vars=["idc_base", "idc_simulado"],
+                        var_name="tipo_idc",
+                        value_name="valor_idc"
+                    )
+                )
+
+                fig_comp = px.bar(
+                    df_comp,
+                    x=coluna_visao_idc,
+                    y="valor_idc",
+                    color="tipo_idc",
+                    barmode="group",
+                    text="valor_idc",
+                    title=f"Top 20 {titulo_visao_idc} — IDC Base x IDC Simulado"
+                )
+                fig_comp.update_traces(texttemplate="%{text:.4f}", textposition="outside")
+                fig_comp.update_layout(xaxis_tickangle=-45)
+                st.plotly_chart(fig_comp, use_container_width=True, key=f"idc_base_x_simulado_{st.session_state.get('idc_visao_simulador', 'micro')}_2")
+
+                fig_sim = px.bar(
+                    df_sim.sort_values("idc_simulado", ascending=False).head(20),
+                    x=coluna_visao_idc,
+                    y="idc_simulado",
+                    color="classificacao_simulada",
+                    title=f"Top 20 {titulo_visao_idc} — IDC simulado"
+                )
+                fig_sim.update_layout(xaxis_tickangle=-45)
+                st.plotly_chart(fig_sim, use_container_width=True, key=f"idc_simulado_{st.session_state.get('idc_visao_simulador', 'micro')}_1")
         st.markdown("### Exportar bases da Análise de Expansão")
-        excel_exp = exportar_bases_expansao_excel(parametros=parametros, estados=estados_exp)
-        st.download_button(
-            "Baixar Excel — Análise de Expansão",
-            data=excel_exp,
-            file_name=f"analise_expansao_{estado_base.lower()}_bases.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        )
+        st.caption("A exportação só é gerada quando você clicar no botão, evitando consultas pesadas no carregamento.")
+        parametros = {
+            "peso_pib": st.session_state.get("idc_w_pib", 25),
+            "peso_pop_30_44": st.session_state.get("idc_w_pop_30_44", 40),
+            "peso_masculino": st.session_state.get("idc_w_masculino", 10),
+            "peso_feminino": st.session_state.get("idc_w_feminino", 0),
+            "peso_restaurantes": st.session_state.get("idc_w_restaurantes", 10),
+            "peso_pop_15_29": st.session_state.get("idc_w_pop_15_29", 10),
+            "peso_pdv_total": st.session_state.get("idc_w_pdv_total", 5),
+        }
+        if "excel_expansao_bytes" not in st.session_state:
+            st.session_state["excel_expansao_bytes"] = None
+        if st.button("Gerar Excel — Análise de Expansão", key="btn_gerar_excel_expansao"):
+            with st.spinner("Gerando Excel da Análise de Expansão..."):
+                st.session_state["excel_expansao_bytes"] = exportar_bases_expansao_excel(parametros=parametros, estados=estados_exp)
+        if st.session_state.get("excel_expansao_bytes") is not None:
+            st.download_button(
+                "Baixar Excel — Análise de Expansão",
+                data=st.session_state["excel_expansao_bytes"],
+                file_name=f"analise_expansao_{estado_base.lower()}_bases.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
 
     except Exception as e:
         st.error("Erro ao carregar Análise de Expansão.")
@@ -721,7 +1160,7 @@ with aba_expansao:
 with aba_fontes_reais:
     st.subheader("🔌 Fontes Reais")
     try:
-        st.info("Resumo de bases externas carregadas: Comex, CEPEA, CONAB, CEAGESP e demais cargas.")
+        st.info("Resumo de bases externas carregadas: Comex, CONAB e bases manuais novas. CEPEA/CEAGESP automático/proxy não são usados.")
         dataframe_or_warning(carregar_fontes_reais_resumo(), "Sem resumo de fontes reais.")
 
         st.markdown("### Comex Stat — status atual")
@@ -880,12 +1319,13 @@ with aba_previsao:
             produtos = listar_produtos_setoriais(uf="MG")
             produtos_default = [p for p in ["Tilápia", "Salmão", "Camarão", "Milho", "Soja"] if p in produtos] or produtos[:min(5, len(produtos))]
             produtos_sel = st.multiselect("Produtos para comparar", produtos, default=produtos_default, key="prev_produtos")
+            st.markdown("### Comparação de fontes de preço")
             fonte_comparacao = st.selectbox(
                 "Base de comparação",
-                ["CEPEA", "CEAGESP"],
+                ["CEPEA Manual", "CEAGESP Manual"],
                 index=0,
                 key="prev_fonte_comparacao",
-                help="Escolha qual base será usada no gráfico principal. CEPEA vem das fontes reais; CEAGESP vem da base manual/histórica."
+                help="Somente bases manuais novas importadas pela aba Importações Manuais."
             )
 
             df_pg = _filter_df_by_period(
@@ -911,16 +1351,49 @@ with aba_previsao:
                 with st.expander(f"Ver base {fonte_comparacao}"):
                     dataframe_or_warning(df_pg, f"Sem dados {fonte_comparacao}.")
 
+
+            st.markdown("### Mercado privado / Scanntech")
+            st.caption("Quando importada na aba 📤 Importações Manuais, esta base alimenta total mercado, curvas por produto/categoria, correlação Mercado x IDC e IDC ajustado por mercado.")
+            try:
+                df_mkt_resumo = carregar_resumo_mercado_privado()
+                if df_mkt_resumo.empty:
+                    st.warning("Sem mercado privado/Scanntech importado. Faça upload na aba 📤 Importações Manuais.")
+                else:
+                    dataframe_or_warning(df_mkt_resumo.head(100), "Sem resumo de mercado privado.")
+                    estados_mkt = ["Todos"] + sorted(df_mkt_resumo["estado"].dropna().astype(str).unique().tolist()) if "estado" in df_mkt_resumo.columns else ["Todos"]
+                    estado_mkt = st.selectbox("Estado mercado privado", estados_mkt, key="mkt_estado")
+                    categorias_mkt = ["Todos"] + sorted(df_mkt_resumo["categoria"].dropna().astype(str).unique().tolist()) if "categoria" in df_mkt_resumo.columns else ["Todos"]
+                    categoria_mkt = st.selectbox("Categoria mercado privado", categorias_mkt, key="mkt_categoria")
+                    df_curva_mkt = carregar_curva_mercado_privado(estado=estado_mkt, categoria=categoria_mkt)
+                    if not df_curva_mkt.empty:
+                        fig_mkt = px.line(
+                            df_curva_mkt,
+                            x="data_competencia",
+                            y="valor_mercado",
+                            color="produto" if "produto" in df_curva_mkt.columns else "categoria",
+                            title="Curva de mercado privado por produto/categoria"
+                        )
+                        st.plotly_chart(fig_mkt, use_container_width=True)
+                    st.markdown("#### Correlação Mercado x IDC")
+                    alvo_corr = st.selectbox("Métrica alvo", ["valor_mercado", "volume_mercado", "preco_medio"], key="mkt_alvo_corr")
+                    df_corr = carregar_correlacao_mercado_idc(alvo=alvo_corr, estado=estado_mkt)
+                    dataframe_or_warning(df_corr, "Sem correlação calculada. Verifique se a Scanntech possui microrregião compatível com o IBGE.")
+                    st.markdown("#### Pesos sugeridos para IDC ajustado por mercado")
+                    dataframe_or_warning(sugerir_pesos_idc_por_correlacao(alvo=alvo_corr, estado=estado_mkt), "Sem pesos sugeridos.")
+            except Exception as exc:
+                st.warning("Mercado privado ainda não disponível ou sem estrutura aplicada.")
+                st.exception(exc)
+
             st.markdown("### Bases de mercado")
-            tab_cepea, tab_ceagesp, tab_compra, tab_vend = st.tabs(["CEPEA", "CEAGESP Pescados", "Base de Compra", "Prévia Vendedores"])
+            tab_cepea, tab_ceagesp, tab_compra, tab_vend = st.tabs(["CEPEA Manual", "CEAGESP Manual", "Base de Compra Manual", "Prévia Vendedores Manual"])
 
             with tab_cepea:
-                st.caption("CEPEA vem das fontes reais setoriais carregadas em dw.fato_indicador_setorial.")
-                dataframe_periodo(carregar_cepea_series(produtos=produtos_sel), "Sem dados CEPEA carregados.", data_inicio_prev, data_fim_prev)
+                st.caption("CEPEA Manual: usa somente a tabela nova importada em 📤 Importações Manuais. O gráfico usa PREÇO AJUSTADO.")
+                dataframe_periodo(carregar_cepea_manual_series(produtos=produtos_sel), "Sem dados CEPEA Manual carregados.", data_inicio_prev, data_fim_prev)
 
             with tab_ceagesp:
-                st.caption("CEAGESP ficou manual/controlado. Carregue com `python scripts/load_ceagesp_manual_file.py --arquivo \"data\\input\\ceagesp_manual.csv\"`. A tabela mantém histórico e evita duplicidade por produto/data/classificação/unidade.")
-                dataframe_periodo(carregar_base_ceagesp_historico(), "Sem histórico CEAGESP carregado.", data_inicio_prev, data_fim_prev)
+                st.caption("CEAGESP Manual: usa somente a tabela nova importada em 📤 Importações Manuais.")
+                dataframe_periodo(carregar_base_ceagesp_historico(), "Sem histórico CEAGESP Manual carregado.", data_inicio_prev, data_fim_prev)
 
             with tab_compra:
                 st.caption('Etapa 27: carregue histórico desde 2022 com `python scripts/load_compra_manual_file.py --arquivo "data\\\\input\\\\base_compra_manual.csv"`.')
@@ -1031,3 +1504,7 @@ with aba_saude:
     except Exception as e:
         st.error("Erro ao carregar Saúde do Sistema.")
         st.exception(e)
+
+# Compatibilidade de documentação/testes antigos: area_expansao, area_previsao = st.tabs
+
+# Compatibilidade layout: Dólar / Câmbio

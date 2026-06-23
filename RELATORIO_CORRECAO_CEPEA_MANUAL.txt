@@ -1,0 +1,75 @@
+RELATÓRIO DE CORREÇÃO — CEPEA MANUAL OFICIAL
+
+Objetivo
+- Adicionar uma carga manual oficial do CEPEA, no mesmo conceito da CEAGESP manual.
+- Permitir preencher uma tabela predefinida quando o CEPEA bloquear scraping por Cloudflare/anti-bot.
+- Publicar os dados manuais oficiais no DW sem misturar com proxy antigo.
+
+Arquivos adicionados
+- scripts/criar_template_cepea_manual.py
+- scripts/load_cepea_manual_file.py
+- src/database/cepea_manual.sql
+- docs/CEPEA_MANUAL.md
+- data/templates/cepea_manual.csv
+- data/input/cepea_manual.csv
+- modelos_importacao/modelo_cepea_manual.xlsx
+- data/templates/modelo_cepea_manual.xlsx
+
+Arquivos alterados
+- app.py
+- src/services/previsao_mercado_service.py
+- src/services/importacoes_manuais_service.py
+- src/services/pipeline_service.py
+- scripts/criar_templates_importacao.py
+- scripts/rodar_importadores_manuais_exemplo.bat
+- scripts/rodar_fontes_automaticas.bat
+
+Como usar por terminal
+1. Criar template:
+   python scripts\criar_template_cepea_manual.py
+
+2. Preencher:
+   data\input\cepea_manual.csv
+   ou usar o modelo Excel:
+   modelos_importacao\modelo_cepea_manual.xlsx
+
+3. Carregar no banco:
+   python scripts\load_cepea_manual_file.py --criar-estrutura --arquivo "data\input\cepea_manual.csv"
+
+Como usar pelo app
+- Aba 📤 Importações Manuais
+- Tipo de base: CEPEA Manual Oficial
+- Baixar modelo Excel
+- Preencher e importar
+
+Regras aplicadas
+- O dado manual oficial entra no banco como:
+  fonte = CEPEA
+  subcategoria = oficial_arquivo_manual
+  indicador = preco_tilapia_cepea_produtor_independente
+  periodicidade = semanal
+  unidade = R$/kg
+
+- O dado é gravado em duas camadas:
+  app.fato_cepea_tilapia_manual — tabela auditável/manual
+  dw.fato_indicador_setorial — tabela usada nos gráficos do app
+
+Validações locais realizadas
+- py_compile app.py: OK
+- py_compile src/services/previsao_mercado_service.py: OK
+- py_compile src/services/importacoes_manuais_service.py: OK
+- py_compile scripts/load_cepea_manual_file.py: OK
+- compileall src/scripts: OK
+- parsing do template cepea_manual.csv com _prepare_records: OK, 2 linhas válidas
+
+Observação sobre pytest
+- O pytest completo não fecha 100% neste ambiente por dois motivos externos/legados:
+  1. Falta o driver psycopg/banco PostgreSQL real neste container.
+  2. Existem testes legados contraditórios: um exige que a string "Comparação CEPEA x CEAGESP" exista no app.py e outro exige que ela não exista; o mesmo ocorre com fator_faixa_etaria em expansao_service.py.
+- Isso não impede a compilação nem a funcionalidade nova do CEPEA manual.
+
+Regra de segurança
+- Não usar este modelo para camarão.
+- Não usar este modelo para preço interno/compra.
+- Não usar este modelo para preço de varejo, filé ou proxy.
+- Usar somente valor oficial da página CEPEA de tilápia.

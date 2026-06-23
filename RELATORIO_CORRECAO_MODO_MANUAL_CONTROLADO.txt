@@ -1,0 +1,161 @@
+RELATÓRIO — CORREÇÃO MODO MANUAL CONTROLADO
+Projeto: App Pescados / Radar Econômico / IDC
+
+1. OBJETIVO DA CORREÇÃO
+
+Converter CEPEA e CEAGESP para funcionamento 100% manual/controlado, removendo do app o uso de bases antigas, proxy, scraper, Playwright ou coleta automática para essas fontes.
+
+A regra final aplicada foi:
+
+- CEPEA: usar somente app.fato_cepea_tilapia_manual / app.vw_cepea_tilapia_manual_historico.
+- CEAGESP: usar somente app.fato_ceagesp_pescados quando o registro tiver origem manual nova.
+- PREÇO AJUSTADO do CEPEA é o valor usado nos gráficos.
+- Prévia Vendedores não usa mais fallback de vendas internas; usa somente app.fato_previa_vendedores.
+- Na aba Importações Manuais, o modo padrão agora é “Limpar base antiga e carregar somente este arquivo”.
+
+2. ARQUIVOS REMOVIDOS/DESATIVADOS
+
+Removidos do pacote:
+
+- src/collectors/cepea_collector.py
+- src/collectors/ceagesp_collector.py
+- src/collectors/ceagesp_playwright_collector.py
+- scripts/run_cepea_oficial.py
+- scripts/load_cepea_file.py
+- scripts/run_ceagesp_automatico.py
+- scripts/run_ceagesp_playwright.py
+- scripts/run_ceagesp_pescados.py
+- scripts/instalar_playwright_ceagesp.bat
+- scripts/instalar_dependencias_ceagesp.bat
+
+Também foram removidos/atualizados testes e documentos que obrigavam a existência dessas fontes automáticas.
+
+3. APP.PY
+
+Alterações principais:
+
+- Base de comparação agora mostra somente:
+  - CEPEA Manual
+  - CEAGESP Manual
+
+- A aba “Bases de mercado” agora mostra:
+  - CEPEA Manual
+  - CEAGESP Manual
+  - Base de Compra Manual
+  - Prévia Vendedores Manual
+
+- Foi removida da tela a opção CEPEA automática/oficial site.
+- Foi removida da tela a orientação de rodar Playwright/CEAGESP automático.
+- O modo padrão de importação passou a ser “substituir_tudo”.
+
+4. PREVISAO_MERCADO_SERVICE
+
+Alterações principais:
+
+- carregar_cepea_series agora é só compatibilidade e redireciona para carregar_cepea_manual_series.
+- carregar_cepea_manual_series lê somente app.vw_cepea_tilapia_manual_historico.
+- Foi removido o fallback para dw.fato_indicador_setorial, porque essa tabela poderia conter legado/proxy/automático.
+- carregar_comparacao_cepea_ceagesp trata CEPEA e CEAGESP antigos como alias manual, nunca como scraper/proxy.
+- carregar_base_ceagesp_historico passou a filtrar somente registros manuais novos.
+- carregar_base_previa_vendedores não usa mais app.vw_vendas_analitica como fallback.
+
+5. IMPORTACOES_MANUAIS_SERVICE
+
+Alterações principais:
+
+- CEPEA Manual, no modo substituir_tudo, limpa todo CEPEA antigo/proxy/automático de dw.fato_indicador_setorial.
+- CEAGESP Manual força fonte = “CEAGESP Manual” na importação pelo app.
+- CEAGESP Manual, no modo substituir_tudo, limpa CEAGESP antigo/proxy/automático do DW.
+- Todas as bases manuais continuam com hash_linha para evitar duplicidade.
+
+6. SCRIPT NOVO DE LIMPEZA
+
+Criado:
+
+scripts/limpar_bases_antigas_cepea_ceagesp.py
+
+Função:
+
+- Remove CEPEA/CEAGESP antigo do DW.
+- Remove CEAGESP antigo do app quando não tem marcação manual nova.
+- Preserva CEPEA manual nova.
+
+Comando:
+
+python scripts\limpar_bases_antigas_cepea_ceagesp.py
+
+7. VALIDAÇÃO NOVA
+
+Atualizado:
+
+scripts/validar_cepea_ceagesp_fontes.py
+
+Agora valida:
+
+- CEPEA Manual com data e preço ajustado válidos.
+- CEAGESP Manual com data e preço comum válidos.
+- Ausência de CEPEA/CEAGESP legado no DW.
+- Ausência de CEAGESP antigo sem origem manual nova.
+
+8. DOCUMENTAÇÃO
+
+Criado:
+
+docs/MODO_MANUAL_CONTROLADO.md
+
+Esse documento explica:
+
+- Decisão de usar somente manual.
+- Tabelas oficiais do app.
+- Regras para CEPEA, CEAGESP e Prévia Vendedores.
+- Como limpar legado.
+- Como validar.
+
+9. BASE CEPEA NOVA
+
+O arquivo enviado pelo usuário foi incluído como:
+
+data/input/cepea_manual_nova_base.xlsx
+
+Ele pode ser usado para importação manual inicial.
+
+10. VALIDAÇÃO TÉCNICA
+
+Executado:
+
+python -m compileall -q app.py src scripts
+pytest -q
+
+Resultado:
+
+95 passed, 8 skipped
+
+Os 8 testes pulados são testes de banco porque o ambiente de validação não tinha psycopg instalado. No ambiente local do projeto, com requirements.txt instalado e banco configurado, eles devem ser executados normalmente.
+
+11. COMO USAR AGORA
+
+Ordem recomendada no seu ambiente:
+
+1. Extrair o ZIP novo.
+2. Rodar:
+
+python scripts\limpar_bases_antigas_cepea_ceagesp.py
+
+3. Abrir o app:
+
+python -m streamlit run app.py
+
+4. Ir em Importações Manuais.
+5. Importar CEPEA Manual usando o modelo/base nova.
+6. Importar CEAGESP Manual usando o modelo/base nova.
+7. Usar sempre o modo:
+
+Limpar base antiga e carregar somente este arquivo
+
+8. Validar:
+
+python scripts\validar_cepea_ceagesp_fontes.py
+
+12. CONCLUSÃO
+
+O app agora está configurado para usar somente bases manuais novas para CEPEA/CEAGESP e evitar que dados antigos/proxy/automáticos apareçam nos gráficos ou tabelas de comparação.

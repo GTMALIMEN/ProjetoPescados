@@ -1,3 +1,1 @@
-﻿parceiro;cidade;estado;data_competencia;grupo_produto;vlr_total_liquido
-Cliente Exemplo 1;Belo Horizonte;MG;01/06/2026;Tilápia;1800,00
-Cliente Exemplo 2;Belo Horizonte;MG;01/06/2026;Salmão;4500,50
+﻿parceiro;cidade;estado;data_competencia;grupo_produto;vlr_total_liquido;volume;produto;top

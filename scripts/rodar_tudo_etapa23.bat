@@ -133,7 +133,7 @@ if exist "data\input\previa_vendedores.csv" (
 )
 
 if exist "data\input\cepea_tilapia.xlsx" (
-    "%PY%" scripts\load_cepea_file.py --arquivo "data\input\cepea_tilapia.xlsx" --categoria proteina --produto-default Tilápia --uf-default MG
+REM CEPEA antigo removido: use Importacoes Manuais CEPEA Manual
 ) else (
     echo PULADO: cepea_tilapia.xlsx nao encontrado.
 )

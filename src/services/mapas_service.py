@@ -19,6 +19,51 @@ UF_TO_CODIGO = {
 }
 
 
+# Paleta estável para compatibilidade com mapas Folium antigos e testes.
+REGIAO_CORES = {
+    "Central": "#1f77b4",
+    "Grande BH": "#1f77b4",
+    "Zona da Mata": "#ff7f0e",
+    "Triângulo/Alto Paranaíba": "#2ca02c",
+    "Vale do Aço/Rio Doce": "#d62728",
+    "Sul de MG": "#9467bd",
+    "Oeste de MG": "#8c564b",
+    "Campo das Vertentes": "#e377c2",
+    "Central Mineira": "#7f7f7f",
+    "Noroeste de MG": "#bcbd22",
+    "Norte de MG": "#17becf",
+    "Jequitinhonha/Mucuri": "#aec7e8",
+    "Sem região": "#d9d9d9",
+}
+
+
+def _linear_colormap(nome: str = "viridis", vmin: float = 0, vmax: float = 100):
+    """Compatibilidade com versões antigas baseadas em Folium/branca.
+
+    Retorna um objeto chamável. Quando branca não está instalado, retorna uma
+    função simples que preserva a interface esperada pelos testes e pelo app.
+    """
+    try:
+        from branca.colormap import linear
+
+        nome_norm = str(nome or "viridis").lower().replace("-", "_")
+        aliases = {
+            "viridis": "viridis",
+            "ylgnbu": "YlGnBu_09",
+            "ylgnbu_09": "YlGnBu_09",
+        }
+        attr = aliases.get(nome_norm, nome_norm)
+        cmap = getattr(linear, attr, None)
+        if cmap is None:
+            cmap = linear.viridis
+        return cmap.scale(vmin, vmax)
+    except Exception:
+        def _fallback(value):
+            return "#808080"
+
+        return _fallback
+
+
 def normalizar_codarea(value: Any) -> str:
     if value is None:
         return ""

@@ -18,6 +18,9 @@ def main():
             "data_competencia": "01/06/2026",
             "grupo_produto": "Tilápia",
             "vlr_total_liquido": "1800,00",
+            "Volume": "100",
+            "Produto": "Tilápia",
+            "TOP": "1100 - VENDA DE MERCADORIA",
         },
         {
             "parceiro": "Cliente Exemplo 2",
@@ -26,6 +29,9 @@ def main():
             "data_competencia": "01/06/2026",
             "grupo_produto": "Salmão",
             "vlr_total_liquido": "4500,50",
+            "Volume": "150",
+            "Produto": "Salmão",
+            "TOP": "1100 - VENDA DE MERCADORIA",
         },
     ]
 

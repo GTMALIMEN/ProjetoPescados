@@ -1,0 +1,49 @@
+RELATÓRIO — CORREÇÃO DA PRÉVIA DE IMPORTAÇÕES MANUAIS
+
+Correções aplicadas:
+
+1. Corrigido erro NameError: _relation_exists is not defined
+   - Foi adicionada a função _relation_exists dentro de importacoes_manuais_service.py.
+   - A importação CEPEA/CEAGESP agora consegue verificar se a tabela DW existe antes de tentar limpar/publicar dados auxiliares.
+
+2. Corrigida prévia de importação
+   - A tela agora mostra "Prévia do arquivo normalizado".
+   - A prévia exibe os campos como serão gravados nas bases atuais, não a leitura bruta do Excel.
+   - Para CEPEA, a tela também mostra a prévia do gráfico/DW com:
+     data_referencia, origem, fonte, subcategoria, produto, regiao, uf, preco_grafico, preco_bruto_referencia e unidade.
+   - O campo usado no gráfico CEPEA é sempre PREÇO AJUSTADO.
+
+3. CEPEA Manual
+   - A base nova preenchida é aceita como base real/manual controlada.
+   - Categoria vira produto.
+   - Mês/Ano vira data_fim_periodo.
+   - PREÇO AJUSTADO vira preco_ajustado e é o valor do gráfico.
+   - À vista R$ fica apenas como preco_rs_kg/referência bruta.
+   - Produtos como BOI são normalizados para Bovino.
+
+4. Publicação no DW ficou opcional
+   - Se dw.fato_indicador_setorial não existir, a importação não quebra.
+   - A tabela principal/manual continua sendo alimentada normalmente.
+   - A tela principal lê a tabela manual auditável, não base antiga/proxy.
+
+5. Limpeza do pacote
+   - Removidos __pycache__, .pytest_cache, .git, .venv e pyc do ZIP final.
+   - Removido data/input/cepea_tilapia.xlsx para evitar confusão com base antiga CEPEA.
+
+Validação executada:
+
+- python -m py_compile app.py src/services/importacoes_manuais_service.py: OK
+- python -m compileall -q app.py src scripts: OK
+- pytest -q: 95 passed, 8 skipped
+- Validação do arquivo CEPEA novo com 409 linhas: OK
+
+Como testar:
+
+1. Extraia o ZIP.
+2. Rode o app.
+3. Vá em Importações Manuais.
+4. Selecione CEPEA Manual Oficial.
+5. Suba o Excel novo preenchido.
+6. Veja a prévia normalizada.
+7. Use modo: Limpar base antiga e carregar somente este arquivo.
+8. Clique em Importar base para o banco.

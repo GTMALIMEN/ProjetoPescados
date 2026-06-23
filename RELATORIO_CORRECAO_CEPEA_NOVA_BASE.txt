@@ -1,0 +1,47 @@
+RELATÓRIO DE CORREÇÃO — CEPEA MANUAL NOVA BASE
+
+Problema identificado:
+- O app ainda misturava registros antigos/proxy do CEPEA manual com a nova base.
+- A coluna Categoria do modelo novo estava sendo tratada como auxiliar, então todos os registros viravam Tilápia.
+- O gráfico CEPEA Manual podia continuar mostrando valores antigos mesmo depois da prévia do arquivo novo estar correta.
+
+Correções aplicadas:
+1. CEPEA Manual agora usa somente a tabela nova manual/controlada.
+2. Campo Categoria do modelo novo agora vira produto.
+   Ex.: BOI -> Bovino; TILAPIA -> Tilápia.
+3. Campo Mês/Ano agora é a data correta da série.
+4. Campo PREÇO AJUSTADO é o valor usado no gráfico e no DW.
+5. Campo À vista R$ fica apenas como referência bruta em preco_rs_kg.
+6. Base CEPEA automática ficou separada da CEPEA Manual.
+   - CEPEA Manual: subcategoria = oficial_arquivo_manual.
+   - CEPEA automático/scraper: subcategoria = oficial_site_produtor_independente.
+7. Foi criado modo de importação:
+   Limpar base antiga e carregar somente este arquivo.
+8. Foi criado script de limpeza:
+   python scripts\limpar_cepea_manual_antiga.py
+
+Como usar agora:
+1. Abrir aba Importações Manuais.
+2. Selecionar CEPEA Manual Oficial.
+3. Subir o modelo novo.
+4. Selecionar modo:
+   Limpar base antiga e carregar somente este arquivo.
+5. Importar.
+6. Ir para Análise Previsão de Mercado.
+7. Em Base de comparação, selecionar CEPEA Manual.
+
+Resultado esperado:
+- A tabela antiga/proxy deixa de aparecer no gráfico.
+- O gráfico usa PREÇO AJUSTADO.
+- Produtos do arquivo aparecem corretamente, por exemplo Bovino e Tilápia.
+- Não há mistura entre CEPEA automático, CEPEA manual novo e CEPEA proxy antigo.
+
+Validação local feita:
+- app.py compilado.
+- importacoes_manuais_service.py compilado.
+- previsao_mercado_service.py compilado.
+- load_cepea_manual_file.py compilado.
+- Modelo enviado pelo usuário validado com 409 registros.
+- Produtos detectados: Bovino, FRANGO CONGELADO, FRANGO RESFRIADO, MILHO, SOJA, SUÍNO VIVO, Tilápia, OVO BRANCO.
+- Datas Mês/Ano interpretadas corretamente como mês/ano, ex.: 2022-02-01.
+- PREÇO AJUSTADO preservado exatamente como veio na base.

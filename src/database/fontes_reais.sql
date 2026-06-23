@@ -100,10 +100,10 @@ VALUES
     ),
     (
         'CEPEA',
-        'arquivo_excel',
-        'https://cepea.org.br/br/consultas-ao-banco-de-dados-do-site.aspx',
+        'scraping_site_publico',
+        'https://www.cepea.org.br/br/indicador/tilapia.aspx',
         'ativa',
-        'Planilhas exportadas pelo site CEPEA e carregadas no DW.'
+        'Scraping da página pública CEPEA Tilápia. Preço R$/kg à vista pago ao produtor independente; divulgação semanal por região.'
     )
 ON CONFLICT (fonte)
 DO UPDATE SET

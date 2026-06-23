@@ -85,19 +85,34 @@ def carregar_proteinas_graos_unificado(uf: str = "MG", produtos: list[str] | Non
 
 
 def carregar_base_ceagesp_historico() -> pd.DataFrame:
-    engine = get_engine()
-    with engine.begin() as conn:
-        if not _relation_exists(conn, "app.fato_ceagesp_pescados"):
-            return pd.DataFrame(columns=[
-                "data_coleta", "data_referencia", "produto", "classificacao", "unidade",
-                "preco_minimo", "preco_comum", "preco_maximo", "fonte", "hash_carga"
-            ])
-        return pd.read_sql(text("""
-            SELECT data_coleta, data_referencia, produto, classificacao, unidade,
-                   preco_minimo, preco_comum, preco_maximo, fonte, url_fonte, hash_carga
-            FROM app.fato_ceagesp_pescados
-            ORDER BY data_referencia DESC, produto
-        """), conn)
+    cols = [
+        "data_coleta", "data_referencia", "produto", "classificacao", "unidade",
+        "preco_minimo", "preco_comum", "preco_maximo", "fonte", "url_fonte", "hash_carga"
+    ]
+    try:
+        engine = get_engine()
+        with engine.begin() as conn:
+            if not _relation_exists(conn, "app.fato_ceagesp_pescados"):
+                return pd.DataFrame(columns=cols)
+            conn.execute(text("""
+                ALTER TABLE app.fato_ceagesp_pescados
+                    ADD COLUMN IF NOT EXISTS fonte_arquivo TEXT,
+                    ADD COLUMN IF NOT EXISTS hash_linha TEXT;
+            """))
+            # Manual-only: ignora registros antigos de scraper/automático que não passaram
+            # pela importação manual nova (fonte_arquivo/hash_linha) ou fonte manual explícita.
+            return pd.read_sql(text("""
+                SELECT data_coleta, data_referencia, produto, classificacao, unidade,
+                       preco_minimo, preco_comum, preco_maximo, fonte, url_fonte, hash_carga
+                FROM app.fato_ceagesp_pescados
+                WHERE COALESCE(fonte, '') ILIKE '%manual%'
+                   OR COALESCE(fonte_arquivo, '') <> ''
+                   OR COALESCE(hash_linha, '') <> ''
+                ORDER BY data_referencia DESC, produto
+            """), conn)
+    except Exception:
+        # App/testes continuam abrindo mesmo sem driver PostgreSQL ou banco configurado.
+        return pd.DataFrame(columns=cols)
 
 
 def carregar_base_compra_manual() -> pd.DataFrame:
@@ -109,34 +124,27 @@ def carregar_base_compra_manual() -> pd.DataFrame:
 
 
 def carregar_base_previa_vendedores() -> pd.DataFrame:
-    engine = get_engine()
-    with engine.begin() as conn:
-        if _relation_exists(conn, "app.fato_previa_vendedores"):
-            df_manual = pd.read_sql(text("SELECT * FROM app.fato_previa_vendedores ORDER BY data_venda DESC NULLS LAST, id DESC"), conn)
-            if not df_manual.empty:
-                return df_manual
+    """Carrega somente a Prévia Vendedores manual.
 
-        if not _relation_exists(conn, "app.vw_vendas_analitica"):
-            return pd.DataFrame(columns=[
-                "vendedor", "produto", "preco", "data_venda", "quantidade_vendida",
-                "receita_total", "cliente", "regiao", "observacao"
-            ])
-
-        return pd.read_sql(text("""
-            SELECT
-                COALESCE(vendedor, 'Sem vendedor') AS vendedor,
-                COALESCE(produto, 'Sem produto') AS produto,
-                preco_medio_kg AS preco,
-                data AS data_venda,
-                quantidade AS quantidade_vendida,
-                valor_venda AS receita_total,
-                cliente,
-                regiao_comercial AS regiao,
-                'Origem: vendas internas' AS observacao
-            FROM app.vw_vendas_analitica
-            ORDER BY data DESC
-            LIMIT 5000
-        """), conn)
+    Fallback antigo para app.vw_vendas_analitica foi removido para evitar misturar
+    venda real/automática com a base manual de prévia.
+    """
+    cols = [
+        "vendedor", "produto", "preco", "data_venda", "quantidade_vendida",
+        "receita_total", "cliente", "regiao", "observacao"
+    ]
+    try:
+        engine = get_engine()
+        with engine.begin() as conn:
+            if not _relation_exists(conn, "app.fato_previa_vendedores"):
+                return pd.DataFrame(columns=cols)
+            return pd.read_sql(text("""
+                SELECT *
+                FROM app.fato_previa_vendedores
+                ORDER BY data_venda DESC NULLS LAST, id DESC
+            """), conn)
+    except Exception:
+        return pd.DataFrame(columns=cols)
 
 
 def carregar_diagnostico_v2_plano() -> pd.DataFrame:
@@ -199,32 +207,53 @@ def carregar_previa_vendedores_resumo() -> pd.DataFrame:
 
 
 # ============================================================
-# HOTFIX — CEPEA x CEAGESP em Análise Previsão de Mercado
+# Fontes de preço — MODO MANUAL CONTROLADO
 # ============================================================
 
-def carregar_cepea_series(produtos: list[str] | None = None) -> pd.DataFrame:
-    engine = get_engine()
-    with engine.begin() as conn:
-        if not _relation_exists(conn, "dw.fato_indicador_setorial"):
-            return pd.DataFrame()
+MANUAL_PRICE_SOURCE_NOTICE = (
+    "Modo manual controlado: CEPEA/CEAGESP automático, proxy e scraper não são usados. "
+    "Os gráficos leem apenas as tabelas novas importadas pela aba Importações Manuais."
+)
 
-        sql = """
-            SELECT
-                data,
-                fonte,
-                indicador,
-                categoria,
-                subcategoria,
-                produto,
-                uf,
-                valor,
-                unidade,
-                periodicidade
-            FROM dw.fato_indicador_setorial
-            WHERE fonte ILIKE '%CEPEA%'
-            ORDER BY data DESC, produto
-        """
-        df = pd.read_sql(text(sql), conn)
+
+def carregar_cepea_series(produtos: list[str] | None = None) -> pd.DataFrame:
+    """Compatibilidade: CEPEA agora é sempre CEPEA Manual.
+
+    Mantemos o nome antigo da função para não quebrar imports/telas antigas,
+    mas ela não lê scraper, proxy nem CEPEA_MANUAL_IMPORTADO.
+    """
+    return carregar_cepea_manual_series(produtos=produtos)
+
+
+
+def carregar_cepea_manual_series(produtos: list[str] | None = None) -> pd.DataFrame:
+    """Carrega somente a tabela nova CEPEA manual oficial.
+
+    Fonte aceita: app.vw_cepea_tilapia_manual_historico.
+    Não há fallback para dw.fato_indicador_setorial, porque essa camada pode conter
+    registros legados/proxy/automáticos. O DW é atualizado na importação apenas para
+    compatibilidade, mas a tela usa a tabela manual auditável.
+    """
+    cols = [
+        "data", "fonte", "subcategoria", "produto", "uf", "regiao",
+        "valor", "unidade", "periodicidade", "url_fonte", "observacao", "data_coleta"
+    ]
+    try:
+        engine = get_engine()
+        with engine.begin() as conn:
+            if not _relation_exists(conn, "app.vw_cepea_tilapia_manual_historico"):
+                return pd.DataFrame(columns=cols)
+            df = pd.read_sql(text("""
+                SELECT
+                    data, fonte, subcategoria, produto, uf, regiao, valor, unidade,
+                    'mensal' AS periodicidade, url_fonte, observacao, data_coleta
+                FROM app.vw_cepea_tilapia_manual_historico
+                WHERE fonte = 'CEPEA'
+                  AND subcategoria = 'oficial_arquivo_manual'
+                ORDER BY data DESC, produto, regiao
+            """), conn)
+    except Exception:
+        return pd.DataFrame(columns=cols)
 
     if produtos and not df.empty and "produto" in df.columns:
         df = df[df["produto"].astype(str).isin(produtos)].copy()
@@ -232,23 +261,33 @@ def carregar_cepea_series(produtos: list[str] | None = None) -> pd.DataFrame:
     return df
 
 
+
 def carregar_comparacao_cepea_ceagesp(produtos: list[str] | None = None, fontes: list[str] | None = None) -> pd.DataFrame:
-    fontes = fontes or ["CEPEA", "CEAGESP"]
+    """Comparação de preços somente com bases manuais novas.
+
+    Aliases antigos ("CEPEA" e "CEAGESP") são redirecionados para as bases manuais,
+    nunca para scraper/proxy/automático.
+    """
+    fontes = fontes or ["CEPEA Manual", "CEAGESP Manual"]
+    fontes_norm = {str(f).strip().upper() for f in fontes}
     frames = []
 
-    if "CEPEA" in fontes:
-        df_cepea = carregar_cepea_series(produtos=produtos)
-        if not df_cepea.empty:
-            tmp = df_cepea.rename(columns={"data": "data_referencia", "valor": "preco"})
-            tmp["origem"] = "CEPEA"
-            tmp["preco_tipo"] = tmp.get("indicador", "CEPEA")
+    usar_cepea_manual = bool(fontes_norm & {"CEPEA", "CEPEA MANUAL", "CEPEA_MANUAL"})
+    usar_ceagesp_manual = bool(fontes_norm & {"CEAGESP", "CEAGESP MANUAL", "CEAGESP_PESCADOS"})
+
+    if usar_cepea_manual:
+        df_cepea_manual = carregar_cepea_manual_series(produtos=produtos)
+        if not df_cepea_manual.empty:
+            tmp = df_cepea_manual.rename(columns={"data": "data_referencia", "valor": "preco"})
+            tmp["origem"] = "CEPEA Manual"
+            tmp["preco_tipo"] = tmp.get("regiao", "CEPEA Manual")
             frames.append(tmp[["data_referencia", "origem", "produto", "preco", "unidade", "preco_tipo"]])
 
-    if "CEAGESP" in fontes:
+    if usar_ceagesp_manual:
         df_ceagesp = carregar_base_ceagesp_historico()
         if not df_ceagesp.empty:
             tmp = df_ceagesp.rename(columns={"preco_comum": "preco"})
-            tmp["origem"] = "CEAGESP"
+            tmp["origem"] = "CEAGESP Manual"
             tmp["preco_tipo"] = tmp.get("classificacao", "Preço comum")
             if produtos and "produto" in tmp.columns:
                 tmp = tmp[tmp["produto"].astype(str).isin(produtos)].copy()

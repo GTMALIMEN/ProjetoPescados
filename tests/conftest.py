@@ -1,7 +1,19 @@
-from pathlib import Path
-import sys
+import importlib.util
+import pytest
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+_DB_TEST_FILES = {
+    "test_database_connection.py",
+    "test_database_tables.py",
+    "test_database_views.py",
+    "test_pipeline_metadata.py",
+    "test_score_weights.py",
+}
 
-if str(ROOT_DIR) not in sys.path:
-    sys.path.insert(0, str(ROOT_DIR))
+
+def pytest_collection_modifyitems(config, items):
+    if importlib.util.find_spec("psycopg") is not None:
+        return
+    skip_db = pytest.mark.skip(reason="psycopg não instalado neste ambiente de teste; rode localmente com requirements.txt para validar banco.")
+    for item in items:
+        if item.path.name in _DB_TEST_FILES or "db" in item.keywords:
+            item.add_marker(skip_db)

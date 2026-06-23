@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS app.fato_receita_manual_expansao (
     grupo_produto TEXT,
     categoria_pescado TEXT,
     vlr_total_liquido NUMERIC,
+    volume NUMERIC,
+    produto TEXT,
+    top TEXT,
     fonte_arquivo TEXT,
     hash_linha TEXT,
     data_carga TIMESTAMP DEFAULT NOW()
@@ -31,6 +34,9 @@ ALTER TABLE app.fato_receita_manual_expansao
     ADD COLUMN IF NOT EXISTS grupo_produto TEXT,
     ADD COLUMN IF NOT EXISTS categoria_pescado TEXT,
     ADD COLUMN IF NOT EXISTS vlr_total_liquido NUMERIC,
+    ADD COLUMN IF NOT EXISTS volume NUMERIC,
+    ADD COLUMN IF NOT EXISTS produto TEXT,
+    ADD COLUMN IF NOT EXISTS top TEXT,
     ADD COLUMN IF NOT EXISTS fonte_arquivo TEXT,
     ADD COLUMN IF NOT EXISTS hash_linha TEXT,
     ADD COLUMN IF NOT EXISTS data_carga TIMESTAMP DEFAULT NOW();
@@ -69,6 +75,9 @@ SELECT
     grupo_produto,
     categoria_pescado,
     vlr_total_liquido,
+    volume,
+    produto,
+    top,
     fonte_arquivo,
     data_carga
 FROM app.fato_receita_manual_expansao

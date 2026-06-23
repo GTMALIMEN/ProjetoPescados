@@ -1,3 +1,9 @@
+
+
+## Modo manual controlado CEPEA/CEAGESP
+
+CEPEA e CEAGESP não usam mais proxy, scraper, Playwright ou coleta automática. Use somente a aba **Importações Manuais** com os modelos novos e o modo **Limpar base antiga e carregar somente este arquivo**.
+
 https://projetopescados-wscfj2qoztdevsyeqdrzyi.streamlit.app/
 # Radar Pescados IA
 
@@ -260,7 +266,7 @@ scripts/load_vendas_file.py                Carrega vendas internas
 scripts/load_indicadores_setoriais_file.py Carrega indicadores setoriais por arquivo
 scripts/run_comex_pescados.py              Carrega Comex Stat
 scripts/load_conab_file.py                 Carrega arquivo CONAB
-scripts/load_cepea_file.py                 Carrega arquivo CEPEA
+scripts/load_cepea_manual_file.py          Carrega CEPEA Manual Oficial
 scripts/calculate_indices_setoriais.py     Calcula índices de proteínas/grãos
 scripts/calculate_scores.py                Calcula scores regionais
 scripts/generate_recommendations.py        Gera recomendações
@@ -652,7 +658,7 @@ A interface foi alinhada ao plano da versão 2.0 e passou a diferenciar dado rea
 ```bat
 python scripts/apply_expansao_v2_publica.py
 python scripts/run_expansao_publica.py --estados MG,SP,RJ,ES
-python scripts/run_ceagesp_pescados.py
+REM CEAGESP automático removido; use Importações Manuais > CEAGESP Manual
 python scripts/diagnosticar_v2_plano.py
 ```
 
@@ -702,7 +708,7 @@ Comandos:
 
 ```bat
 pip install -r requirements.txt
-python scripts\run_ceagesp_pescados.py
+REM CEAGESP automático removido; use Importações Manuais > CEAGESP Manual
 python scripts\diagnosticar_v2_plano.py
 streamlit run app.py
 ```
@@ -740,7 +746,7 @@ docs/IMPORTADORES_MANUAIS_E_IDH.md
 ```bat
 python scripts\apply_fontes_automaticas.py
 python scripts\run_idh_automatico.py
-python scripts\run_ceagesp_automatico.py --dias-busca 21
+REM CEAGESP automático removido; use Importações Manuais > CEAGESP Manual
 python scripts\diagnosticar_v2_plano.py
 ```
 
@@ -855,7 +861,7 @@ Comandos:
 ```bat
 python scripts\corrigir_idh_aliases.py
 python scripts\diagnosticar_v2_plano.py
-python scripts\run_ceagesp_automatico.py --dias-busca 60 --timeout 8 --max-tentativas 12
+REM CEAGESP automático removido; use Importações Manuais > CEAGESP Manual
 ```
 
 Documentação:
@@ -875,7 +881,7 @@ Comandos:
 python scripts\preencher_idh_faltantes_ibge.py
 python scripts\diagnosticar_v2_plano.py
 
-python scripts\run_ceagesp_automatico.py --dias-busca 60 --timeout 8 --max-tentativas 20
+REM CEAGESP automático removido; use Importações Manuais > CEAGESP Manual
 python scripts\diagnosticar_v2_plano.py
 ```
 
@@ -888,20 +894,20 @@ docs/HOTFIX_IDH_IBGE_CEAGESP_FORM.md
 
 ---
 
-# Hotfix CEAGESP — Playwright
+# CEAGESP — Manual Controlado
 
 Quando `requests` não retorna a tabela da CEAGESP, use o coletor com navegador:
 
 ```bat
 scripts\instalar_playwright_ceagesp.bat
-python scripts\run_ceagesp_playwright.py --dias-busca 60 --max-datas 12
+REM Playwright CEAGESP removido; use Importações Manuais > CEAGESP Manual
 python scripts\diagnosticar_v2_plano.py
 ```
 
 Para depurar com navegador visível:
 
 ```bat
-python scripts\run_ceagesp_playwright.py --dias-busca 60 --max-datas 5 --visivel
+REM Playwright CEAGESP removido; use Importações Manuais > CEAGESP Manual
 ```
 
 Documentação:

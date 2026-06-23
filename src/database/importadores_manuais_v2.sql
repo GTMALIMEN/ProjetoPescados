@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS app.importacao_manual_log (
 CREATE INDEX IF NOT EXISTS idx_importacao_manual_log_tipo_data
 ON app.importacao_manual_log (tipo_importacao, executado_em DESC);
 
+DROP VIEW IF EXISTS app.vw_importacao_manual_resumo CASCADE;
+
 CREATE OR REPLACE VIEW app.vw_importacao_manual_resumo AS
 SELECT
     tipo_importacao,

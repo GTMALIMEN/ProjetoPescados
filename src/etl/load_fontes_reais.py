@@ -398,6 +398,7 @@ def carregar_arquivo_fonte_real(
     categoria_default: str,
     produto_default: str,
     uf_default: str = "MG",
+    subcategoria_default: str = "fonte_real",
 ) -> None:
     """
     Loader genérico para planilhas reais baixadas manualmente.
@@ -446,7 +447,7 @@ def carregar_arquivo_fonte_real(
                 "fonte": fonte,
                 "indicador": indicador,
                 "categoria": categoria_default,
-                "subcategoria": "fonte_real",
+                "subcategoria": subcategoria_default,
                 "produto": produto,
                 "uf": uf,
                 "regiao": "",
@@ -490,6 +491,7 @@ def main():
     p_file.add_argument("--categoria", required=True)
     p_file.add_argument("--produto-default", required=True)
     p_file.add_argument("--uf-default", default="MG")
+    p_file.add_argument("--subcategoria-default", default="fonte_real")
 
     args = parser.parse_args()
 
@@ -502,6 +504,7 @@ def main():
             categoria_default=args.categoria,
             produto_default=args.produto_default,
             uf_default=args.uf_default,
+            subcategoria_default=args.subcategoria_default,
         )
 
 

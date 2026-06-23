@@ -16,11 +16,13 @@ def test_files_exist():
         assert (ROOT_DIR / rel).exists(), rel
 
 
-def test_app_has_cepea_ceagesp():
+def test_app_has_manual_cepea_ceagesp():
     text = (ROOT_DIR / "app.py").read_text(encoding="utf-8")
-    assert "Comparação CEPEA x CEAGESP" in text
+    assert "CEPEA Manual" in text
+    assert "CEAGESP Manual" in text
     assert "carregar_comparacao_cepea_ceagesp" in text
-    assert "carregar_cepea_series" in text
+    assert "carregar_cepea_manual_series" in text
+    assert "carregar_cepea_series" not in text
 
 
 def test_expansao_service_has_receita_manual_and_idc():

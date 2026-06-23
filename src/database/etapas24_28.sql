@@ -84,15 +84,21 @@ CREATE TABLE IF NOT EXISTS app.fato_pdv_proxy_municipio (
 CREATE INDEX IF NOT EXISTS idx_pdv_proxy_uf
 ON app.fato_pdv_proxy_municipio (uf);
 
+DROP VIEW IF EXISTS app.vw_demografia_renda_municipio CASCADE;
+
 CREATE OR REPLACE VIEW app.vw_demografia_renda_municipio AS
 SELECT *
 FROM app.fato_demografia_renda_municipio
 ORDER BY uf, municipio;
 
+DROP VIEW IF EXISTS app.vw_pdv_proxy_municipio CASCADE;
+
 CREATE OR REPLACE VIEW app.vw_pdv_proxy_municipio AS
 SELECT *
 FROM app.fato_pdv_proxy_municipio
 ORDER BY uf, municipio;
+
+DROP VIEW IF EXISTS app.vw_comex_stat_status_atual CASCADE;
 
 CREATE OR REPLACE VIEW app.vw_comex_stat_status_atual AS
 WITH ultimo_sucesso AS (
@@ -148,6 +154,8 @@ FROM resumo r
 LEFT JOIN ultimo_sucesso s ON TRUE
 LEFT JOIN ultimo_erro e ON TRUE;
 
+DROP VIEW IF EXISTS app.vw_fontes_reais_cargas_sucesso CASCADE;
+
 CREATE OR REPLACE VIEW app.vw_fontes_reais_cargas_sucesso AS
 SELECT
     fonte,
@@ -160,6 +168,8 @@ SELECT
 FROM app.etl_fonte_real_resumo
 WHERE status = 'SUCESSO'
 ORDER BY data_execucao DESC;
+
+DROP VIEW IF EXISTS app.vw_fontes_reais_cargas_erro CASCADE;
 
 CREATE OR REPLACE VIEW app.vw_fontes_reais_cargas_erro AS
 SELECT
@@ -174,6 +184,8 @@ FROM app.etl_fonte_real_resumo
 WHERE status <> 'SUCESSO'
 ORDER BY data_execucao DESC;
 
+DROP VIEW IF EXISTS app.vw_compra_manual_resumo CASCADE;
+
 CREATE OR REPLACE VIEW app.vw_compra_manual_resumo AS
 SELECT
     COUNT(*) AS qtd_registros,
@@ -184,6 +196,8 @@ SELECT
     MAX(data) AS ultima_data,
     AVG(preco_compra) AS preco_medio_geral
 FROM app.fato_compra_manual;
+
+DROP VIEW IF EXISTS app.vw_previa_vendedores_resumo CASCADE;
 
 CREATE OR REPLACE VIEW app.vw_previa_vendedores_resumo AS
 SELECT

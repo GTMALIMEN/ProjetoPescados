@@ -88,10 +88,10 @@ def build_pipeline_steps(
     )
 
     add(
-        "Carregar CEPEA arquivo",
-        [py, _script("load_cepea_file.py"), "--arquivo", cepea_file or "", "--categoria", "proteina", "--produto-default", "Tilápia", "--uf-default", uf],
+        "Carregar CEPEA manual oficial",
+        [py, _script("load_cepea_manual_file.py"), "--criar-estrutura", "--substituir-tudo", "--arquivo", cepea_file or ""],
         False,
-        bool(cepea_file) and (ROOT_DIR / "scripts/load_cepea_file.py").exists(),
+        bool(cepea_file) and (ROOT_DIR / "scripts/load_cepea_manual_file.py").exists(),
     )
 
     add(

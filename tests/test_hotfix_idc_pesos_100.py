@@ -14,13 +14,13 @@ def test_app_has_weight_normalizer():
 def test_service_uses_all_factors():
     text = (ROOT_DIR / "src/services/expansao_service.py").read_text(encoding="utf-8")
     for col in [
-        "fator_populacao",
         "fator_pib",
+        "fator_pop_30_44",
         "fator_masculino",
         "fator_feminino",
-        "fator_faixa_etaria",
-        "fator_renda",
-        "fator_pdv",
+        "fator_restaurantes",
+        "fator_pop_15_29",
+        "fator_pdv_total",
     ]:
         assert col in text
 

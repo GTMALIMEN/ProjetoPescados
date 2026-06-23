@@ -1,0 +1,240 @@
+RELATÓRIO DE CORREÇÃO — APP PESCADOS / RADAR ECONÔMICO / IDC
+
+Data: 25/06/2026
+Pacote corrigido: Pescados_corrigido_app.zip
+
+1. OBJETIVO DA CORREÇÃO
+
+A correção foi focada primeiro em deixar o app estável para avançar depois nas análises/dados:
+
+- remover bloqueios de compilação;
+- corrigir imports ausentes;
+- alinhar o simulador/exportação do IDC com a fórmula oficial atual;
+- evitar erro no botão de exportação;
+- deixar o pacote limpo, sem .env, .git, .venv, pycache e backups quebrados.
+
+2. ARQUIVOS AJUSTADOS
+
+Principais arquivos alterados:
+
+- app.py
+- src/services/expansao_service.py
+- src/services/mapas_service.py
+- src/services/previsao_mercado_service.py
+- scripts/corrigir_hover_margin_pool_ibge_seguro.py
+- scripts/hotfix_classes_renda_distribuicao.py
+
+3. CORREÇÕES FEITAS
+
+3.1 Scripts quebrados
+
+Foram corrigidos dois scripts que impediam a compilação completa:
+
+- scripts/corrigir_hover_margin_pool_ibge_seguro.py
+  Problema: erro de sintaxe por trecho corrompido.
+  Correção: script refeito com função compila(), main(), backup e validação segura.
+
+- scripts/hotfix_classes_renda_distribuicao.py
+  Problema: string quebrada em Path("src/services/...").
+  Correção: script refeito para remover blocos antigos e inserir bloco de distribuição de classe de renda de forma segura.
+
+3.2 Mapas
+
+Arquivo ajustado:
+
+- src/services/mapas_service.py
+
+Correções:
+
+- restaurado REGIAO_CORES para compatibilidade com mapas/Folium antigos;
+- adicionada função _linear_colormap();
+- mantida compatibilidade quando branca estiver ou não instalado.
+
+Resultado:
+
+- testes de mapas passaram.
+
+3.3 Exportação do Excel da Análise de Expansão
+
+Arquivo ajustado:
+
+- app.py
+
+Problema:
+
+- o botão "Gerar Excel — Análise de Expansão" chamava exportar_bases_expansao_excel(parametros=parametros, ...), mas a variável parametros não estava definida no bloco.
+
+Correção:
+
+- criada variável parametros antes do botão de exportação com os pesos atuais do simulador:
+  - peso_pib
+  - peso_pop_30_44
+  - peso_masculino
+  - peso_feminino
+  - peso_restaurantes
+  - peso_pop_15_29
+  - peso_pdv_total
+
+3.4 Simulador IDC
+
+Arquivo ajustado:
+
+- src/services/expansao_service.py
+
+Correção principal:
+
+- adicionada definição canônica final de simular_idc_expansao(), sobrescrevendo versões antigas carregadas por hotfix.
+
+Fórmula oficial aplicada:
+
+IDC = PIB 25%
+    + População 30-44 40%
+    + População masculina 10%
+    + População feminina 0%
+    + Restaurantes 10%
+    + População 15-29 10%
+    + Total PDV 5%
+
+Regras mantidas:
+
+- soma dos pesos precisa fechar exatamente 100%;
+- se a soma não fechar 100%, a simulação fica bloqueada e preserva o IDC base;
+- fatores são mantidos em escala 0-100;
+- receita continua complementar e não altera o IDC base;
+- parâmetros antigos ficam aceitos por compatibilidade, mas renda/PIB per capita não entram na fórmula oficial atual.
+
+3.5 Exportação canônica
+
+Arquivo ajustado:
+
+- src/services/expansao_service.py
+
+Correção:
+
+- adicionada nova exportar_bases_expansao_excel() alinhada ao simulador novo;
+- o dicionário da exportação agora descreve a fórmula correta do IDC;
+- Classe A-E segue como reservado para distribuição oficial granular;
+- POF regional N2 deve permanecer em colunas regionais de referência.
+
+3.6 CEAGESP histórico
+
+Arquivo ajustado:
+
+- src/services/previsao_mercado_service.py
+
+Problema:
+
+- a função carregar_base_ceagesp_historico() quebrava quando o driver PostgreSQL ou banco não estavam disponíveis no ambiente de teste.
+
+Correção:
+
+- agora a função retorna DataFrame vazio com schema esperado quando não houver banco/driver disponível.
+
+Isso evita o app quebrar em ambiente ainda não configurado.
+
+4. VALIDAÇÕES REALIZADAS
+
+4.1 Compilação
+
+Comandos executados:
+
+python -m py_compile app.py
+python -m py_compile src/services/expansao_service.py
+python -m py_compile src/services/mapas_service.py
+python -m py_compile src/services/previsao_mercado_service.py
+python -m py_compile scripts/corrigir_hover_margin_pool_ibge_seguro.py
+python -m py_compile scripts/hotfix_classes_renda_distribuicao.py
+
+Resultado:
+
+OK.
+
+Também foi executado:
+
+compileall em src: OK
+compileall em scripts: OK
+
+4.2 Testes executados com sucesso
+
+Comando executado no pacote limpo:
+
+pytest -q tests/test_mapas_colormap.py tests/test_mapas_folium.py tests/test_etapa22_v2_services.py tests/test_hotfix_idc_pib_per_capita.py tests/test_hotfix_v2_100_alinhado.py tests/test_whatif_rules.py tests/test_math_rules.py
+
+Resultado:
+
+19 passed.
+
+5. O QUE AINDA NÃO FOI VALIDADO 100%
+
+5.1 Banco real
+
+Não foi possível validar linha por linha os dados oficiais já gravados no PostgreSQL/Supabase porque o ZIP não trouxe dump do banco nem conexão ativa local.
+
+Para validar no seu ambiente, rode:
+
+python scripts/validar_dados_completo.py
+pytest -q
+
+5.2 Testes que dependem de banco
+
+No ambiente de correção, o pytest completo ainda depende de:
+
+- driver psycopg instalado;
+- PostgreSQL/Supabase configurado;
+- tabelas/views criadas;
+- dados carregados.
+
+O requirements.txt já possui psycopg[binary]. No seu ambiente, rode primeiro:
+
+pip install -r requirements.txt
+
+Depois rode:
+
+pytest -q
+
+5.3 Testes antigos conflitantes
+
+Existe teste antigo esperando fator_faixa_etaria, mas outro teste mais novo exige que fator_faixa_etaria não exista mais. Como os dois são contraditórios, foi mantida a regra correta atual:
+
+- não usar fator_faixa_etaria;
+- usar pct_30_44 e pct_15_29 conforme documentação atual.
+
+6. PACOTE LIMPO
+
+O ZIP corrigido foi gerado sem:
+
+- .env
+- .git
+- .venv
+- .pytest_cache
+- __pycache__
+- arquivos .pyc
+- backups .bak
+- arquivos quebrados do app
+
+Isso reduz risco de vazar senha e deixa o pacote mais leve.
+
+7. PRÓXIMO PASSO RECOMENDADO
+
+Agora o próximo passo é rodar no seu computador:
+
+1) Extrair o ZIP corrigido.
+2) Criar/ativar a venv.
+3) Instalar requirements.
+4) Configurar .env a partir de .env.example.
+5) Rodar:
+
+python -m streamlit run app.py
+
+6) Depois rodar:
+
+python scripts/validar_dados_completo.py
+pytest -q
+
+Quando o app abrir, o próximo foco deve ser:
+
+- limpar definitivamente expansao_service.py, removendo hotfixes antigos;
+- separar regra do IDC em módulo único;
+- criar validação linha por linha no banco;
+- criar tela de qualidade dos dados oficiais;
+- revisar as cargas oficiais IBGE/SIDRA/BCB/Comex com auditoria.

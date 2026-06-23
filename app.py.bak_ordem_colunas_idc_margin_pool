@@ -1,0 +1,1351 @@
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+from src.services.indicadores_service import carregar_series_dw, listar_indicadores_disponiveis
+from src.services.geografia_service import listar_ufs, carregar_municipios, resumo_geografia, resumo_regiao_comercial
+from src.services.setorial_service import (
+    carregar_indices_setoriais_atuais,
+    carregar_series_setoriais,
+    listar_produtos_setoriais,
+    resumo_setorial,
+)
+from src.services.fontes_reais_service import carregar_fontes_reais_resumo, carregar_fontes_reais_cargas, carregar_comex_series, carregar_comex_status_atual, carregar_fontes_reais_cargas_sucesso, carregar_fontes_reais_cargas_erro
+from src.services.whatif_service import WhatIfParams, carregar_regioes_scores, simular_regiao, carregar_ultimas_simulacoes
+from src.services.active_alerts_service import carregar_alertas_ativos, carregar_resumo_alertas_area, carregar_resumo_alertas_tipo
+from src.services.executive_report_service import gerar_relatorio_executivo, carregar_relatorios_recentes
+from src.services.health_service import carregar_saude_sistema, carregar_ultimas_execucoes, carregar_resumo_fonte, carregar_controle_carga
+from src.services.mapas_service import dados_mapa_brasil_ufs, dados_mapa_mg_regioes, fig_mapa_brasil_uf, fig_mapa_mg_regioes
+from src.services.expansao_service import (
+    carregar_resumo_estado_expansao,
+    carregar_microrregiao_expansao,
+    carregar_perfil_demografico_expansao,
+    carregar_receita_categoria_expansao,
+    calcular_idc_expansao,
+    simular_idc_expansao,
+    exportar_bases_expansao_excel,
+    carregar_regioes_economicas_expansao,
+    carregar_municipios_regiao_economica_expansao,
+)
+from src.services.importacoes_manuais_service import (
+    CONFIGS,
+    configs_importacao,
+    gerar_template_excel,
+    validar_base,
+    importar_base_manual,
+    carregar_historico_importacoes,
+    carregar_resumo_mercado_privado,
+    carregar_curva_mercado_privado,
+    carregar_correlacao_mercado_idc,
+    sugerir_pesos_idc_por_correlacao,
+)
+from src.services.previsao_mercado_service import (
+    carregar_radar_economico_ultimo_ano,
+    resumo_radar_economico_ultimo_ano,
+    carregar_proteinas_graos_unificado,
+    carregar_base_ceagesp_historico,
+    carregar_base_compra_manual,
+    carregar_base_previa_vendedores,
+    carregar_diagnostico_v2_plano,
+    carregar_comparacao_cepea_ceagesp,
+    carregar_cepea_series,
+    carregar_receita_manual_expansao_resumo,
+    carregar_receita_manual_expansao_base,
+    exportar_bases_previsao_mercado_excel,
+)
+
+
+def br_money(value) -> str:
+    if value is None or pd.isna(value):
+        return "N/A"
+    return "R$ " + f"{float(value):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def br_num(value) -> str:
+    if value is None or pd.isna(value):
+        return "N/A"
+    return f"{float(value):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def safe_metric(value, default="N/A"):
+    if isinstance(value, pd.Series):
+        value = value.sum()
+    if isinstance(value, (pd.DataFrame, list, tuple, dict)):
+        return default
+    if value is None or pd.isna(value):
+        return default
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    return value
+
+
+def df_display(df: pd.DataFrame) -> pd.DataFrame:
+    if df is None or not isinstance(df, pd.DataFrame):
+        return pd.DataFrame()
+
+    out = df.copy()
+
+    # Padroniza números em 4 casas decimais nas tabelas.
+    for col in out.columns:
+        if pd.api.types.is_numeric_dtype(out[col]):
+            try:
+                out[col] = pd.to_numeric(out[col], errors="coerce").round(4)
+            except Exception:
+                pass
+
+    # Evita erro/warning do Arrow quando uma coluna object mistura float + string.
+    for col in out.columns:
+        if out[col].dtype == "object":
+            out[col] = out[col].where(pd.notna(out[col]), "N/A").astype(str)
+
+    return out
+
+
+def dataframe_or_warning(df, warning: str):
+    if df is None:
+        st.warning(warning)
+        return
+    if isinstance(df, dict):
+        if not df:
+            st.warning(warning)
+        else:
+            st.dataframe(pd.DataFrame([df]), use_container_width=True)
+        return
+    if not isinstance(df, pd.DataFrame):
+        st.write(df)
+        return
+    if df.empty:
+        st.warning(warning)
+    else:
+        st.dataframe(df_display(df), use_container_width=True)
+
+
+
+
+# ============================================================
+# Fallbacks Etapas 27/28 — evita NameError se service antigo estiver carregado
+# ============================================================
+def carregar_base_compra_resumo():
+    try:
+        from src.database.connection import get_engine
+        from sqlalchemy import text
+        import pandas as pd
+        engine = get_engine()
+        with engine.begin() as conn:
+            existe = conn.execute(text("SELECT to_regclass('app.vw_compra_manual_resumo') IS NOT NULL")).scalar()
+            if not existe:
+                return pd.DataFrame()
+            return pd.read_sql(text("SELECT * FROM app.vw_compra_manual_resumo"), conn)
+    except Exception:
+        import pandas as pd
+        return pd.DataFrame()
+
+
+def carregar_previa_vendedores_resumo():
+    try:
+        from src.database.connection import get_engine
+        from sqlalchemy import text
+        import pandas as pd
+        engine = get_engine()
+        with engine.begin() as conn:
+            existe = conn.execute(text("SELECT to_regclass('app.vw_previa_vendedores_resumo') IS NOT NULL")).scalar()
+            if not existe:
+                return pd.DataFrame()
+            return pd.read_sql(text("SELECT * FROM app.vw_previa_vendedores_resumo"), conn)
+    except Exception:
+        import pandas as pd
+        return pd.DataFrame()
+
+
+
+
+# ============================================================
+# Helpers de layout/filtros — consolidação V2.1
+# ============================================================
+def _date_range_from_period(periodo: str):
+    """Retorna intervalo de datas para filtros visuais."""
+    from datetime import date, timedelta
+    hoje = date.today()
+    if periodo == "Últimos 3 meses":
+        return hoje - timedelta(days=90), hoje
+    if periodo == "Últimos 6 meses":
+        return hoje - timedelta(days=180), hoje
+    if periodo == "Últimos 12 meses":
+        return hoje - timedelta(days=365), hoje
+    if periodo == "Últimos 24 meses":
+        return hoje - timedelta(days=730), hoje
+    if periodo == "Ano atual":
+        return date(hoje.year, 1, 1), hoje
+    return None, None
+
+
+def _filter_df_by_period(df: pd.DataFrame, data_inicio=None, data_fim=None, possible_cols=None) -> pd.DataFrame:
+    """Filtra dataframe por período procurando colunas comuns de data."""
+    if df is None or not isinstance(df, pd.DataFrame) or df.empty:
+        return pd.DataFrame() if df is None else df
+
+    possible_cols = possible_cols or [
+        "data", "mes", "data_referencia", "data_venda", "data_compra",
+        "data_execucao", "data_coleta", "ultima_data", "primeira_data"
+    ]
+
+    out = df.copy()
+    date_col = None
+    for col in possible_cols:
+        if col in out.columns:
+            date_col = col
+            break
+
+    if date_col is None:
+        return out
+
+    dt = pd.to_datetime(out[date_col], errors="coerce")
+    mask = pd.Series(True, index=out.index)
+
+    if data_inicio is not None:
+        mask &= dt.dt.date >= data_inicio
+    if data_fim is not None:
+        mask &= dt.dt.date <= data_fim
+
+    return out[mask].copy()
+
+
+def _drop_duplicate_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Remove colunas duplicadas ou sufixos de merge visual, sem alterar o banco."""
+    if df is None or not isinstance(df, pd.DataFrame) or df.empty:
+        return pd.DataFrame() if df is None else df
+
+    out = df.copy()
+    out = out.loc[:, ~out.columns.duplicated()]
+
+    for suffix in ["_x", "_y"]:
+        dup_cols = [c for c in out.columns if c.endswith(suffix)]
+        for col in dup_cols:
+            base = col[:-2]
+            if base in out.columns:
+                out = out.drop(columns=[col])
+    return out
+
+
+
+
+# ============================================================
+# Simulador IDC — pesos livres, validação em 100%
+# ============================================================
+PESOS_IDC_DEFAULT = {
+    "idc_w_pop": 30,
+    "idc_w_pib": 25,
+    "idc_w_renda": 15,
+    "idc_w_pib_per_capita": 15,
+    "idc_w_fem": 5,
+    "idc_w_masc": 5,
+    "idc_w_pdv": 5,
+}
+
+
+def _inicializar_pesos_idc():
+    """Inicializa pesos padrão. Não redistribui automaticamente."""
+    for key, value in PESOS_IDC_DEFAULT.items():
+        if key not in st.session_state:
+            st.session_state[key] = int(value)
+
+
+def _pesos_idc_atuais() -> dict:
+    _inicializar_pesos_idc()
+    return {k: int(st.session_state.get(k, 0)) for k in PESOS_IDC_DEFAULT}
+
+
+def _total_pesos_idc() -> int:
+    return int(sum(_pesos_idc_atuais().values()))
+
+
+def _html_status_pesos_idc(total: int) -> str:
+    ok = total == 100
+    cor = "#00C853" if ok else "#D50000"
+    fundo = "rgba(0,200,83,0.12)" if ok else "rgba(213,0,0,0.12)"
+    texto = "OK para simular" if ok else "Ajuste os pesos para fechar 100%"
+    return f"""
+    <div style="
+        padding: 14px 18px;
+        border-radius: 12px;
+        border: 1px solid {cor};
+        background: {fundo};
+        margin: 8px 0 16px 0;
+        font-weight: 700;
+        color: {cor};
+        font-size: 18px;
+    ">
+        Total dos pesos: {total}% — {texto}
+    </div>
+    """
+
+def dataframe_periodo(df: pd.DataFrame, mensagem: str, data_inicio=None, data_fim=None):
+    """Exibe dataframe filtrado por período e limpo de duplicidades visuais."""
+    df_filtrado = _drop_duplicate_columns(_filter_df_by_period(df, data_inicio, data_fim))
+    return dataframe_or_warning(df_filtrado, mensagem)
+
+
+
+st.set_page_config(page_title="Radar Pescados IA", page_icon="🐟", layout="wide")
+
+st.title("🐟 Radar Pescados IA")
+st.caption("Versão 2.0 — Banco Central + IBGE/SIDRA + Expansão + Previsão de Mercado + Proteínas/Grãos + CEAGESP + PostgreSQL + Streamlit")
+
+st.markdown("""
+<style>
+/* Etapa 22 — separação visual principal */
+div[data-testid="stTabs"] > div[role="tablist"] {
+    gap: 10px;
+}
+div[data-testid="stTabs"] > div[role="tablist"] button[role="tab"] {
+    border-radius: 14px 14px 0 0;
+    padding: 10px 18px;
+    font-weight: 700;
+}
+.radar-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    gap: 18px;
+    margin: 12px 0 20px 0;
+}
+.radar-card {
+    border: 1px solid rgba(255, 203, 0, 0.28);
+    border-radius: 18px;
+    padding: 18px 20px;
+    background: rgba(255, 255, 255, 0.025);
+}
+.radar-card-title {
+    font-size: 1.08rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+.radar-card-desc {
+    opacity: 0.78;
+    font-size: 0.92rem;
+}
+@media (max-width: 900px) {
+    .radar-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
+
+area_expansao, area_previsao, area_importacoes = st.tabs([
+    "🌎 Análise de Expansão",
+    "📈 Análise Previsão de Mercado",
+    "📤 Importações Manuais",
+])
+
+with area_expansao:
+    st.markdown("""
+    <div class="radar-card-grid">
+        <div class="radar-card">
+            <div class="radar-card-title">🌎 Análise de Expansão</div>
+            <div class="radar-card-desc">
+                Frente estratégica para geografia, região comercial, população, PIB, IDH, IDC, margin pool e priorização de microrregiões.
+            </div>
+        </div>
+        <div class="radar-card">
+            <div class="radar-card-title">Ordem desta frente</div>
+            <div class="radar-card-desc">
+                Radar Econômico → Geografia IBGE → Análise de Expansão consolidada → What-if.
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    aba_economia, aba_geografia, aba_expansao, aba_whatif = st.tabs([
+        "📈 Radar Econômico",
+        "🗺️ Geografia IBGE",
+        "🌎 Análise de Expansão",
+        "🧪 What-if",
+    ])
+
+    # Região Comercial MG foi consolidada dentro da própria Análise de Expansão.
+    aba_regiao = aba_expansao
+
+with area_previsao:
+    st.markdown("""
+    <div class="radar-card-grid">
+        <div class="radar-card">
+            <div class="radar-card-title">📈 Análise Previsão de Mercado</div>
+            <div class="radar-card-desc">
+                Frente para proteínas, grãos, fontes reais, CEAGESP manual, base de compra, prévia de vendedores, alertas e relatórios.
+            </div>
+        </div>
+        <div class="radar-card">
+            <div class="radar-card-title">Ordem desta frente</div>
+            <div class="radar-card-desc">
+                Fontes Reais → Previsão de Mercado consolidada → Alertas → Relatório → Saúde.
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    aba_fontes_reais, aba_previsao, aba_alertas, aba_relatorio, aba_saude = st.tabs([
+        "🔌 Fontes Reais",
+        "📈 Análise Previsão de Mercado",
+        "🚨 Alertas Ativos",
+        "📄 Relatório Executivo",
+        "🩺 Saúde do Sistema",
+    ])
+
+    # Proteínas e Grãos foi consolidado dentro de Análise Previsão de Mercado.
+    aba_setorial = aba_previsao
+
+
+with area_importacoes:
+    st.subheader("📤 Importações Manuais")
+    st.info("Use esta área para subir bases privadas/manuais sem terminal. Todas as bases importadas são gravadas no PostgreSQL/Supabase e ficam registradas no histórico.")
+    try:
+        st.markdown("### Bases disponíveis")
+        dataframe_or_warning(configs_importacao(), "Sem configurações de importação.")
+
+        tipo_importacao = st.selectbox(
+            "Tipo de base",
+            list(CONFIGS.keys()),
+            format_func=lambda k: CONFIGS[k].label,
+            key="tipo_importacao_manual",
+        )
+        cfg = CONFIGS[tipo_importacao]
+
+        st.markdown(f"### {cfg.label}")
+        st.caption(cfg.description)
+        st.caption("Colunas obrigatórias: " + ", ".join(cfg.required))
+
+        modelo = gerar_template_excel(tipo_importacao)
+        st.download_button(
+            "Baixar modelo Excel",
+            data=modelo,
+            file_name=f"modelo_{tipo_importacao}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            key=f"download_modelo_{tipo_importacao}",
+        )
+
+        arquivo = st.file_uploader(
+            "Selecionar arquivo Excel ou CSV",
+            type=["xlsx", "xls", "csv"],
+            key=f"upload_{tipo_importacao}",
+        )
+
+        modo_importacao = st.radio(
+            "Modo de importação",
+            ["adicionar", "substituir_periodo"],
+            format_func=lambda x: "Adicionar dados" if x == "adicionar" else "Substituir período existente do arquivo",
+            horizontal=True,
+            key=f"modo_{tipo_importacao}",
+        )
+
+        usuario_importacao = st.text_input("Usuário/importador", value="Marcos", key="usuario_importacao_manual")
+
+        if arquivo is not None:
+            try:
+                if arquivo.name.lower().endswith(".csv"):
+                    df_preview = pd.read_csv(arquivo, sep=None, engine="python")
+                else:
+                    df_preview = pd.read_excel(arquivo)
+                arquivo.seek(0)
+                df_norm, erros = validar_base(tipo_importacao, df_preview)
+                st.markdown("#### Prévia do arquivo")
+                dataframe_or_warning(df_norm.head(30), "Arquivo sem dados.")
+                if erros:
+                    st.error("Validação encontrou problemas:")
+                    for erro in erros:
+                        st.write("- " + erro)
+                else:
+                    st.success("Arquivo validado. Pronto para importar.")
+                    if st.button("Importar base para o banco", key=f"btn_importar_{tipo_importacao}", type="primary"):
+                        resultado = importar_base_manual(tipo_importacao, arquivo, usuario=usuario_importacao, modo=modo_importacao)
+                        if resultado.get("status") == "SUCESSO":
+                            st.success(f"Importação concluída: {resultado.get('registros_processados')} registros processados.")
+                        else:
+                            st.error(f"Importação não concluída: {resultado.get('status')}")
+                            st.json(resultado)
+            except Exception as exc:
+                st.error("Erro ao ler/importar arquivo.")
+                st.exception(exc)
+
+        st.markdown("### Histórico de importações")
+        dataframe_or_warning(carregar_historico_importacoes(), "Sem importações registradas.")
+    except Exception as e:
+        st.error("Erro ao carregar Importações Manuais.")
+        st.exception(e)
+
+
+with aba_economia:
+    st.subheader("📈 Radar Econômico")
+    try:
+        indicadores = listar_indicadores_disponiveis()
+        if not indicadores:
+            st.warning("Nenhum dado econômico encontrado. Rode `python scripts/run_bcb_load.py`.")
+        else:
+            indicador = st.selectbox("Indicador", indicadores, key="radar_economico_indicador")
+            df = carregar_series_dw(indicador=indicador)
+            if df.empty:
+                st.warning("Nenhum dado encontrado para o indicador.")
+            else:
+                df["data"] = pd.to_datetime(df["data"])
+                df = df.sort_values("data")
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Último valor", br_num(df["valor"].iloc[-1]))
+                c2.metric("Última data", str(df["data"].iloc[-1].date()))
+                c3.metric("Registros", len(df))
+                fig = px.line(df, x="data", y="valor", title=f"Série histórica — {indicador}")
+                st.plotly_chart(fig, use_container_width=True)
+                with st.expander("Ver dados"):
+                    dataframe_or_warning(df, "Sem dados.")
+    except Exception as e:
+        st.error("Erro ao carregar Radar Econômico.")
+        st.exception(e)
+
+
+with aba_geografia:
+    st.subheader("🗺️ Geografia IBGE")
+    try:
+        df_resumo = resumo_geografia()
+        qtd_ufs = df_resumo["uf"].nunique() if isinstance(df_resumo, pd.DataFrame) and not df_resumo.empty else 0
+        qtd_municipios = df_resumo["qtd_municipios"].sum() if isinstance(df_resumo, pd.DataFrame) and "qtd_municipios" in df_resumo.columns else 0
+
+        c1, c2, c3 = st.columns(3)
+        c1.metric("UFs carregadas", int(qtd_ufs))
+        c2.metric("Municípios carregados", int(qtd_municipios))
+        c3.metric("Fonte", "IBGE")
+
+        ufs = ["Todas"] + listar_ufs()
+        uf_sel = st.selectbox("Selecionar UF", ufs, key="geo_uf")
+
+        st.markdown("### Mapa simplificado do Brasil por UF")
+        df_mapa_uf = dados_mapa_brasil_ufs()
+        metricas_br = {
+            "Municípios": "qtd_municipios",
+            "Faturamento": "faturamento",
+            "Volume KG": "volume_kg",
+            "Clientes": "qtd_clientes",
+            "Faturamento por município": "faturamento_por_municipio",
+        }
+        metrica_br_label = st.selectbox("Métrica do mapa Brasil", list(metricas_br.keys()), key="mapa_br_metrica")
+        fig_br = fig_mapa_brasil_uf(df_mapa_uf, metricas_br[metrica_br_label], f"Brasil por UF — {metrica_br_label}")
+        if fig_br is not None:
+            st.plotly_chart(fig_br, use_container_width=True)
+
+        st.markdown("### Resumo por UF")
+        dataframe_or_warning(df_resumo, "Sem resumo de geografia.")
+
+        st.markdown("### Municípios")
+        df_mun = carregar_municipios(uf=None if uf_sel == "Todas" else uf_sel)
+        dataframe_or_warning(df_mun, "Nenhum município carregado.")
+    except Exception as e:
+        st.error("Erro ao carregar Geografia IBGE.")
+        st.exception(e)
+
+
+with aba_expansao:
+    st.subheader("🌎 Análise de Expansão")
+    st.info("Aba alinhada ao plano V2: estado, microrregião, demografia, receita por categoria, IDC, margin pool, simulador e exportação.")
+
+    try:
+        diag = carregar_diagnostico_v2_plano()
+        if not diag.empty:
+            with st.expander("Diagnóstico Plano V2 x Dados carregados", expanded=False):
+                dataframe_or_warning(diag, "Sem diagnóstico.")
+
+        st.markdown("### Seleção geográfica da expansão")
+        c_estado, c_regiao = st.columns([1, 2])
+        with c_estado:
+            estado_base = st.selectbox("Estado base", ["Todos", "MG", "SP", "RJ", "ES"], index=1)
+
+        estados_exp = ["MG", "SP", "RJ", "ES"] if estado_base == "Todos" else [estado_base]
+
+        df_estado = carregar_resumo_estado_expansao(estados=estados_exp)
+        df_regioes = carregar_regioes_economicas_expansao(estados=estados_exp)
+
+        regioes_opcoes = ["Todas"]
+        if not df_regioes.empty and "regiao_economica" in df_regioes.columns:
+            regioes_opcoes += df_regioes["regiao_economica"].dropna().astype(str).sort_values().unique().tolist()
+
+        with c_regiao:
+            regiao_exp = st.selectbox(
+                "Região econômica/comercial",
+                regioes_opcoes,
+                index=0,
+                help="Todos carrega MG, SP, RJ e ES. MG usa a Região Comercial MG. SP/RJ/ES usam a mesorregião IBGE como região econômica inicial."
+            )
+
+        df_micro = carregar_microrregiao_expansao(estados=estados_exp)
+        df_demo = carregar_perfil_demografico_expansao(estados=estados_exp)
+        df_receita = carregar_receita_categoria_expansao(estados=estados_exp)
+        df_idc = calcular_idc_expansao(estados=estados_exp)
+        df_mun_regiao = carregar_municipios_regiao_economica_expansao(
+            estado=None if estado_base == "Todos" else estado_base,
+            regiao_economica=regiao_exp,
+        )
+
+        st.markdown("### Painel da Análise de Expansão")
+        tab_mapa, tab_demo, tab_receita, tab_idc, tab_simulador = st.tabs([
+            "Mapa e regiões",
+            "Perfil demográfico",
+            "Receita por categoria",
+            "IDC / Margin Pool",
+            "Simulador IDC",
+        ])
+
+        with tab_mapa:
+            st.markdown("#### Mapa comercial/econômico simplificado")
+            st.caption("MG usa mapa comercial próprio; SP/RJ/ES usam visão econômica simplificada. A seleção Todos consolida Sudeste.")
+            if estado_base == "MG":
+                df_mapa_mg = dados_mapa_mg_regioes()
+                fig_mg = fig_mapa_mg_regioes(df_mapa_mg)
+                if fig_mg is not None:
+                    st.plotly_chart(fig_mg, use_container_width=True)
+                else:
+                    st.warning("Mapa MG indisponível. Exibindo tabela consolidada de regiões.")
+                    dataframe_or_warning(_drop_duplicate_columns(df_regioes), "Sem regiões.")
+            else:
+                if df_regioes.empty:
+                    st.warning("Sem regiões econômicas para a seleção.")
+                else:
+                    fig_tree = px.treemap(
+                        df_regioes,
+                        path=["estado", "regiao_economica"],
+                        values="qtd_municipios",
+                        color="idc_base_regiao" if "idc_base_regiao" in df_regioes.columns else "score_regiao",
+                        hover_data=[c for c in ["idc_base_regiao", "idc_macro_regiao", "score_regiao", "classificacao_regiao", "populacao", "pib", "renda_media", "pib_per_capita"] if c in df_regioes.columns],
+                        title="Mapa comercial simplificado — Sudeste" if estado_base == "Todos" else f"Mapa comercial simplificado — {estado_base}",
+                    )
+                    st.plotly_chart(fig_tree, use_container_width=True)
+
+            st.markdown("#### Resumo por estado")
+            if df_estado.empty:
+                st.warning("Sem dados por estado. Rode `python scripts/run_expansao_publica.py --estados MG,SP,RJ,ES`.")
+            else:
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Seleção", estado_base)
+                c2.metric("Municípios", int(df_estado["qtd_municipios"].sum()))
+                c3.metric("População", br_num(pd.to_numeric(df_estado["populacao"], errors="coerce").sum(skipna=True)))
+                c4.metric("PIB", br_money(pd.to_numeric(df_estado["pib"], errors="coerce").sum(skipna=True)))
+                dataframe_or_warning(df_estado, "Sem resumo.")
+
+            st.markdown("#### Regiões econômicas/comerciais")
+            st.caption("Classificação: Alta prioridade, Média prioridade, Baixa prioridade e Monitorar.")
+            if df_regioes.empty:
+                st.warning("Sem regiões econômicas/comerciais calculadas.")
+            else:
+                fig_regiao = px.bar(
+                    df_regioes.head(30),
+                    x="regiao_economica",
+                    y="score_regiao",
+                    color="classificacao_regiao",
+                    title=f"Score por região econômica/comercial — {estado_base}",
+                    text="idc_base_regiao" if "idc_base_regiao" in df_regioes.columns else "score_regiao",
+                    hover_data=[c for c in ["idc_base_regiao", "idc_macro_regiao", "score_regiao", "classificacao_regiao", "populacao", "pib", "renda_media", "pib_per_capita"] if c in df_regioes.columns],
+                )
+                st.plotly_chart(fig_regiao, use_container_width=True)
+                dataframe_or_warning(_drop_duplicate_columns(df_regioes), "Sem regiões.")
+
+            st.markdown("#### Municípios da região selecionada")
+            dataframe_or_warning(_drop_duplicate_columns(df_mun_regiao), "Nenhum município encontrado para a seleção.")
+
+        with tab_demo:
+            st.markdown("#### Perfil demográfico")
+            st.caption("Campos de sexo/faixa etária/renda ficam como N/A até carga Censo/POF. O app não preenche zero falso.")
+            dataframe_or_warning(df_demo, "Sem dados demográficos.")
+
+        with tab_receita:
+            st.markdown("#### Receita por categoria")
+            st.caption("Base manual esperada: parceiro, cidade, estado, data_competencia, grupo_produto e vlr_total_liquido. O status mostra a última venda por região; se não houver venda recente, acusa Sem venda nos últimos 12 meses.")
+            dataframe_or_warning(df_receita, "Sem receita por categoria.")
+            with st.expander("Resumo da base manual de receita da expansão"):
+                dataframe_or_warning(carregar_receita_manual_expansao_resumo(), "Base manual de receita ainda não carregada.")
+                dataframe_or_warning(carregar_receita_manual_expansao_base(), "Sem linhas na base manual de receita.")
+
+        with tab_idc:
+            st.markdown("#### IDC / Margin Pool")
+            if df_idc.empty:
+                st.warning("Sem IDC calculado.")
+            else:
+                fig_idc = px.bar(
+                    df_idc.head(20),
+                    x="microrregiao",
+                    y="score",
+                    color="classificacao_score",
+                    text="idc_base",
+                    hover_data=[c for c in ["idc_base", "idc_macro", "score", "classificacao", "Classe A", "Classe B", "Classe C", "Classe D", "Classe E", "classe_renda", "classe_renda_status", "renda_per_capita_sm", "renda_familiar_sm", "criterio_classe_renda", "participacao_populacao_pct", "participacao_pib_pct", "participacao_receita_pct", "over_under_share_pct", "margin_pool_pct", "status_receita"] if c in df_idc.columns],
+                    title="Top 20 microrregiões por score IDC",
+                )
+                st.plotly_chart(fig_idc, use_container_width=True)
+                dataframe_or_warning(df_idc, "Sem IDC.")
+
+        with tab_simulador:
+            st.markdown("#### Simulador de critérios IDC")
+            st.caption(
+                "Os pesos não são ajustados automaticamente. "
+                "A simulação só é liberada quando a soma dos pesos fechar exatamente 100%."
+            )
+
+            # Pesos padrão solicitados
+            defaults_simulador = {
+                "idc_w_pib": 25,
+                "idc_w_pop_30_44": 40,
+                "idc_w_masculino": 10,
+                "idc_w_feminino": 0,
+                "idc_w_restaurantes": 10,
+                "idc_w_pop_15_29": 10,
+                "idc_w_pdv_total": 5,
+            }
+
+            for k, v in defaults_simulador.items():
+                if k not in st.session_state:
+                    st.session_state[k] = v
+
+            c1, c2, c3, c4 = st.columns(4)
+
+            with c1:
+                st.slider("Peso PIB", 0, 100, key="idc_w_pib")
+                st.slider("Peso população 30–44", 0, 100, key="idc_w_pop_30_44")
+
+            with c2:
+                st.slider("Peso população 15–29", 0, 100, key="idc_w_pop_15_29")
+                st.slider("Peso população masculina", 0, 100, key="idc_w_masculino")
+
+            with c3:
+                st.slider("Peso população feminina", 0, 100, key="idc_w_feminino")
+                st.slider("Peso restaurantes", 0, 100, key="idc_w_restaurantes")
+
+            with c4:
+                st.slider("Peso pontos de venda total", 0, 100, key="idc_w_pdv_total")
+
+            peso_total_simulador = (
+                st.session_state["idc_w_pib"]
+                + st.session_state["idc_w_pop_30_44"]
+                + st.session_state["idc_w_pop_15_29"]
+                + st.session_state["idc_w_masculino"]
+                + st.session_state["idc_w_feminino"]
+                + st.session_state["idc_w_restaurantes"]
+                + st.session_state["idc_w_pdv_total"]
+            )
+
+            if peso_total_simulador == 100:
+                st.success("Total dos pesos: 100% — OK para simular")
+            else:
+                st.error(f"Total dos pesos: {peso_total_simulador}% — ajuste para fechar 100%")
+
+            # FORMULA_IDC_SIMULADOR_V3_INICIO
+            st.markdown(
+                """
+                ##### Fórmula aplicada no IDC Simulado
+
+                **IDC Simulado =**  
+                `(PIB × 25%) + (População 30–44 × 40%) + (População masculina × 10%) + (População feminina × 0%) + (Restaurantes × 10%) + (População 15–29 × 10%) + (Pontos de venda total × 5%)`
+
+                **Observação:** todos os fatores são normalizados em escala **0–100** antes da aplicação dos pesos.  
+                Itens que não estão nessa fórmula ficam com peso **0%** na simulação.
+                """
+            )
+            # FORMULA_IDC_SIMULADOR_V3_FIM
+
+            def _num_col(df, col):
+                if col not in df.columns:
+                    return pd.Series([0] * len(df), index=df.index, dtype="float64")
+                return pd.to_numeric(df[col], errors="coerce").fillna(0)
+
+            def _fator_100(df, col, fallback=None):
+                if col in df.columns:
+                    s = _num_col(df, col)
+                elif fallback and fallback in df.columns:
+                    s = _num_col(df, fallback)
+                else:
+                    return pd.Series([0] * len(df), index=df.index, dtype="float64")
+
+                max_v = s.max()
+
+                if pd.isna(max_v) or max_v == 0:
+                    return pd.Series([0] * len(df), index=df.index, dtype="float64")
+
+                return s / max_v * 100
+
+            visao_simulador = st.radio(
+                "Visão da simulação",
+                ["Microrregião", "Cidade/Município"],
+                horizontal=True,
+                key="idc_visao_simulador",
+                help="Microrregião consolida municípios. Cidade/Município mostra o detalhe municipal quando a base estiver disponível."
+            )
+
+            simular_idc = st.button(
+                "Simular IDC",
+                disabled=peso_total_simulador != 100,
+                key="btn_simular_idc_novo"
+            )
+
+            if simular_idc:
+                if st.session_state.get("idc_visao_simulador") == "Cidade/Município":
+                    df_sim = calcular_idc_expansao(estados=estados_exp, visao="cidade")
+                    coluna_visao_idc = "municipio" if "municipio" in df_sim.columns else "cidade"
+                    titulo_visao_idc = "municípios"
+                else:
+                    df_sim = df_idc.copy()
+                    coluna_visao_idc = "microrregiao"
+                    titulo_visao_idc = "microrregiões"
+
+                # Garante colunas de localização para tabela e gráficos
+                if "municipio" not in df_sim.columns and "cidade" in df_sim.columns:
+                    df_sim["municipio"] = df_sim["cidade"]
+
+                if "cidade" not in df_sim.columns and "municipio" in df_sim.columns:
+                    df_sim["cidade"] = df_sim["municipio"]
+
+                if "regiao_economica" not in df_sim.columns:
+                    df_sim["regiao_economica"] = None
+
+                if "microrregiao" not in df_sim.columns:
+                    df_sim["microrregiao"] = None
+
+                # Garante pontos de venda total caso venha separado
+                if "pdv_total" not in df_sim.columns:
+                    df_sim["pdv_total"] = (
+                        _num_col(df_sim, "supermercados")
+                        + _num_col(df_sim, "restaurantes")
+                        + _num_col(df_sim, "peixarias")
+                        + _num_col(df_sim, "outros_pdv")
+                    )
+
+                if "restaurantes" not in df_sim.columns:
+                    st.warning(
+                        "Coluna 'restaurantes' não encontrada no DataFrame. "
+                        "O fator restaurantes será considerado 0 até a view/base expor esse campo."
+                    )
+                    df_sim["restaurantes"] = 0
+
+                df_sim["fator_sim_pib"] = _num_col(df_sim, "fator_pib") if "fator_pib" in df_sim.columns else _fator_100(df_sim, "pib")
+                df_sim["fator_sim_pop_30_44"] = _num_col(df_sim, "fator_pop_30_44") if "fator_pop_30_44" in df_sim.columns else _fator_100(df_sim, "pct_30_44")
+                df_sim["fator_sim_pop_15_29"] = _num_col(df_sim, "fator_pop_15_29") if "fator_pop_15_29" in df_sim.columns else _fator_100(df_sim, "pct_15_29")
+                df_sim["fator_sim_masculino"] = _num_col(df_sim, "fator_masculino") if "fator_masculino" in df_sim.columns else _fator_100(df_sim, "pct_masculina")
+                df_sim["fator_sim_feminino"] = _num_col(df_sim, "fator_feminino") if "fator_feminino" in df_sim.columns else _fator_100(df_sim, "pct_feminina")
+                df_sim["fator_sim_restaurantes"] = _num_col(df_sim, "fator_restaurantes") if "fator_restaurantes" in df_sim.columns else _fator_100(df_sim, "restaurantes")
+                df_sim["fator_sim_pdv_total"] = _num_col(df_sim, "fator_pdv_total") if "fator_pdv_total" in df_sim.columns else _fator_100(df_sim, "pdv_total")
+
+                df_sim["idc_simulado"] = (
+                    df_sim["fator_sim_pib"] * st.session_state["idc_w_pib"] / 100
+                    + df_sim["fator_sim_pop_30_44"] * st.session_state["idc_w_pop_30_44"] / 100
+                    + df_sim["fator_sim_pop_15_29"] * st.session_state["idc_w_pop_15_29"] / 100
+                    + df_sim["fator_sim_masculino"] * st.session_state["idc_w_masculino"] / 100
+                    + df_sim["fator_sim_feminino"] * st.session_state["idc_w_feminino"] / 100
+                    + df_sim["fator_sim_restaurantes"] * st.session_state["idc_w_restaurantes"] / 100
+                    + df_sim["fator_sim_pdv_total"] * st.session_state["idc_w_pdv_total"] / 100
+                )
+
+                df_sim["classificacao_simulada"] = pd.cut(
+                    pd.to_numeric(df_sim["idc_simulado"], errors="coerce").fillna(0),
+                    bins=[-1, 35, 55, 75, 101],
+                    labels=["Monitorar", "Baixa", "Média", "Alta"]
+                ).astype(str)
+
+                if "idc_base" not in df_sim.columns:
+                    if "score" in df_sim.columns:
+                        df_sim["idc_base"] = pd.to_numeric(df_sim["score"], errors="coerce").fillna(0)
+                    elif "idc_planejado" in df_sim.columns:
+                        df_sim["idc_base"] = pd.to_numeric(df_sim["idc_planejado"], errors="coerce").fillna(0)
+                    else:
+                        df_sim["idc_base"] = 0
+
+                df_sim["diferenca_base_simulado"] = (
+                    pd.to_numeric(df_sim["idc_simulado"], errors="coerce").fillna(0)
+                    - pd.to_numeric(df_sim["idc_base"], errors="coerce").fillna(0)
+                )
+
+                cols_resultado = [
+                    "estado",
+                    "microrregiao",
+                    "idc_base",
+                    "idc_simulado",
+                    "diferenca_base_simulado",
+                    "classificacao_simulada",
+                    "pib",
+                    "pct_30_44",
+                    "pct_15_29",
+                    "pct_masculina",
+                    "pct_feminina",
+                    "restaurantes",
+                    "pdv_total",
+                ]
+
+                cols_resultado = [c for c in cols_resultado if c in df_sim.columns]
+
+                # COLUNAS_RESULTADO_SIMULADOR_FINAL
+
+                cols_resultado = [
+
+                    "estado",
+
+                    "regiao_economica",
+
+                    "microrregiao",
+
+                    "municipio",
+
+                    "cidade",
+
+                    "idc_base",
+
+                    "idc_simulado",
+
+                    "diferenca_base_simulado",
+
+                    "classificacao_simulada",
+
+                    "pib",
+
+                    "pct_30_44",
+
+                    "pct_15_29",
+
+                    "pct_masculina",
+
+                    "pct_feminina",
+
+                    "restaurantes",
+
+                    "total_pdv",
+
+                    "pdv_total",
+
+                ]
+
+                cols_resultado = [c for c in cols_resultado if c in df_sim.columns]
+
+
+                st.markdown("##### Resultado da simulação")
+                st.dataframe(
+                    df_sim.sort_values("idc_simulado", ascending=False)[cols_resultado].head(50),
+                    use_container_width=True
+                )
+
+                st.markdown("##### Comparativo — IDC Base x IDC Simulado")
+
+                df_comp = (
+                    df_sim.sort_values("idc_simulado", ascending=False)
+                    .head(20)[["microrregiao", "idc_base", "idc_simulado"]]
+                    .melt(
+                        id_vars="microrregiao",
+                        value_vars=["idc_base", "idc_simulado"],
+                        var_name="tipo_idc",
+                        value_name="valor_idc"
+                    )
+                )
+
+                fig_comp = px.bar(
+                    df_comp,
+                    x="microrregiao",
+                    y="valor_idc",
+                    color="tipo_idc",
+                    barmode="group",
+                    text="valor_idc",
+                    title="Top 20 microrregiões — IDC Base x IDC Simulado"
+                )
+                fig_comp.update_traces(texttemplate="%{text:.4f}", textposition="outside")
+                fig_comp.update_layout(xaxis_tickangle=-45)
+                st.plotly_chart(fig_comp, use_container_width=True, key=f"idc_base_x_simulado_{st.session_state.get('idc_visao_simulador', 'micro')}_1")
+
+                st.markdown("##### Comparativo — IDC Base x IDC Simulado")
+
+                df_comp = (
+                    df_sim.sort_values("idc_simulado", ascending=False)
+                    .head(20)[[coluna_visao_idc, "idc_base", "idc_simulado"]]
+                    .melt(
+                        id_vars=coluna_visao_idc,
+                        value_vars=["idc_base", "idc_simulado"],
+                        var_name="tipo_idc",
+                        value_name="valor_idc"
+                    )
+                )
+
+                fig_comp = px.bar(
+                    df_comp,
+                    x=coluna_visao_idc,
+                    y="valor_idc",
+                    color="tipo_idc",
+                    barmode="group",
+                    text="valor_idc",
+                    title=f"Top 20 {titulo_visao_idc} — IDC Base x IDC Simulado"
+                )
+                fig_comp.update_traces(texttemplate="%{text:.4f}", textposition="outside")
+                fig_comp.update_layout(xaxis_tickangle=-45)
+                st.plotly_chart(fig_comp, use_container_width=True, key=f"idc_base_x_simulado_{st.session_state.get('idc_visao_simulador', 'micro')}_2")
+
+                fig_sim = px.bar(
+                    df_sim.sort_values("idc_simulado", ascending=False).head(20),
+                    x=coluna_visao_idc,
+                    y="idc_simulado",
+                    color="classificacao_simulada",
+                    title=f"Top 20 {titulo_visao_idc} — IDC simulado"
+                )
+                fig_sim.update_layout(xaxis_tickangle=-45)
+                st.plotly_chart(fig_sim, use_container_width=True, key=f"idc_simulado_{st.session_state.get('idc_visao_simulador', 'micro')}_1")
+        st.markdown("### Exportar bases da Análise de Expansão")
+        st.caption("A exportação só é gerada quando você clicar no botão, evitando consultas pesadas no carregamento.")
+        if "excel_expansao_bytes" not in st.session_state:
+            st.session_state["excel_expansao_bytes"] = None
+        if st.button("Gerar Excel — Análise de Expansão", key="btn_gerar_excel_expansao"):
+            with st.spinner("Gerando Excel da Análise de Expansão..."):
+                st.session_state["excel_expansao_bytes"] = exportar_bases_expansao_excel(parametros=parametros, estados=estados_exp)
+        if st.session_state.get("excel_expansao_bytes") is not None:
+            st.download_button(
+                "Baixar Excel — Análise de Expansão",
+                data=st.session_state["excel_expansao_bytes"],
+                file_name=f"analise_expansao_{estado_base.lower()}_bases.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+
+    except Exception as e:
+        st.error("Erro ao carregar Análise de Expansão.")
+        st.exception(e)
+
+
+with aba_fontes_reais:
+    st.subheader("🔌 Fontes Reais")
+    try:
+        st.info("Resumo de bases externas carregadas: Comex, CEPEA, CONAB, CEAGESP e demais cargas.")
+        dataframe_or_warning(carregar_fontes_reais_resumo(), "Sem resumo de fontes reais.")
+
+        st.markdown("### Comex Stat — status atual")
+        dataframe_or_warning(carregar_comex_status_atual(), "Sem status Comex.")
+
+        tab_ok, tab_erro, tab_tudo = st.tabs(["Últimas cargas com sucesso", "Últimos erros", "Histórico completo"])
+        with tab_ok:
+            dataframe_or_warning(carregar_fontes_reais_cargas_sucesso(), "Sem cargas com sucesso.")
+        with tab_erro:
+            st.caption("Erros antigos ficam aqui como histórico técnico e não necessariamente representam o status atual.")
+            dataframe_or_warning(carregar_fontes_reais_cargas_erro(), "Sem erros recentes.")
+        with tab_tudo:
+            dataframe_or_warning(carregar_fontes_reais_cargas(), "Sem histórico de cargas.")
+
+        with st.expander("Comex Stat — séries carregadas"):
+            dataframe_or_warning(carregar_comex_series(), "Sem dados Comex.")
+    except Exception as e:
+        st.error("Erro ao carregar Fontes Reais.")
+        st.exception(e)
+
+
+with aba_previsao:
+    st.subheader("📈 Análise Previsão de Mercado")
+    st.info("Estrutura V2.2: Cotação Dólar, IPCA, IPCA Alimentar e Previsão Mercado em abas internas.")
+
+    try:
+        st.markdown("### Filtro de período")
+        c_periodo, c_inicio, c_fim = st.columns([1.2, 1, 1])
+        with c_periodo:
+            periodo_prev = st.selectbox(
+                "Período",
+                ["Últimos 12 meses", "Últimos 3 meses", "Últimos 6 meses", "Últimos 24 meses", "Ano atual", "Tudo", "Personalizado"],
+                index=0,
+                key="prev_periodo",
+            )
+
+        data_inicio_auto, data_fim_auto = _date_range_from_period(periodo_prev)
+        with c_inicio:
+            data_inicio_prev = st.date_input(
+                "Data início",
+                value=data_inicio_auto,
+                disabled=periodo_prev != "Personalizado",
+                key="prev_data_inicio",
+            ) if periodo_prev == "Personalizado" else data_inicio_auto
+        with c_fim:
+            data_fim_prev = st.date_input(
+                "Data fim",
+                value=data_fim_auto,
+                disabled=periodo_prev != "Personalizado",
+                key="prev_data_fim",
+            ) if periodo_prev == "Personalizado" else data_fim_auto
+
+        indicadores = listar_indicadores_disponiveis()
+
+        def _match_indicadores(termos_obrigatorios=None, termos_opcionais=None, excluir=None):
+            termos_obrigatorios = termos_obrigatorios or []
+            termos_opcionais = termos_opcionais or []
+            excluir = excluir or []
+            encontrados = []
+            for ind in indicadores:
+                txt = str(ind).lower()
+                if excluir and any(t in txt for t in excluir):
+                    continue
+                if termos_obrigatorios and not all(t in txt for t in termos_obrigatorios):
+                    continue
+                if termos_opcionais and not any(t in txt for t in termos_opcionais):
+                    continue
+                encontrados.append(ind)
+            return encontrados
+
+        indicadores_dolar = _match_indicadores(
+            termos_opcionais=["dólar", "dolar", "usd", "cambio", "câmbio", "ptax"]
+        )
+        indicadores_ipca = _match_indicadores(
+            termos_obrigatorios=["ipca"],
+            excluir=["aliment", "alimento", "alimentar", "comida"]
+        )
+        indicadores_ipca_alimentar = _match_indicadores(
+            termos_obrigatorios=["ipca"],
+            termos_opcionais=["aliment", "alimento", "alimentar", "comida"]
+        )
+        if not indicadores_ipca_alimentar:
+            indicadores_ipca_alimentar = _match_indicadores(
+                termos_opcionais=["aliment", "alimento", "alimentar", "comida"]
+            )
+
+        tab_dolar, tab_ipca, tab_ipca_alim, tab_mercado = st.tabs([
+            "Cotação Dólar",
+            "IPCA",
+            "IPCA Alimentar",
+            "Previsão Mercado",
+        ])
+
+        indicador_export = None
+        produtos_sel = []
+
+        with tab_dolar:
+            st.markdown("### Cotação Dólar")
+            if indicadores_dolar:
+                indicador_dolar = st.selectbox("Indicador de dólar/câmbio", indicadores_dolar, key="prev_indicador_dolar")
+                indicador_export = indicador_dolar
+                df_dolar = _filter_df_by_period(carregar_radar_economico_ultimo_ano(indicador_dolar), data_inicio_prev, data_fim_prev)
+                resumo_dolar = resumo_radar_economico_ultimo_ano(indicador_dolar)
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Último valor", br_num(resumo_dolar.get("ultimo_valor")))
+                c2.metric("Última data", str(resumo_dolar.get("ultima_data")))
+                c3.metric("Tendência", resumo_dolar.get("tendencia"))
+                if not df_dolar.empty:
+                    fig_dolar = px.line(df_dolar, x="data", y="valor", title=f"{indicador_dolar} — período selecionado")
+                    st.plotly_chart(fig_dolar, use_container_width=True)
+                    with st.expander("Ver base Cotação Dólar"):
+                        dataframe_or_warning(df_dolar, "Sem dados de dólar.")
+            else:
+                st.warning("Nenhum indicador de dólar/câmbio encontrado nas séries carregadas.")
+
+        with tab_ipca:
+            st.markdown("### IPCA")
+            if indicadores_ipca:
+                indicador_ipca = st.selectbox("Indicador IPCA", indicadores_ipca, key="prev_indicador_ipca")
+                indicador_export = indicador_export or indicador_ipca
+                df_ipca = _filter_df_by_period(carregar_radar_economico_ultimo_ano(indicador_ipca), data_inicio_prev, data_fim_prev)
+                resumo_ipca = resumo_radar_economico_ultimo_ano(indicador_ipca)
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Último valor", br_num(resumo_ipca.get("ultimo_valor")))
+                c2.metric("Última data", str(resumo_ipca.get("ultima_data")))
+                c3.metric("Tendência", resumo_ipca.get("tendencia"))
+                if not df_ipca.empty:
+                    fig_ipca = px.line(df_ipca, x="data", y="valor", title=f"{indicador_ipca} — período selecionado")
+                    st.plotly_chart(fig_ipca, use_container_width=True)
+                    with st.expander("Ver base IPCA"):
+                        dataframe_or_warning(df_ipca, "Sem dados IPCA.")
+            else:
+                st.warning("Nenhum indicador IPCA encontrado nas séries carregadas.")
+
+        with tab_ipca_alim:
+            st.markdown("### IPCA Alimentar")
+            if indicadores_ipca_alimentar:
+                indicador_ipca_alim = st.selectbox("Indicador IPCA Alimentar", indicadores_ipca_alimentar, key="prev_indicador_ipca_alimentar")
+                indicador_export = indicador_export or indicador_ipca_alim
+                df_ipca_alim = _filter_df_by_period(carregar_radar_economico_ultimo_ano(indicador_ipca_alim), data_inicio_prev, data_fim_prev)
+                resumo_ipca_alim = resumo_radar_economico_ultimo_ano(indicador_ipca_alim)
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Último valor", br_num(resumo_ipca_alim.get("ultimo_valor")))
+                c2.metric("Última data", str(resumo_ipca_alim.get("ultima_data")))
+                c3.metric("Tendência", resumo_ipca_alim.get("tendencia"))
+                if not df_ipca_alim.empty:
+                    fig_ipca_alim = px.line(df_ipca_alim, x="data", y="valor", title=f"{indicador_ipca_alim} — período selecionado")
+                    st.plotly_chart(fig_ipca_alim, use_container_width=True)
+                    with st.expander("Ver base IPCA Alimentar"):
+                        dataframe_or_warning(df_ipca_alim, "Sem dados IPCA Alimentar.")
+            else:
+                st.warning("Nenhum indicador IPCA Alimentar encontrado nas séries carregadas.")
+
+        with tab_mercado:
+            st.markdown("### Proteínas e grãos consolidados")
+            produtos = listar_produtos_setoriais(uf="MG")
+            produtos_default = [p for p in ["Tilápia", "Salmão", "Camarão", "Milho", "Soja"] if p in produtos] or produtos[:min(5, len(produtos))]
+            produtos_sel = st.multiselect("Produtos para comparar", produtos, default=produtos_default, key="prev_produtos")
+            fonte_comparacao = st.selectbox(
+                "Base de comparação",
+                ["CEPEA", "CEAGESP"],
+                index=0,
+                key="prev_fonte_comparacao",
+                help="Escolha qual base será usada no gráfico principal. CEPEA vem das fontes reais; CEAGESP vem da base manual/histórica."
+            )
+
+            df_pg = _filter_df_by_period(
+                carregar_comparacao_cepea_ceagesp(produtos=produtos_sel, fontes=[fonte_comparacao]),
+                data_inicio_prev,
+                data_fim_prev,
+                possible_cols=["data_referencia"],
+            )
+
+            if df_pg.empty:
+                st.warning(f"Sem dados carregados para {fonte_comparacao}.")
+            else:
+                fig_pg = px.line(
+                    df_pg,
+                    x="data_referencia",
+                    y="preco",
+                    color="produto",
+                    line_dash="origem",
+                    hover_data=[c for c in ["origem", "preco_tipo", "unidade"] if c in df_pg.columns],
+                    title=f"Proteínas e grãos — base {fonte_comparacao} — período selecionado",
+                )
+                st.plotly_chart(fig_pg, use_container_width=True)
+                with st.expander(f"Ver base {fonte_comparacao}"):
+                    dataframe_or_warning(df_pg, f"Sem dados {fonte_comparacao}.")
+
+
+            st.markdown("### Mercado privado / Scanntech")
+            st.caption("Quando importada na aba 📤 Importações Manuais, esta base alimenta total mercado, curvas por produto/categoria, correlação Mercado x IDC e IDC ajustado por mercado.")
+            try:
+                df_mkt_resumo = carregar_resumo_mercado_privado()
+                if df_mkt_resumo.empty:
+                    st.warning("Sem mercado privado/Scanntech importado. Faça upload na aba 📤 Importações Manuais.")
+                else:
+                    dataframe_or_warning(df_mkt_resumo.head(100), "Sem resumo de mercado privado.")
+                    estados_mkt = ["Todos"] + sorted(df_mkt_resumo["estado"].dropna().astype(str).unique().tolist()) if "estado" in df_mkt_resumo.columns else ["Todos"]
+                    estado_mkt = st.selectbox("Estado mercado privado", estados_mkt, key="mkt_estado")
+                    categorias_mkt = ["Todos"] + sorted(df_mkt_resumo["categoria"].dropna().astype(str).unique().tolist()) if "categoria" in df_mkt_resumo.columns else ["Todos"]
+                    categoria_mkt = st.selectbox("Categoria mercado privado", categorias_mkt, key="mkt_categoria")
+                    df_curva_mkt = carregar_curva_mercado_privado(estado=estado_mkt, categoria=categoria_mkt)
+                    if not df_curva_mkt.empty:
+                        fig_mkt = px.line(
+                            df_curva_mkt,
+                            x="data_competencia",
+                            y="valor_mercado",
+                            color="produto" if "produto" in df_curva_mkt.columns else "categoria",
+                            title="Curva de mercado privado por produto/categoria"
+                        )
+                        st.plotly_chart(fig_mkt, use_container_width=True)
+                    st.markdown("#### Correlação Mercado x IDC")
+                    alvo_corr = st.selectbox("Métrica alvo", ["valor_mercado", "volume_mercado", "preco_medio"], key="mkt_alvo_corr")
+                    df_corr = carregar_correlacao_mercado_idc(alvo=alvo_corr, estado=estado_mkt)
+                    dataframe_or_warning(df_corr, "Sem correlação calculada. Verifique se a Scanntech possui microrregião compatível com o IBGE.")
+                    st.markdown("#### Pesos sugeridos para IDC ajustado por mercado")
+                    dataframe_or_warning(sugerir_pesos_idc_por_correlacao(alvo=alvo_corr, estado=estado_mkt), "Sem pesos sugeridos.")
+            except Exception as exc:
+                st.warning("Mercado privado ainda não disponível ou sem estrutura aplicada.")
+                st.exception(exc)
+
+            st.markdown("### Bases de mercado")
+            tab_cepea, tab_ceagesp, tab_compra, tab_vend = st.tabs(["CEPEA", "CEAGESP Pescados", "Base de Compra", "Prévia Vendedores"])
+
+            with tab_cepea:
+                st.caption("CEPEA vem das fontes reais setoriais carregadas em dw.fato_indicador_setorial.")
+                dataframe_periodo(carregar_cepea_series(produtos=produtos_sel), "Sem dados CEPEA carregados.", data_inicio_prev, data_fim_prev)
+
+            with tab_ceagesp:
+                st.caption("CEAGESP ficou manual/controlado. Carregue com `python scripts/load_ceagesp_manual_file.py --arquivo \"data\\input\\ceagesp_manual.csv\"`. A tabela mantém histórico e evita duplicidade por produto/data/classificação/unidade.")
+                dataframe_periodo(carregar_base_ceagesp_historico(), "Sem histórico CEAGESP carregado.", data_inicio_prev, data_fim_prev)
+
+            with tab_compra:
+                st.caption('Etapa 27: carregue histórico desde 2022 com `python scripts/load_compra_manual_file.py --arquivo "data\\\\input\\\\base_compra_manual.csv"`.')
+                dataframe_or_warning(carregar_base_compra_resumo(), "Sem resumo de compra manual.")
+                dataframe_periodo(carregar_base_compra_manual(), "Sem base de compra manual importada.", data_inicio_prev, data_fim_prev)
+
+            with tab_vend:
+                st.caption('Etapa 28: carregue a prévia com `python scripts/load_previa_vendedores_file.py --arquivo "data\\\\input\\\\previa_vendedores.csv"`.')
+                dataframe_or_warning(carregar_previa_vendedores_resumo(), "Sem resumo de prévia.")
+                dataframe_periodo(carregar_base_previa_vendedores(), "Sem prévia de vendedores.", data_inicio_prev, data_fim_prev)
+
+            st.markdown("### Índices no final da página")
+            dataframe_or_warning(carregar_indices_setoriais_atuais(uf="MG"), "Índices setoriais ainda não calculados.")
+
+            st.markdown("### Exportar bases da Previsão de Mercado")
+            excel = exportar_bases_previsao_mercado_excel(indicador=indicador_export, produtos=produtos_sel)
+            st.download_button(
+                "Baixar Excel — Previsão de Mercado",
+                data=excel,
+                file_name=f"previsao_mercado_{periodo_prev.lower().replace(' ', '_')}_bases.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+
+    except Exception as e:
+        st.error("Erro ao carregar Análise Previsão de Mercado.")
+        st.exception(e)
+
+
+with aba_whatif:
+    st.subheader("🧪 What-if")
+    try:
+        regioes = carregar_regioes_scores(uf="MG")
+        if regioes.empty:
+            st.warning("Sem regiões para simulação.")
+        else:
+            regiao = st.selectbox("Região", regioes["regiao_comercial"].tolist())
+            params = WhatIfParams(
+                variacao_dolar_pct=st.slider("Variação dólar %", -30, 30, 0),
+                variacao_tilapia_pct=st.slider("Variação tilápia %", -30, 30, 0),
+                variacao_frango_pct=st.slider("Variação frango %", -30, 30, 0),
+                variacao_bovino_pct=st.slider("Variação bovino %", -30, 30, 0),
+                variacao_suino_pct=st.slider("Variação suíno %", -30, 30, 0),
+                variacao_graos_pct=st.slider("Variação grãos %", -30, 30, 0),
+                campanha_marketing=st.checkbox("Campanha marketing"),
+                adicionar_vendedor=st.checkbox("Adicionar vendedor"),
+                adicionar_promotor=st.checkbox("Adicionar promotor"),
+                melhorar_cobertura_pct=st.slider("Melhorar cobertura %", 0, 50, 0),
+                aumentar_mix_premium_pct=st.slider("Aumentar mix premium %", 0, 50, 0),
+            )
+            if st.button("Simular"):
+                resultado = simular_regiao(regiao, params, salvar=True)
+                st.json(resultado)
+            with st.expander("Últimas simulações"):
+                dataframe_or_warning(carregar_ultimas_simulacoes(), "Sem simulações.")
+    except Exception as e:
+        st.error("Erro no What-if.")
+        st.exception(e)
+
+
+with aba_alertas:
+    st.subheader("🚨 Alertas Ativos")
+    try:
+        df_alertas = carregar_alertas_ativos()
+        if df_alertas.empty:
+            st.success("Nenhum alerta ativo.")
+        else:
+            dataframe_or_warning(df_alertas, "Sem alertas.")
+            col1, col2 = st.columns(2)
+            with col1:
+                dataframe_or_warning(carregar_resumo_alertas_area(), "Sem resumo por área.")
+            with col2:
+                dataframe_or_warning(carregar_resumo_alertas_tipo(), "Sem resumo por tipo.")
+    except Exception as e:
+        st.error("Erro ao carregar Alertas.")
+        st.exception(e)
+
+
+with aba_relatorio:
+    st.subheader("📄 Relatório Executivo")
+    try:
+        if st.button("Gerar relatório executivo MG"):
+            rel = gerar_relatorio_executivo(uf="MG", usuario="Marcos")
+            st.success("Relatório gerado.")
+            st.json(rel)
+        dataframe_or_warning(carregar_relatorios_recentes(), "Sem relatórios recentes.")
+    except Exception as e:
+        st.error("Erro ao carregar Relatório Executivo.")
+        st.exception(e)
+
+
+with aba_saude:
+    st.subheader("🩺 Saúde do Sistema")
+    try:
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("### Saúde geral")
+            saude = carregar_saude_sistema()
+            dataframe_or_warning(saude, "Sem saúde do sistema.")
+        with c2:
+            st.markdown("### Resumo por fonte")
+            dataframe_or_warning(carregar_resumo_fonte(), "Sem resumo por fonte.")
+
+        st.markdown("### Últimas execuções")
+        dataframe_or_warning(carregar_ultimas_execucoes(), "Sem execuções.")
+
+        st.markdown("### Controle de carga")
+        dataframe_or_warning(carregar_controle_carga(), "Sem controle de carga.")
+    except Exception as e:
+        st.error("Erro ao carregar Saúde do Sistema.")
+        st.exception(e)

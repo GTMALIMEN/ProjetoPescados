@@ -11,7 +11,7 @@ from src.etl.load_fontes_reais import carregar_arquivo_fonte_real
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Carregar arquivo CEPEA exportado")
+    parser = argparse.ArgumentParser(description="Carregar arquivo CEPEA manual/proxy exportado. Para CEPEA oficial, use scripts/run_cepea_oficial.py")
     parser.add_argument("--arquivo", required=True)
     parser.add_argument("--categoria", default="proteina")
     parser.add_argument("--produto-default", default="CEPEA")
@@ -20,8 +20,9 @@ if __name__ == "__main__":
 
     carregar_arquivo_fonte_real(
         arquivo=args.arquivo,
-        fonte="CEPEA",
+        fonte="CEPEA_MANUAL_IMPORTADO",
         categoria_default=args.categoria,
         produto_default=args.produto_default,
         uf_default=args.uf_default,
+        subcategoria_default="manual_importado",
     )

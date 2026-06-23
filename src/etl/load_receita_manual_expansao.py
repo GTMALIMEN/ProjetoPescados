@@ -13,6 +13,9 @@ from sqlalchemy import text
 from src.database.connection import get_engine
 
 
+TOP_RECEITA_EXPANSAO_OBRIGATORIO = "1100 - VENDA DE MERCADORIA"
+
+
 def _norm_col(col: Any) -> str:
     s = str(col or "").strip().lower()
     s = unicodedata.normalize("NFKD", s)
@@ -39,6 +42,14 @@ def _norm_col(col: Any) -> str:
         "receita": "vlr_total_liquido",
         "faturamento": "vlr_total_liquido",
         "valor": "vlr_total_liquido",
+        "volume": "volume",
+        "qtd": "volume",
+        "quantidade": "volume",
+        "produto": "produto",
+        "item": "produto",
+        "top": "top",
+        "tipo_operacao": "top",
+        "tipo_de_operacao": "top",
     }
     return aliases.get(s, s)
 
@@ -86,6 +97,17 @@ def _to_date(value):
     return dt.date()
 
 
+def _normalizar_top_receita(valor: Any) -> str | None:
+    txt = str(valor or "").strip()
+    if not txt or txt.lower() in {"nan", "none"}:
+        return None
+    txt_norm = unicodedata.normalize("NFKD", txt).encode("ascii", "ignore").decode("ascii").upper()
+    txt_norm = re.sub(r"\s+", " ", txt_norm).strip()
+    if txt_norm == "1100" or txt_norm.startswith("1100") or txt_norm == "VENDA DE MERCADORIA":
+        return TOP_RECEITA_EXPANSAO_OBRIGATORIO
+    return txt
+
+
 def _hash(values: list[Any]) -> str:
     parts = []
     for v in values:
@@ -128,17 +150,18 @@ def carregar_receita_manual_expansao(arquivo: str | Path) -> dict:
     df = _read_table(path)
     df = df.rename(columns={c: _norm_col(c) for c in df.columns}).dropna(how="all")
 
-    obrigatorias = ["parceiro", "cidade", "estado", "data_competencia", "grupo_produto", "vlr_total_liquido"]
+    obrigatorias = ["parceiro", "cidade", "estado", "data_competencia", "grupo_produto", "vlr_total_liquido", "top"]
     missing = [c for c in obrigatorias if c not in df.columns]
     if missing:
         raise ValueError(
             "Colunas obrigatórias ausentes: "
             + ", ".join(missing)
-            + "\nEsperado: parceiro, cidade, estado, data_competencia, grupo_produto, vlr_total_liquido"
+            + "\nEsperado: parceiro, cidade, estado, data_competencia, grupo_produto, vlr_total_liquido, TOP"
         )
 
     records = []
     rejeitados = 0
+    rejeitados_top = 0
 
     for _, row in df.iterrows():
         parceiro = str(row.get("parceiro") or "").strip()
@@ -147,6 +170,14 @@ def carregar_receita_manual_expansao(arquivo: str | Path) -> dict:
         data_comp = _to_date(row.get("data_competencia"))
         grupo = str(row.get("grupo_produto") or "").strip()
         valor = _to_number(row.get("vlr_total_liquido"))
+        volume = _to_number(row.get("volume"))
+        produto = str(row.get("produto") or "").strip() or None
+        top = _normalizar_top_receita(row.get("top"))
+
+        if top != TOP_RECEITA_EXPANSAO_OBRIGATORIO:
+            rejeitados += 1
+            rejeitados_top += 1
+            continue
 
         if not cidade or not estado or not data_comp or not grupo or valor is None:
             rejeitados += 1
@@ -156,7 +187,7 @@ def carregar_receita_manual_expansao(arquivo: str | Path) -> dict:
         categoria = _categoria_pescado(grupo)
         hash_linha = _hash([
             parceiro.upper(), cidade.upper(), estado.upper(), data_comp,
-            grupo.upper(), valor, path.name
+            grupo.upper(), produto or "", valor, volume, top, path.name
         ])
 
         records.append({
@@ -168,6 +199,9 @@ def carregar_receita_manual_expansao(arquivo: str | Path) -> dict:
             "grupo_produto": grupo,
             "categoria_pescado": categoria,
             "vlr_total_liquido": valor,
+            "volume": volume,
+            "produto": produto,
+            "top": top,
             "fonte_arquivo": path.name,
             "hash_linha": hash_linha,
         })
@@ -176,15 +210,21 @@ def carregar_receita_manual_expansao(arquivo: str | Path) -> dict:
         engine = get_engine()
         with engine.begin() as conn:
             conn.execute(text("""
+                ALTER TABLE app.fato_receita_manual_expansao
+                    ADD COLUMN IF NOT EXISTS volume NUMERIC,
+                    ADD COLUMN IF NOT EXISTS produto TEXT,
+                    ADD COLUMN IF NOT EXISTS top TEXT;
+            """))
+            conn.execute(text("""
                 INSERT INTO app.fato_receita_manual_expansao (
                     parceiro, cidade, estado, data_competencia, mes,
                     grupo_produto, categoria_pescado, vlr_total_liquido,
-                    fonte_arquivo, hash_linha
+                    volume, produto, top, fonte_arquivo, hash_linha
                 )
                 VALUES (
                     :parceiro, :cidade, :estado, :data_competencia, :mes,
                     :grupo_produto, :categoria_pescado, :vlr_total_liquido,
-                    :fonte_arquivo, :hash_linha
+                    :volume, :produto, :top, :fonte_arquivo, :hash_linha
                 )
                 ON CONFLICT (hash_linha)
                 DO UPDATE SET
@@ -196,6 +236,9 @@ def carregar_receita_manual_expansao(arquivo: str | Path) -> dict:
                     grupo_produto = EXCLUDED.grupo_produto,
                     categoria_pescado = EXCLUDED.categoria_pescado,
                     vlr_total_liquido = EXCLUDED.vlr_total_liquido,
+                    volume = EXCLUDED.volume,
+                    produto = EXCLUDED.produto,
+                    top = EXCLUDED.top,
                     fonte_arquivo = EXCLUDED.fonte_arquivo,
                     data_carga = NOW();
             """), records)
@@ -206,4 +249,6 @@ def carregar_receita_manual_expansao(arquivo: str | Path) -> dict:
         "registros_lidos": int(len(df)),
         "registros_processados": int(len(records)),
         "registros_rejeitados": int(rejeitados),
+        "registros_rejeitados_top": int(rejeitados_top),
+        "top_obrigatorio": TOP_RECEITA_EXPANSAO_OBRIGATORIO,
     }

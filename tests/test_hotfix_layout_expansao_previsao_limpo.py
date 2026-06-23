@@ -6,7 +6,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 def test_previsao_usa_base_comparacao():
     text = (ROOT_DIR / "app.py").read_text(encoding="utf-8")
     assert "Base de comparação" in text
-    assert '["CEPEA", "CEAGESP"]' in text
+    assert '["CEPEA Manual", "CEAGESP Manual"]' in text
     assert "tab_comparacao_fontes" not in text
     assert "Comparação CEPEA x CEAGESP" not in text
 
