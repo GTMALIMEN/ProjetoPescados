@@ -39,12 +39,7 @@ ALTER TABLE app.fato_curva_mercado_categoria
     ADD COLUMN IF NOT EXISTS data_importacao TIMESTAMP DEFAULT NOW();
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_curva_mercado_hash
-<<<<<<< HEAD
 ON app.fato_curva_mercado_categoria (hash_linha);
-=======
-ON app.fato_curva_mercado_categoria (hash_linha)
-WHERE hash_linha IS NOT NULL;
->>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
 -- Garante estrutura do mercado privado / Scanntech
 CREATE TABLE IF NOT EXISTS app.fato_mercado_privado (
@@ -71,12 +66,7 @@ ALTER TABLE app.fato_mercado_privado
     ADD COLUMN IF NOT EXISTS data_importacao TIMESTAMP DEFAULT NOW();
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_mercado_privado_hash
-<<<<<<< HEAD
 ON app.fato_mercado_privado (hash_linha);
-=======
-ON app.fato_mercado_privado (hash_linha)
-WHERE hash_linha IS NOT NULL;
->>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
 -- Garante estrutura Key Account
 CREATE TABLE IF NOT EXISTS app.dim_key_account_loja (
@@ -103,12 +93,7 @@ ALTER TABLE app.dim_key_account_loja
     ADD COLUMN IF NOT EXISTS data_importacao TIMESTAMP DEFAULT NOW();
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_key_account_hash
-<<<<<<< HEAD
 ON app.dim_key_account_loja (hash_linha);
-=======
-ON app.dim_key_account_loja (hash_linha)
-WHERE hash_linha IS NOT NULL;
->>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 """
 
 with get_engine().begin() as conn:

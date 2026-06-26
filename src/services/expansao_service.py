@@ -1139,7 +1139,6 @@ def calcular_idc_expansao(estados: list[str] | None = None) -> pd.DataFrame:
     df["total"] = pd.to_numeric(df.get("total"), errors="coerce").fillna(0)
     receita_total = df["total"].sum(skipna=True)
     df["participacao_receita_pct"] = df["total"] / receita_total * 100 if receita_total else 0.0
-<<<<<<< HEAD
     # IDC_OFICIAL_NOVA_FORMULA_INICIO
     # Garante que o IDC base/oficial use a mesma fórmula do simulador.
     # Fórmula:
@@ -1225,8 +1224,6 @@ def calcular_idc_expansao(estados: list[str] | None = None) -> pd.DataFrame:
 
 
 
-=======
->>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
     # Compatibilidade IDC:
     # A view nova usa idc_planejado/idc/idc_final/score_idc.
     # O código antigo ainda esperava idc_base.
@@ -1363,7 +1360,6 @@ def exportar_bases_expansao_excel(parametros: dict | None = None, estados: list[
             if isinstance(df, pd.DataFrame):
                 df.to_excel(writer, index=False, sheet_name=name[:31])
     return output.getvalue()
-<<<<<<< HEAD
 
 
 # IDC_FINAL_ESTAVEL_MICRO_CIDADE_INICIO
@@ -2263,5 +2259,3 @@ def exportar_bases_expansao_excel(parametros: dict | None = None, estados: list[
                 df.to_excel(writer, index=False, sheet_name=name[:31])
     return output.getvalue()
 # IDC_SIMULADOR_CANONICO_FINAL_FIM
-=======
->>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
