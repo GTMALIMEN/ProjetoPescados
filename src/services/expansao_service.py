@@ -10,7 +10,16 @@ from src.database.connection import get_engine
 
 
 ESTADOS_SUDESTE = ["MG", "SP", "RJ", "ES"]
-CATEGORIAS_PESCADOS = ["Tilápia", "Salmão", "Camarão", "Piramutaba", "Polaca", "Merluza", "Panga"]
+CATEGORIAS_PESCADOS =[
+    "TILAPIA",
+    "SALMAO",
+    "CAMARAO",
+    "PIRAMUTABA",
+    "POLACA",
+    "MERLUZA",
+    "PANGA",
+    "OUTROS PEIXES",
+]
 
 
 def _relation_exists(conn, relation_name: str) -> bool:

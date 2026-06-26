@@ -1,0 +1,56 @@
+[35mapp.py[m[36m:[m[32m802[m[36m:[m            st.caption("Base manual esperada: parceiro, cidade, estado, data_competencia, [1;31mgrupo_produto[m e vlr_total_liquido. O status mostra a última venda por região; se não houver venda recente, acusa Sem venda nos últimos 12 meses.")
+[35mapp.py[m[36m:[m[32m1320[m[36m:[m            produtos_default = [p for p in ["[1;31mTilápia[m", "Salmão", "[1;31mCamarão[m", "Milho", "Soja"] if p in produtos] or produtos[:min(5, len(produtos))]
+[35msrc/collectors/cepea_collector.py[m[36m:[m[32m29[m[36m:[m    produto = "[1;31mTilápia[m"
+[35msrc/database/cepea_manual.sql[m[36m:[m[32m25[m[36m:[m    produto TEXT NOT NULL DEFAULT '[1;31mTilápia[m',
+[35msrc/database/cepea_manual.sql[m[36m:[m[32m47[m[36m:[m    ADD COLUMN IF NOT EXISTS produto TEXT DEFAULT '[1;31mTilápia[m',
+[35msrc/database/etapas41_idc_importacoes_persistencia.sql[m[36m:[m[32m185[m[36m:[m    [1;31mgrupo_produto[m TEXT,
+[35msrc/database/etapas41_idc_importacoes_persistencia.sql[m[36m:[m[32m186[m[36m:[m    [1;31mcategoria_pescado[m TEXT,
+[35msrc/database/fontes_reais.sql[m[36m:[m[32m106[m[36m:[m        'Scraping da página pública CEPEA [1;31mTilápia[m. Preço R$/kg à vista pago ao produtor independente; divulgação semanal por região.'
+[35msrc/database/hotfix_expansao_receita_manual_cepea.sql[m[36m:[m[32m17[m[36m:[m    [1;31mgrupo_produto[m TEXT,
+[35msrc/database/hotfix_expansao_receita_manual_cepea.sql[m[36m:[m[32m18[m[36m:[m    [1;31mcategoria_pescado[m TEXT,
+[35msrc/database/hotfix_expansao_receita_manual_cepea.sql[m[36m:[m[32m34[m[36m:[m    ADD COLUMN IF NOT EXISTS [1;31mgrupo_produto[m TEXT,
+[35msrc/database/hotfix_expansao_receita_manual_cepea.sql[m[36m:[m[32m35[m[36m:[m    ADD COLUMN IF NOT EXISTS [1;31mcategoria_pescado[m TEXT,
+[35msrc/database/hotfix_expansao_receita_manual_cepea.sql[m[36m:[m[32m66[m[36m:[mON app.fato_receita_manual_expansao ([1;31mcategoria_pescado[m);
+[35msrc/database/hotfix_expansao_receita_manual_cepea.sql[m[36m:[m[32m75[m[36m:[m    [1;31mgrupo_produto[m,
+[35msrc/database/hotfix_expansao_receita_manual_cepea.sql[m[36m:[m[32m76[m[36m:[m    [1;31mcategoria_pescado[m,
+[35msrc/database/hotfix_expansao_receita_manual_cepea.sql[m[36m:[m[32m91[m[36m:[m    COUNT(DISTINCT [1;31mgrupo_produto[m) AS qtd_grupos_produto,
+[35msrc/database/models.sql[m[36m:[m[32m201[m[36m:[m    [1;31mgrupo_produto[m TEXT,
+[35msrc/database/models.sql[m[36m:[m[32m277[m[36m:[m    dp.[1;31mgrupo_produto[m,
+[35msrc/database/vendas.sql[m[36m:[m[32m27[m[36m:[m    [1;31mgrupo_produto[m TEXT,
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m34[m[36m:[m        "grupo_de_produto": "[1;31mgrupo_produto[m",
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m35[m[36m:[m        "[1;31mgrupo_produto[ms": "[1;31mgrupo_produto[m",
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m36[m[36m:[m        "[1;31mgrupo_produto[m": "[1;31mgrupo_produto[m",
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m37[m[36m:[m        "produto_grupo": "[1;31mgrupo_produto[m",
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m124[m[36m:[mdef _[1;31mcategoria_pescado[m(grupo: str) -> str:
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m130[m[36m:[m        ("tilapia", "[1;31mTilápia[m"),
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m132[m[36m:[m        ("camarao", "[1;31mCamarão[m"),
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m153[m[36m:[m    obrigatorias = ["parceiro", "cidade", "estado", "data_competencia", "[1;31mgrupo_produto[m", "vlr_total_liquido", "top"]
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m159[m[36m:[m            + "\nEsperado: parceiro, cidade, estado, data_competencia, [1;31mgrupo_produto[m, vlr_total_liquido, TOP"
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m171[m[36m:[m        grupo = str(row.get("[1;31mgrupo_produto[m") or "").strip()
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m187[m[36m:[m        categoria = _[1;31mcategoria_pescado[m(grupo)
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m199[m[36m:[m            "[1;31mgrupo_produto[m": grupo,
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m200[m[36m:[m            "[1;31mcategoria_pescado[m": categoria,
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m221[m[36m:[m                    [1;31mgrupo_produto[m, [1;31mcategoria_pescado[m, vlr_total_liquido,
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m226[m[36m:[m                    :[1;31mgrupo_produto[m, :[1;31mcategoria_pescado[m, :vlr_total_liquido,
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m236[m[36m:[m                    [1;31mgrupo_produto[m = EXCLUDED.[1;31mgrupo_produto[m,
+[35msrc/etl/load_receita_manual_expansao.py[m[36m:[m[32m237[m[36m:[m                    [1;31mcategoria_pescado[m = EXCLUDED.[1;31mcategoria_pescado[m,
+[35msrc/etl/load_vendas.py[m[36m:[m[32m41[m[36m:[m    "[1;31mgrupo_produto[m": ["desc grupo do produto", "desc. grupo do produto", "grupo produto", "grupo do produto"],
+[35msrc/etl/load_vendas.py[m[36m:[m[32m190[m[36m:[mdef classificar_proteina(produto: object, [1;31mgrupo_produto[m: object) -> tuple[str | None, str | None, str | None]:
+[35msrc/etl/load_vendas.py[m[36m:[m[32m191[m[36m:[m    texto = normalize_text(f"{produto or ''} {[1;31mgrupo_produto[m or ''}")
+[35msrc/etl/load_vendas.py[m[36m:[m[32m200[m[36m:[m        return "[1;31mCamarão[m", "Pescado", "Importado"
+[35msrc/etl/load_vendas.py[m[36m:[m[32m203[m[36m:[m        return "[1;31mTilápia[m", "Pescado", "Nacional"
+[35msrc/etl/load_vendas.py[m[36m:[m[32m276[m[36m:[m        [1;31mgrupo_produto[m = safe_str(get("[1;31mgrupo_produto[m"))
+[35msrc/etl/load_vendas.py[m[36m:[m[32m277[m[36m:[m        proteina, categoria, origem_produto = classificar_proteina(produto, [1;31mgrupo_produto[m)
+[35msrc/etl/load_vendas.py[m[36m:[m[32m332[m[36m:[m            "[1;31mgrupo_produto[m": [1;31mgrupo_produto[m,
+[35msrc/etl/load_vendas.py[m[36m:[m[32m463[m[36m:[m        "[1;31mgrupo_produto[m",
+[35msrc/etl/load_vendas.py[m[36m:[m[32m501[m[36m:[m                [1;31mgrupo_produto[m,
+[35msrc/etl/load_vendas.py[m[36m:[m[32m533[m[36m:[m                :[1;31mgrupo_produto[m,
+[35msrc/etl/load_vendas.py[m[36m:[m[32m569[m[36m:[m    produtos = df[["codigo_produto", "produto", "[1;31mgrupo_produto[m", "proteina", "categoria", "origem_produto"]].drop_duplicates(subset=["codigo_produto"])
+[35msrc/etl/load_vendas.py[m[36m:[m[32m596[m[36m:[m                    codigo_produto, produto, [1;31mgrupo_produto[m, proteina, categoria, origem
+[35msrc/etl/load_vendas.py[m[36m:[m[32m599[m[36m:[m                    :codigo_produto, :produto, :[1;31mgrupo_produto[m, :proteina, :categoria, :origem
+[35msrc/services/expansao_service.py[m[36m:[m[32m13[m[36m:[mCATEGORIAS_PESCADOS = ["[1;31mTilápia[m", "Salmão", "[1;31mCamarão[m", "Piramutaba", "Polaca", "Merluza", "Panga"]
+[35msrc/services/expansao_service.py[m[36m:[m[32m426[m[36m:[m                COALESCE(NULLIF(v.proteina, ''), NULLIF(v.produto, ''), 'Outros') AS [1;31mcategoria_pescado[m,
+[35msrc/services/expansao_service.py[m[36m:[m[32m445[m[36m:[m        columns="[1;31mcategoria_pescado[m",
+[35msrc/services/expansao_service.py[m[36m:[m[32m764[m[36m:[mdef _[1;31mcategoria_pescado[m_sql_case(alias_col: str = "[1;31mgrupo_produto[m") -> str:
+[35msrc/services/expansao_service.py[m[36m:[m[32m767[m[36m:[m            WHEN LOWER({alias_col}) LIKE '%til%pia%' OR LOWER({alias_col}) LIKE '%tilapia%' THEN '[1;31mTilápia[m'
+[35msrc/services/expansao_service.py[m[36m:[m[32m769[m[36m:[m            WHEN LOWER({alias_col}) LIKE '%camar%' THEN '[1;31mCamarão[m'

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+from src.utils.normalizacao_produtos import normalizar_produto
 from sqlalchemy import text
 
 from src.database.connection import get_engine
@@ -122,23 +123,14 @@ def _hash(values: list[Any]) -> str:
 
 
 def _categoria_pescado(grupo: str) -> str:
-    txt = str(grupo or "").strip().lower()
-    txt_norm = unicodedata.normalize("NFKD", txt)
-    txt_norm = "".join(ch for ch in txt_norm if not unicodedata.combining(ch))
+    """
+    Classifica o produto usando aliases oficiais.
 
-    mapa = [
-        ("tilapia", "Tilápia"),
-        ("salmao", "Salmão"),
-        ("camarao", "Camarão"),
-        ("piramutaba", "Piramutaba"),
-        ("polaca", "Polaca"),
-        ("merluza", "Merluza"),
-        ("panga", "Panga"),
-    ]
-    for chave, categoria in mapa:
-        if chave in txt_norm:
-            return categoria
-    return "Outros"
+    Exemplos:
+    CAMARAO, CAMAR?O, CAMARAO CATIVEIRO -> Camar?o
+    TILAPIA, TIL?PIA, FILE TILAPIA -> Til?pia
+    """
+    return normalizar_produto(grupo)
 
 
 def carregar_receita_manual_expansao(arquivo: str | Path) -> dict:
