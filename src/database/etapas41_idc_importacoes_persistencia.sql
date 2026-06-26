@@ -197,7 +197,12 @@ ALTER TABLE app.fato_compra_manual
     ADD COLUMN IF NOT EXISTS data_importacao TIMESTAMP DEFAULT NOW();
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_compra_manual_hash
+<<<<<<< HEAD
 ON app.fato_compra_manual (hash_linha);
+=======
+ON app.fato_compra_manual (hash_linha)
+WHERE hash_linha IS NOT NULL;
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
 ALTER TABLE app.fato_previa_vendedores
     ADD COLUMN IF NOT EXISTS fonte_arquivo TEXT,
@@ -205,7 +210,12 @@ ALTER TABLE app.fato_previa_vendedores
     ADD COLUMN IF NOT EXISTS data_importacao TIMESTAMP DEFAULT NOW();
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_previa_vendedores_hash
+<<<<<<< HEAD
 ON app.fato_previa_vendedores (hash_linha);
+=======
+ON app.fato_previa_vendedores (hash_linha)
+WHERE hash_linha IS NOT NULL;
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
 ALTER TABLE app.fato_receita_manual_expansao
     ADD COLUMN IF NOT EXISTS fonte_arquivo TEXT,
@@ -213,7 +223,12 @@ ALTER TABLE app.fato_receita_manual_expansao
     ADD COLUMN IF NOT EXISTS data_importacao TIMESTAMP DEFAULT NOW();
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_receita_manual_exp_hash
+<<<<<<< HEAD
 ON app.fato_receita_manual_expansao (hash_linha);
+=======
+ON app.fato_receita_manual_expansao (hash_linha)
+WHERE hash_linha IS NOT NULL;
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
 ALTER TABLE app.fato_ceagesp_pescados
     ADD COLUMN IF NOT EXISTS fonte_arquivo TEXT,
@@ -221,7 +236,12 @@ ALTER TABLE app.fato_ceagesp_pescados
     ADD COLUMN IF NOT EXISTS data_importacao TIMESTAMP DEFAULT NOW();
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_ceagesp_hash
+<<<<<<< HEAD
 ON app.fato_ceagesp_pescados (hash_linha);
+=======
+ON app.fato_ceagesp_pescados (hash_linha)
+WHERE hash_linha IS NOT NULL;
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
 -- Preenche todos os campos automáticos possíveis sem mexer nas bases manuais.
 -- Onde não existe fonte oficial carregada, grava proxy claramente identificado.

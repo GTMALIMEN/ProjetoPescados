@@ -35,7 +35,10 @@ from src.services.importacoes_manuais_service import (
     configs_importacao,
     gerar_template_excel,
     validar_base,
+<<<<<<< HEAD
     preparar_previa_publicacao,
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
     importar_base_manual,
     carregar_historico_importacoes,
     carregar_resumo_mercado_privado,
@@ -385,6 +388,7 @@ def _total_pesos_idc() -> int:
     return int(sum(_pesos_idc_atuais().values()))
 
 
+<<<<<<< HEAD
 def _ajustar_pesos_idc(pesos: dict) -> dict:
     """Compatibilidade: não redistribui automaticamente; apenas retorna os pesos recebidos.
 
@@ -393,6 +397,8 @@ def _ajustar_pesos_idc(pesos: dict) -> dict:
     return {k: int(v or 0) for k, v in pesos.items()}
 
 
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 def _html_status_pesos_idc(total: int) -> str:
     ok = total == 100
     cor = "#00C853" if ok else "#D50000"
@@ -548,7 +554,11 @@ with area_importacoes:
         st.caption(cfg.description)
         st.caption("Colunas obrigatórias: " + ", ".join(cfg.required))
 
+<<<<<<< HEAD
         modelo = carregar_modelo_importacao(tipo_importacao)
+=======
+        modelo = gerar_template_excel(tipo_importacao)
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
         st.download_button(
             "Baixar modelo Excel",
             data=modelo,
@@ -565,6 +575,7 @@ with area_importacoes:
 
         modo_importacao = st.radio(
             "Modo de importação",
+<<<<<<< HEAD
             ["adicionar", "substituir_periodo", "substituir_tudo"],
             format_func=lambda x: {
                 "adicionar": "Adicionar dados",
@@ -577,6 +588,13 @@ with area_importacoes:
         )
         if modo_importacao != "substituir_tudo":
             st.warning("Recomendado nesta fase: Limpar base antiga e carregar somente este arquivo. Isso impede mistura com bases antigas, proxy ou versões anteriores.")
+=======
+            ["adicionar", "substituir_periodo"],
+            format_func=lambda x: "Adicionar dados" if x == "adicionar" else "Substituir período existente do arquivo",
+            horizontal=True,
+            key=f"modo_{tipo_importacao}",
+        )
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
         usuario_importacao = st.text_input("Usuário/importador", value="Marcos", key="usuario_importacao_manual")
 
@@ -588,12 +606,17 @@ with area_importacoes:
                     df_preview = pd.read_excel(arquivo)
                 arquivo.seek(0)
                 df_norm, erros = validar_base(tipo_importacao, df_preview)
+<<<<<<< HEAD
                 st.markdown("#### Prévia do arquivo normalizado")
                 st.caption("Esta prévia já mostra os campos como serão gravados nas bases atuais, não a leitura bruta do Excel.")
                 previews = preparar_previa_publicacao(tipo_importacao, df_norm)
                 for nome_previa, df_previa in previews.items():
                     st.markdown(f"##### {nome_previa}")
                     dataframe_or_warning(df_previa.head(30), "Arquivo sem dados.")
+=======
+                st.markdown("#### Prévia do arquivo")
+                dataframe_or_warning(df_norm.head(30), "Arquivo sem dados.")
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
                 if erros:
                     st.error("Validação encontrou problemas:")
                     for erro in erros:
@@ -829,6 +852,7 @@ with aba_expansao:
                 "A simulação só é liberada quando a soma dos pesos fechar exatamente 100%."
             )
 
+<<<<<<< HEAD
             # Pesos padrão solicitados
             defaults_simulador = {
                 "idc_w_pib": 25,
@@ -1092,6 +1116,94 @@ with aba_expansao:
                 fig_comp.update_traces(texttemplate="%{text:.4f}", textposition="outside")
                 fig_comp.update_layout(xaxis_tickangle=-45)
                 st.plotly_chart(fig_comp, use_container_width=True, key=f"idc_base_x_simulado_{st.session_state.get('idc_visao_simulador', 'micro')}_1")
+=======
+            _inicializar_pesos_idc()
+            c1, c2, c3, c4 = st.columns(4)
+            with c1:
+                st.slider("Peso população", 0, 100, key="idc_w_pop")
+                st.slider("Peso PIB", 0, 100, key="idc_w_pib")
+            with c2:
+                st.slider("Peso renda / POF", 0, 100, key="idc_w_renda")
+                st.slider("Peso PIB per capita", 0, 100, key="idc_w_pib_per_capita")
+            with c3:
+                st.slider("Peso gênero feminino", 0, 100, key="idc_w_fem")
+                st.slider("Peso gênero masculino", 0, 100, key="idc_w_masc")
+            with c4:
+                st.slider("Peso pontos de venda", 0, 100, key="idc_w_pdv")
+
+            pesos_idc = _pesos_idc_atuais()
+            total_pesos_idc = _total_pesos_idc()
+            st.markdown(_html_status_pesos_idc(total_pesos_idc), unsafe_allow_html=True)
+            st.progress(min(total_pesos_idc, 100) / 100)
+
+            if total_pesos_idc < 100:
+                st.error(f"Faltam {100 - total_pesos_idc}% para fechar 100%.")
+            elif total_pesos_idc > 100:
+                st.error(f"Os pesos excederam {total_pesos_idc - 100}%. Reduza algum critério.")
+            else:
+                st.success("Pesos fechados em 100%. Simulação liberada.")
+
+            parametros = {
+                "peso_populacao": pesos_idc["idc_w_pop"],
+                "peso_pib": pesos_idc["idc_w_pib"],
+                "peso_renda": pesos_idc["idc_w_renda"],
+                "peso_pib_per_capita": pesos_idc["idc_w_pib_per_capita"],
+                "peso_feminino": pesos_idc["idc_w_fem"],
+                "peso_masculino": pesos_idc["idc_w_masc"],
+                "peso_pdv": pesos_idc["idc_w_pdv"],
+            }
+
+            with st.expander("Fórmula IDC usada no simulador", expanded=True):
+                st.markdown("""
+                **Fórmula padrão do IDC planejado:**
+
+                `IDC = 30% População + 25% PIB + 15% Renda + 15% PIB per capita + 5% Feminino + 5% Masculino + 5% Pontos de venda`
+
+                O simulador permite alterar os pesos, mas a soma precisa fechar **100%**.
+                """)
+
+            simular_idc_btn = st.button(
+                "Simular IDC",
+                disabled=total_pesos_idc != 100,
+                key="btn_simular_idc",
+                type="primary"
+            )
+
+            if total_pesos_idc != 100:
+                st.warning("Ajuste os pesos até fechar 100% para liberar o botão de simulação.")
+
+            if simular_idc_btn:
+                df_sim = simular_idc_expansao(estados=estados_exp, **parametros)
+                if not df_sim.empty:
+                    df_long = df_sim.head(20).melt(
+                        id_vars=["microrregiao", "estado"],
+                        value_vars=["idc_base", "idc_simulado"],
+                        var_name="tipo_idc",
+                        value_name="valor_idc",
+                    )
+                    fig_comp = px.bar(
+                        df_long,
+                        x="microrregiao",
+                        y="valor_idc",
+                        color="tipo_idc",
+                        barmode="group",
+                        title="IDC planejado atual x IDC simulado"
+                    )
+                    st.plotly_chart(fig_comp, use_container_width=True)
+                    cols = [
+                        "microrregiao", "estado", "idc_base", "idc_simulado", "diferenca_idc",
+                        "score", "score_simulado", "classificacao", "nova_classificacao",
+                        "fator_populacao", "fator_pib", "fator_renda", "fator_pib_per_capita",
+                        "fator_feminino", "fator_masculino", "fator_pdv", "peso_total_simulador",
+                        "status_simulador"
+                    ]
+                    cols = [c for c in cols if c in df_sim.columns]
+                    dataframe_or_warning(df_sim[cols], "Sem simulação.")
+                else:
+                    st.warning("A simulação não retornou dados.")
+            else:
+                st.info("A simulação ainda não foi executada. Ajuste os pesos e clique em **Simular IDC**.")
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
                 st.markdown("##### Comparativo — IDC Base x IDC Simulado")
 
@@ -1130,6 +1242,7 @@ with aba_expansao:
                 st.plotly_chart(fig_sim, use_container_width=True, key=f"idc_simulado_{st.session_state.get('idc_visao_simulador', 'micro')}_1")
         st.markdown("### Exportar bases da Análise de Expansão")
         st.caption("A exportação só é gerada quando você clicar no botão, evitando consultas pesadas no carregamento.")
+<<<<<<< HEAD
         parametros = {
             "peso_pib": st.session_state.get("idc_w_pib", 25),
             "peso_pop_30_44": st.session_state.get("idc_w_pop_30_44", 40),
@@ -1139,6 +1252,8 @@ with aba_expansao:
             "peso_pop_15_29": st.session_state.get("idc_w_pop_15_29", 10),
             "peso_pdv_total": st.session_state.get("idc_w_pdv_total", 5),
         }
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
         if "excel_expansao_bytes" not in st.session_state:
             st.session_state["excel_expansao_bytes"] = None
         if st.button("Gerar Excel — Análise de Expansão", key="btn_gerar_excel_expansao"):

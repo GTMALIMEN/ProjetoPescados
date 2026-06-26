@@ -13,6 +13,7 @@ from sqlalchemy import text
 from src.database.connection import get_engine
 
 
+<<<<<<< HEAD
 
 
 def _deduplicar_hash_linha(conn, table_name: str) -> None:
@@ -55,6 +56,8 @@ def _relation_exists(conn, relation_name: str) -> bool:
     return bool(conn.execute(text("SELECT to_regclass(:name) IS NOT NULL"), {"name": relation_name}).scalar())
 
 
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 @dataclass(frozen=True)
 class ImportConfig:
     tipo: str
@@ -114,6 +117,7 @@ CONFIGS: dict[str, ImportConfig] = {
         numeric_cols=["preco_minimo", "preco_comum", "preco_maximo"],
         description="Histórico CEAGESP manual/controlado. Alimenta comparação CEPEA x CEAGESP e referência de preço.",
     ),
+<<<<<<< HEAD
     "cepea_manual": ImportConfig(
         tipo="cepea_manual",
         label="CEPEA Manual Oficial",
@@ -128,6 +132,8 @@ CONFIGS: dict[str, ImportConfig] = {
         numeric_cols=["preco_ajustado", "preco_rs_kg", "variacao_semana_pct"],
         description="CEPEA manual/controlado preenchido a partir das bases novas. O gráfico usa sempre PREÇO AJUSTADO e ignora tabelas antigas/proxy.",
     ),
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
     "compra_manual": ImportConfig(
         tipo="compra_manual",
         label="Base de Compra Manual",
@@ -142,11 +148,19 @@ CONFIGS: dict[str, ImportConfig] = {
         tipo="receita_expansao",
         label="Receita/Vendas Expansão",
         table="app.fato_receita_manual_expansao",
+<<<<<<< HEAD
         columns=["parceiro", "cidade", "estado", "data_competencia", "grupo_produto", "vlr_total_liquido", "volume", "produto", "top"],
         required=["cidade", "estado", "data_competencia", "grupo_produto", "vlr_total_liquido", "top"],
         date_cols=["data_competencia"],
         numeric_cols=["vlr_total_liquido", "volume"],
         description="Venda interna/receita por cidade e grupo de produto. TOP é obrigatório e deve ser 1100 - VENDA DE MERCADORIA para garantir venda faturada, não pedido.",
+=======
+        columns=["parceiro", "cidade", "estado", "data_competencia", "grupo_produto", "vlr_total_liquido"],
+        required=["cidade", "estado", "data_competencia", "grupo_produto", "vlr_total_liquido"],
+        date_cols=["data_competencia"],
+        numeric_cols=["vlr_total_liquido"],
+        description="Venda interna/receita por cidade e grupo de produto. Alimenta receita real por categoria, over/under share e margin pool.",
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
     ),
     "previa_vendedores": ImportConfig(
         tipo="previa_vendedores",
@@ -196,6 +210,7 @@ ALIASES = {
     "key account": "grupo_key_account",
     "grupo key account": "grupo_key_account",
     "grupo_key_account": "grupo_key_account",
+<<<<<<< HEAD
     "data inicio periodo": "data_inicio_periodo",
     "data inicial": "data_inicio_periodo",
     "data inicio": "data_inicio_periodo",
@@ -311,6 +326,10 @@ TIPO_ALIASES = {
 
 TOP_RECEITA_EXPANSAO_OBRIGATORIO = "1100 - VENDA DE MERCADORIA"
 
+=======
+}
+
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
 def _slug(texto: str) -> str:
     texto = str(texto or "").strip().lower()
@@ -330,6 +349,7 @@ def _canonical_col(col: str) -> str:
     return ALIASES.get(slug, slug)
 
 
+<<<<<<< HEAD
 def _canonical_col_tipo(tipo: str, col: str) -> str:
     raw = str(col or "").strip()
     key_space = unicodedata.normalize("NFKD", raw).encode("ascii", "ignore").decode("ascii").lower()
@@ -465,6 +485,8 @@ def _safe_db_date(value):
     return d if 1900 <= d.year <= 9999 else None
 
 
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 def configs_importacao() -> pd.DataFrame:
     return pd.DataFrame([
         {"tipo": c.tipo, "base": c.label, "tabela_destino": c.table, "colunas_obrigatorias": ", ".join(c.required), "descricao": c.description}
@@ -473,6 +495,7 @@ def configs_importacao() -> pd.DataFrame:
 
 
 def gerar_template_excel(tipo: str) -> bytes:
+<<<<<<< HEAD
     """Gera modelo Excel em branco, sem linhas de exemplo.
 
     Os modelos não devem vir preenchidos, porque uma linha de exemplo pode ser
@@ -483,6 +506,27 @@ def gerar_template_excel(tipo: str) -> bytes:
     output = BytesIO()
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
         pd.DataFrame(columns=cfg.columns).to_excel(writer, index=False, sheet_name="Modelo")
+=======
+    cfg = CONFIGS[tipo]
+    exemplo = {col: None for col in cfg.columns}
+    # exemplos mínimos para facilitar o usuário
+    if tipo in {"mercado_privado", "curva_mercado"}:
+        exemplo.update({"data_competencia": "2026-01-01", "uf": "MG", "microrregiao": "Belo Horizonte", "categoria": "Tilápia", "produto": "Tilápia", "valor_mercado": 100000, "volume_mercado": 5000, "preco_medio": 20, "fonte": "Scanntech"})
+    elif tipo == "key_account":
+        exemplo.update({"grupo_key_account": "Grupo Exemplo", "cliente": "Cliente Exemplo", "loja": "Loja 01", "cidade": "Belo Horizonte", "uf": "MG"})
+    elif tipo == "receita_expansao":
+        exemplo.update({"parceiro": "Cliente Exemplo", "cidade": "Belo Horizonte", "estado": "MG", "data_competencia": "2026-01-01", "grupo_produto": "Tilápia", "vlr_total_liquido": 10000})
+    elif tipo == "ceagesp_pescados":
+        exemplo.update({"data_referencia": "2026-01-01", "produto": "Tilápia", "classificacao": "Comum", "unidade": "kg", "preco_comum": 20, "fonte": "CEAGESP"})
+    elif tipo == "compra_manual":
+        exemplo.update({"data": "2026-01-01", "fornecedor": "Fornecedor", "marca": "Marca", "produto": "Tilápia", "categoria": "Pescados", "preco_compra": 18, "quantidade_comprada": 100})
+    elif tipo == "previa_vendedores":
+        exemplo.update({"vendedor": "Vendedor", "produto": "Tilápia", "data_venda": "2026-01-01", "quantidade_vendida": 100, "preco": 22, "receita_total": 2200})
+
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        pd.DataFrame([exemplo]).to_excel(writer, index=False, sheet_name="Modelo")
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
         pd.DataFrame([
             {"coluna": col, "obrigatoria": "SIM" if col in cfg.required else "NÃO"}
             for col in cfg.columns
@@ -508,7 +552,11 @@ def validar_base(tipo: str, df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
         return pd.DataFrame(), ["Arquivo vazio."]
 
     out = df.copy()
+<<<<<<< HEAD
     out.columns = [_canonical_col_tipo(tipo, c) for c in out.columns]
+=======
+    out.columns = [_canonical_col(c) for c in out.columns]
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
     out = out.loc[:, ~out.columns.duplicated()]
 
     faltantes = [c for c in cfg.required if c not in out.columns]
@@ -524,13 +572,18 @@ def validar_base(tipo: str, df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     # Datas
     for col in cfg.date_cols:
         if col in out.columns:
+<<<<<<< HEAD
             out[col] = _to_date_safe_series(out[col])
+=======
+            out[col] = pd.to_datetime(out[col], errors="coerce").dt.date
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
             if col in cfg.required and out[col].isna().all():
                 erros.append(f"Coluna de data inválida ou vazia: {col}")
 
     # Números
     for col in cfg.numeric_cols:
         if col in out.columns:
+<<<<<<< HEAD
             if tipo == "cepea_manual":
                 out[col] = _to_numeric_br_series(out[col])
             else:
@@ -598,13 +651,20 @@ def validar_base(tipo: str, df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
                 "TOP inválido na Receita Expansão. Use somente "
                 f"'{TOP_RECEITA_EXPANSAO_OBRIGATORIO}'. Valores encontrados: {exemplos}"
             )
+=======
+            out[col] = pd.to_numeric(out[col], errors="coerce")
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
     # UF/cidade/microrregião
     for col in ["uf", "estado"]:
         if col in out.columns:
             out[col] = out[col].astype(str).str.strip().str.upper().replace({"NAN": None, "NONE": None, "": None})
 
+<<<<<<< HEAD
     for col in ["cidade", "microrregiao", "categoria", "produto", "marca", "canal", "fonte", "grupo_produto", "top"]:
+=======
+    for col in ["cidade", "microrregiao", "categoria", "produto", "marca", "canal", "fonte", "grupo_produto"]:
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
         if col in out.columns:
             out[col] = out[col].where(out[col].isna(), out[col].astype(str).str.strip())
 
@@ -625,6 +685,7 @@ def validar_base(tipo: str, df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     return out, erros
 
 
+<<<<<<< HEAD
 
 def preparar_previa_publicacao(tipo: str, df_validado: pd.DataFrame) -> dict[str, pd.DataFrame]:
     """Monta prévias iguais às bases atuais que serão alimentadas.
@@ -674,6 +735,8 @@ def preparar_previa_publicacao(tipo: str, df_validado: pd.DataFrame) -> dict[str
     return previews
 
 
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 def _hash_row(tipo: str, row: dict, arquivo: str) -> str:
     parts = [tipo, arquivo]
     for key in sorted(row.keys()):
@@ -705,6 +768,7 @@ def _delete_period_if_replace(conn, cfg: ImportConfig, df: pd.DataFrame):
     conn.execute(text(f"DELETE FROM {cfg.table} WHERE {col_data} BETWEEN :inicio AND :fim"), {"inicio": inicio, "fim": fim})
 
 
+<<<<<<< HEAD
 
 
 def _uf_cepea_por_regiao(regiao: str) -> str:
@@ -956,6 +1020,8 @@ def _ensure_import_table_structure(conn, tipo: str) -> None:
         """))
 
 
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 def importar_base_manual(tipo: str, uploaded_file: Any, usuario: str = "usuario", modo: str = "adicionar") -> dict:
     if tipo not in CONFIGS:
         raise ValueError(f"Tipo de importação inválido: {tipo}")
@@ -969,19 +1035,25 @@ def importar_base_manual(tipo: str, uploaded_file: Any, usuario: str = "usuario"
         _registrar_log(tipo, arquivo, usuario, modo, "ERRO_VALIDACAO", len(df_raw), 0, len(df_raw), "; ".join(erros), df)
         return {"status": "ERRO_VALIDACAO", "erros": erros, "registros_lidos": len(df_raw), "registros_processados": 0}
 
+<<<<<<< HEAD
     if tipo == "cepea_manual":
         processados = _importar_cepea_manual_oficial(cfg, df, arquivo, usuario, modo)
         _registrar_log(tipo, arquivo, usuario, modo, "SUCESSO", len(df_raw), processados, 0, "CEPEA manual oficial importado e publicado no DW", df)
         return {"status": "SUCESSO", "registros_lidos": len(df_raw), "registros_processados": processados, "erros": []}
 
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
     df = df.copy()
     df["fonte_arquivo"] = arquivo
     if "fonte" in cfg.columns and "fonte" in df.columns:
         df["fonte"] = df["fonte"].fillna("manual_upload")
+<<<<<<< HEAD
     # Bases novas são manuais/controladas. Não deixar valor de fonte antigo
     # (CEPEA/CEAGESP automático, proxy etc.) reaparecer por ter vindo no Excel.
     if tipo == "ceagesp_pescados" and "fonte" in df.columns:
         df["fonte"] = "CEAGESP Manual"
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 
     # Hash único por linha.
     df["hash_linha"] = [_hash_row(tipo, r, arquivo) for r in _records_clean(df[cfg.columns])]
@@ -1011,6 +1083,7 @@ def importar_base_manual(tipo: str, uploaded_file: Any, usuario: str = "usuario"
 
     engine = get_engine()
     with engine.begin() as conn:
+<<<<<<< HEAD
         if tipo == "receita_expansao":
             _ensure_receita_expansao_structure(conn)
         else:
@@ -1033,6 +1106,10 @@ def importar_base_manual(tipo: str, uploaded_file: Any, usuario: str = "usuario"
         # podiam ter índice parcial ou não ter índice; isso é normalizado aqui.
         index_name = "uq_manual_" + re.sub(r"[^a-z0-9_]+", "_", cfg.table.replace("app.", "").replace("dw.", "")) + "_hash"
         _ensure_hash_unique_index(conn, cfg.table, index_name)
+=======
+        if modo == "substituir_periodo":
+            _delete_period_if_replace(conn, cfg, df)
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
         conn.execute(sql, records)
 
     _registrar_log(tipo, arquivo, usuario, modo, "SUCESSO", len(df_raw), len(records), 0, "Importação concluída", df)
@@ -1046,8 +1123,13 @@ def _registrar_log(tipo, arquivo, usuario, modo, status, lidos, processados, rej
         date_cols = CONFIGS[tipo].date_cols if tipo in CONFIGS else []
         for col in date_cols:
             if col in df.columns:
+<<<<<<< HEAD
                 periodo_inicio = _safe_db_date(df[col].min())
                 periodo_fim = _safe_db_date(df[col].max())
+=======
+                periodo_inicio = df[col].min()
+                periodo_fim = df[col].max()
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
                 break
     engine = get_engine()
     with engine.begin() as conn:
@@ -1071,6 +1153,7 @@ def _registrar_log(tipo, arquivo, usuario, modo, status, lidos, processados, rej
 def carregar_historico_importacoes(limit: int = 100) -> pd.DataFrame:
     engine = get_engine()
     with engine.begin() as conn:
+<<<<<<< HEAD
         if not _relation_exists(conn, "app.importacao_manual_log"):
             return pd.DataFrame()
         # Limpa logs antigos com datas impossíveis para evitar DataError do psycopg.
@@ -1093,6 +1176,12 @@ def carregar_historico_importacoes(limit: int = 100) -> pd.DataFrame:
                    periodo_inicio::text AS periodo_inicio,
                    periodo_fim::text AS periodo_fim,
                    detalhe, executado_em
+=======
+        return pd.read_sql(text("""
+            SELECT tipo_importacao, arquivo, usuario, modo_importacao, status,
+                   registros_lidos, registros_processados, registros_rejeitados,
+                   periodo_inicio, periodo_fim, detalhe, executado_em
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
             FROM app.importacao_manual_log
             ORDER BY executado_em DESC
             LIMIT :limit

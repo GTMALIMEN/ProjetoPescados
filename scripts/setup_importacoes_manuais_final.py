@@ -402,6 +402,7 @@ CREATE TABLE IF NOT EXISTS app.fato_previa_vendedores (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_fato_mercado_privado_hash
+<<<<<<< HEAD
 ON app.fato_mercado_privado(hash_linha);
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_fato_curva_mercado_hash
@@ -421,6 +422,34 @@ ON app.fato_ceagesp_pescados(hash_linha);
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_previa_hash
 ON app.fato_previa_vendedores(hash_linha);
+=======
+ON app.fato_mercado_privado(hash_linha)
+WHERE hash_linha IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_fato_curva_mercado_hash
+ON app.fato_curva_mercado_categoria(hash_linha)
+WHERE hash_linha IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_dim_key_account_hash
+ON app.dim_key_account_loja(hash_linha)
+WHERE hash_linha IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_receita_manual_hash
+ON app.fato_receita_manual_expansao(hash_linha)
+WHERE hash_linha IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_compra_manual_hash
+ON app.fato_compra_manual(hash_linha)
+WHERE hash_linha IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_ceagesp_hash
+ON app.fato_ceagesp_pescados(hash_linha)
+WHERE hash_linha IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_previa_hash
+ON app.fato_previa_vendedores(hash_linha)
+WHERE hash_linha IS NOT NULL;
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
 """
 
 def gerar_modelos():

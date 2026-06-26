@@ -438,6 +438,7 @@ Estrutura esperada:
 - `app.fato_previa_vendedores`
 
 Todas as bases manuais devem ser tratadas como fonte persistente no Supabase/PostgreSQL.
+<<<<<<< HEAD
 
 
 ## Receita Expansão — regra de TOP
@@ -453,3 +454,5 @@ Essa trava evita que pedidos de venda entrem como receita/faturamento na anális
 ## CEPEA Manual — preço usado no gráfico
 
 No modelo CEPEA, o gráfico usa sempre a coluna `PREÇO AJUSTADO` / `preco_ajustado`. O campo antigo `preco_rs_kg` ficou apenas como compatibilidade e recebe o mesmo valor quando estiver vazio.
+=======
+>>>>>>> f755249488d880ab9c85f5f8580ef22c3a215cbf
